@@ -12,6 +12,7 @@ import com.system.util.PageVO;
 
 import egovframework.sample.user.exam.model.UserExamVo;
 import egovframework.sample.user.exam.service.UserExamService;
+import egovframework.sample.user.question.service.impl.UserQuestionMapper;
 
 @Service("userExamService")
 @Transactional
@@ -19,6 +20,9 @@ public class UserExamServiceImpl implements UserExamService {
 
 	@Resource(name="userExamMapper")
 	UserExamMapper userExamMapper;
+	
+	@Resource(name="userQuestionMapper")
+	UserQuestionMapper userQuestionMapper;
 
 	@Override
 	public ModelMap getAllList(UserExamVo userExamVo) {
@@ -64,7 +68,13 @@ public class UserExamServiceImpl implements UserExamService {
 		
 		view = userExamMapper.getExamView(userExamVo);
 		
+		//해당 exam 의 시험 관련 내용 가져오기
 		model.put("view", view);
+		
+		//해당 exam 의 문제 가져오기
+		List<?> questionlist = userExamMapper.getQuestionList(userExamVo);
+		
+		model.put("questionlist", questionlist);
 		
 		return model;
 	}

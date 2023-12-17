@@ -10,6 +10,9 @@ public class AdminExamVo extends SearchVo{
 	String m_category = "";
 	String type = "";
 	String content = "";
+	String point = "";
+	String start_tm = "";
+	String end_tm = "";
 	String create_tm = "";
 	String update_tm = "";
 	
@@ -61,6 +64,24 @@ public class AdminExamVo extends SearchVo{
 	}
 	public void setUpdate_tm(String update_tm) {
 		this.update_tm = update_tm;
+	}
+	public String getPoint() {
+		return point;
+	}
+	public void setPoint(String point) {
+		this.point = point;
+	}
+	public String getStart_tm() {
+		return start_tm;
+	}
+	public void setStart_tm(String start_tm) {
+		this.start_tm = start_tm;
+	}
+	public String getEnd_tm() {
+		return end_tm;
+	}
+	public void setEnd_tm(String end_tm) {
+		this.end_tm = end_tm;
 	}
 	
 	

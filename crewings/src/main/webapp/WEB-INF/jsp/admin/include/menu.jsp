@@ -153,6 +153,7 @@
                                         </li>
                                     </ul>
                                 </li>
+                                <!-- 
                                 <li <c:if test="${fn:indexOf(fullURL , '/file/') > -1}">
                                     class="adm_menu_active"
                                     </c:if>>
@@ -172,7 +173,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                
+                                -->
                             </ul>
                         </div>
                         <!--관리자 메뉴 end-->

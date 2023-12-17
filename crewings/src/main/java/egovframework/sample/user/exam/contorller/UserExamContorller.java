@@ -60,7 +60,7 @@ public class UserExamContorller {
 		
 		model.put("beforeData", UserExamVo);
 		
-		return new ModelAndView("user/exam/view.do" , "model" , model);
+		return new ModelAndView("user/exam/view" , "model" , model);
 		
 	}
 	

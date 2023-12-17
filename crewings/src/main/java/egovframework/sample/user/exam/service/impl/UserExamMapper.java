@@ -14,5 +14,7 @@ public interface UserExamMapper {
 	
 	UserExamVo getExamView(UserExamVo userExamVo);
 
+	List<?> getQuestionList(UserExamVo userExamVo);
+
 	
 }

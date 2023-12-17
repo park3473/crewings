@@ -30,12 +30,15 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/home_java.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/aos.js"></script>
 <!-- script end-->
-
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.4.js"></script>
 <script src="${pageContext.request.contextPath}/resources/sweetalert/sweetalert2.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/js/jquery.counterup.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/sweetalert/sweetalert2.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </head>
 <body>
 

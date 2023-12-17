@@ -102,6 +102,7 @@
                                 <a class="storage" onclick="updateClick()">자가진단 수정</a>
                                 <a class="cancel" onclick="deleteClick()">삭제하기</a>
                                 <a class="storage" href="javascript:history.back()">뒤로가기</a>
+                                <a class="cancel" onclick="startClick()">진단 시작</a>
                             </div>
                         </div>
                         <!--저장하기 버튼 end-->
@@ -167,7 +168,7 @@ function updateClick(){
 function deleteClick(){
 	
 	console.log('삭제하기');
-	var result = confirm('해당 게시글을 정말 삭제하시겠습니까?\n 삭제된 데이터는 복구가 불가능합니다.');
+	var result = confirm('해당 자가진단을 정말 삭제하시겠습니까?\n 삭제된 데이터는 복구가 불가능합니다.');
 	if(result){
 		
 		console.log('삭제');
@@ -178,6 +179,37 @@ function deleteClick(){
 		
 		console.log('삭제 안함');
 		
+	}
+	
+}
+
+function startClick(){
+	
+	console.log('시작하기');
+	var result = confirm('해당 자가진단을 시작하시겠습니까?');
+	if(result){
+		
+		console.log('시작하기전 날짜 설정');
+		Swal.fire({
+	        title: '진단 시작하기',
+	        html: `<input type="date" id="start-date" class="swal2-input" placeholder="시작일자">
+	               <input type="date" id="end-date" class="swal2-input" placeholder="종료일자">`,
+	        confirmButtonText: '시작하기',
+	        focusConfirm: false,
+	        preConfirm: () => {
+	            const startDate = document.getElementById('start-date').value;
+	            const endDate = document.getElementById('end-date').value;
+	            return { startDate: startDate, endDate: endDate };
+	        }
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	            console.log('진단 시작:', result.value.startDate, '부터', result.value.endDate, '까지');
+	            // 여기에 시작일자와 종료일자를 처리하는 로직을 추가하세요.
+	        }
+	    });
+		
+	}else{
+		console.log('시작프로세스 cancel');
 	}
 	
 }
