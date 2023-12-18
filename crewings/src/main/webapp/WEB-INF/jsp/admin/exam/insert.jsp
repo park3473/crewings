@@ -82,6 +82,10 @@
                                         	</c:if>
                                         </li>
                                         <li>
+                                        	<span class="list_t">포인트</span>
+                                        	<input class="input_size mr" type="text" name="point" id="point"/>
+                                        </li>
+                                        <li>
                                         	<span class="list_t">개요</span>
                                         	<textarea name="content" id="editor"></textarea>
                                         </li>

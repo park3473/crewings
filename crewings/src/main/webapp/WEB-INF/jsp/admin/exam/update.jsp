@@ -46,6 +46,9 @@
                     <form action="./update.do" method="post" name="updateForm" id="updateForm" enctype="multipart/form-data">
                         <input type="hidden"  name="csrf" value="${CSRF_TOKEN}" />
                         <input type="hidden" name="idx" value="${model.view.idx }"  />
+                        <input type="hidden" name="type" value="${model.view.type }" />
+                        <input type="hidden" name="start_tm" value="" />
+                        <input type="hidden" name="end_tm" value="" />
                         <div class="sc_con" id="div_con">
                             <div class="title">
                                 <span></span>
@@ -81,11 +84,8 @@
                                         	</c:if>
                                         </li>
                                         <li>
-                                        	<span class="list_t">개요</span>
-                                        	<select name="type" id="type">
-                                        		<option value="0" <c:if test="${model.view.type == '0' }">selected="selected"</c:if> >OFF</option>
-                                        		<option value="1" <c:if test="${model.view.type == '1' }">selected="selected"</c:if> >ON</option>
-                                        	</select>
+                                        	<span class="list_t">포인트</span>
+                                        	<input type="text" name="point" value="${model.view.point }"> 
                                         </li>
                                         <li>
                                         	<span class="list_t">개요</span>
@@ -99,10 +99,14 @@
                          <!--저장하기 버튼-->
                         <div class="register_btn_area">
                             <div class="register_btn_con">
+                            	<c:if test="${model.view.type == '0' }">
                                 <a class="storage" onclick="updateClick()">자가진단 수정</a>
                                 <a class="cancel" onclick="deleteClick()">삭제하기</a>
-                                <a class="storage" href="javascript:history.back()">뒤로가기</a>
-                                <a class="cancel" onclick="startClick()">진단 시작</a>
+                                <a class="storage" onclick="startClick()">진단 시작</a>
+                                </c:if>
+                                <c:if test="${model.view.type == '1' }">
+                                <a class="storage" onclick="endClick()">진단 종료</a>
+                                </c:if>
                             </div>
                         </div>
                         <!--저장하기 버튼 end-->
@@ -155,12 +159,6 @@ function updateClick(){
 	
 	console.log('수정하기');
 	
-	$('[change=FALSE]').attr('disabled',true);
-	
-	var fileCnt = $('[change=TRUE]').length;
-	
-	$('[name=file]').val(fileCnt);
-	
 	$('form[name=updateForm]').submit();
 	
 }
@@ -204,8 +202,15 @@ function startClick(){
 	    }).then((result) => {
 	        if (result.isConfirmed) {
 	            console.log('진단 시작:', result.value.startDate, '부터', result.value.endDate, '까지');
-	            // 여기에 시작일자와 종료일자를 처리하는 로직을 추가하세요.
+	            
+	            $('[name=start_tm]').val(result.value.startDate);
+		        $('[name=end_tm]').val(result.value.endDate);
+		        $('[name=type]').val('1');
+		        
+		        updateClick()
+	            
 	        }
+	        
 	    });
 		
 	}else{

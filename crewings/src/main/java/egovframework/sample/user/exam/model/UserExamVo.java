@@ -8,6 +8,9 @@ public class UserExamVo extends SearchVo {
 	String name = "";
 	String l_category = "";
 	String m_category = "";
+	String point = "";
+	String start_tm = "";
+	String end_tm = "";
 	String type = "";
 	String content = "";
 	String create_tm = "";
@@ -60,6 +63,24 @@ public class UserExamVo extends SearchVo {
 	}
 	public void setUpdate_tm(String update_tm) {
 		this.update_tm = update_tm;
+	}
+	public String getPoint() {
+		return point;
+	}
+	public void setPoint(String point) {
+		this.point = point;
+	}
+	public String getStart_tm() {
+		return start_tm;
+	}
+	public void setStart_tm(String start_tm) {
+		this.start_tm = start_tm;
+	}
+	public String getEnd_tm() {
+		return end_tm;
+	}
+	public void setEnd_tm(String end_tm) {
+		this.end_tm = end_tm;
 	}
 	
 	

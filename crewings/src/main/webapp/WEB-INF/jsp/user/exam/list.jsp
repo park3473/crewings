@@ -24,15 +24,16 @@
             margin-bottom: 20px;
         }
     </style>
-    <h1>시험 문제</h1>
+    <h1>시험 리스트</h1>
     
-<c:forEach var="entry" items="${model.questionlist}">
+<c:forEach var="item" items="${model.list}" varStatus="status">
     <div>
-        <h3>${entry.QuestionTitle}</h3>
-        <h3>${entry.QuestionContent}</h3>
-        <c:forEach var="choice" items="${fn:split(entry.Choices, '#')}"> <!-- 선택지 분할 -->
-            <p>${choice}</p>
-        </c:forEach>
+        <ul>
+        	<li>${item.name }</li>
+        	<li>${item.point }</li>
+        	<li>${item.start_tm }</li>
+        	<li>${item.end_tm }</li>
+        </ul>
     </div>
 </c:forEach>
 
