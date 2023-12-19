@@ -1,0 +1,150 @@
+@charset "utf-8";
+
+/* ----------------------------------------------------------
+ * 레이아웃_공통(pc)
+---------------------------------------------------------- */
+html, body {height:100%;padding:0;margin:0}
+body {font-size:1em;font-family:'Malgun Gothic', dotum, sans-serif;background:#fff;color:#555;line-height:27px;letter-spacing:-0.5px;overflow-x:hidden}
+h1, h2, h3, h4, h5, h6 {font-size:1em;font-family:'Malgun Gothic', dotum, sans-serif}
+ul, dl,dt,dd {margin:0;padding:0;list-style:none}
+legend {position:absolute;margin:0;padding:0;font-size:0;line-height:0;text-indent:-9999em;overflow:hidden}
+a {color:#555}
+a:hover {color:#ce7784;text-decoration:none}
+
+input[type=text],input[type=password], textarea {
+-webkit-box-shadow:none !important;
+box-shadow:none !important;
+outline:none !important;
+border:1px #dedede solid !important;
+}
+ 
+input[type=text]:focus,input[type=password]:focus, textarea:focus,select:focus {
+-webkit-box-shadow:none !important;
+box-shadow:none !important;
+outline:none !important;
+border:1px #dedede solid !important;
+}
+
+/* 전체컨테이너 */
+.container{width:1400px;max-width:none !important}
+
+/* 타이틀폰트 */
+.b_txt_tit{font-size:30px;padding-bottom:15px}
+.s_txt_tit{color:#aaa;padding-bottom:5px}
+
+/* 폰트칼라 */
+.orange_01{color:#ff8400}
+.brown_01{color:#795f5f}
+.blue_01{color:#5ed6ec}
+.bora_01{color:#c2aaff}
+.bora_02{color:#7636ba}
+
+/* ----------------------------------------------------------
+ * 상단
+---------------------------------------------------------- */
+
+/* 상단메뉴 */
+.header{background:#f4f4f4;border-bottom:1px #dedede solid}
+.header li{padding:7px 30px;border-right:1px #dedede solid;display:inline-block;font-size:15px}
+.header .bg{background:#fff}
+.navi{padding-top:30px;padding-bottom:25px}
+
+/* ----------------------------------------------------------
+ * 메인
+---------------------------------------------------------- */
+
+/* 메인배너 */
+#jnp {width:1920px}
+#jnp .carousel-inner img{width:100%;height:100%}
+#jnp .carousel-caption {top:22vh;text-align:left;z-index:3}
+#jnp .carousel-caption .txt_64{font-size:4rem;padding:30px 0 40px 0}
+#jnp .carousel-caption .txt_32{font-size:1.5rem;line-height:40px}
+#jnp .carousel-control-prev{left:0%;z-index:3;font-size:72px;}
+#jnp .carousel-control-next{right:0%;z-index:3;font-size:72px}
+#jnp .carousel-indicators {bottom:5%}
+
+/* 사이드바 */
+.sidenav{height:100%;width:95px;position:fixed;z-index:1;top:0;right:0;background:rgba(255,255,255,.2);border-left:1px rgba(0,0,0,.1) solid;overflow-x:hidden;padding-top:12%;text-align:center}
+.sidenav .box_01{background:rgba(215,140,55,.5)}
+.sidenav .box_02{background:rgba(165,140,175,.5)}
+.sidenav .box_03{background:rgba(70,165,95,.5)}
+.sidenav .box_04{background:rgba(130,180,200,.5)}
+.sidenav img{padding-top:20px;padding-bottom:10px}
+.sidenav .txt{color:#fff;padding-bottom:20px;font-size:14px}
+
+/* 플렉스 */
+.jnp .flexbox{display:flex;flex-wrap:wrap;gap:1em;padding-top:15px}
+.jnp .item{flex-basis:150px;flex-grow:1;border:none}
+.jnp .box_01{background:rgba(255,255,255,.8);border-radius:5px;border:1px #dedede solid;color:#c7c7c7;padding:20px}
+.jnp .box_01 .txt{font-size:22px;font-weight:400;padding-top:15px;padding-bottom:10px;color:#000}
+.jnp .box_02{background:rgba(255,255,255,1);border:1px #dedede solid;color:#c7c7c7padding:0}
+.jnp .box_02 img{width:100%;border-bottom:1px #dedede solid}
+.jnp .box_02 .sul_box{padding:5px 20px 20px 30px}
+.jnp .box_02 .txt{font-size:22px;font-weight:400;padding-top:15px;padding-bottom:10px;color:#000}
+.jnp .box_02 .sul{color:#c7c7c7;padding:3px 0 10px 0}
+.jnp .box_02 .day{color:#c7c7c7;font-size:14px;color:#ccc;text-align:right}
+.jnp .box_03{background:rgba(0,0,0,.03);border:1px #dedede solid;height:130px;padding:5px 0 0 30px}
+.jnp .box_03 .tit{font-size:40px;font-weight:400;color:#000;padding-right:30px}
+.jnp .box_03 .txt{font-size:22px;font-weight:400;padding-top:15px;padding-bottom:10px;color:#000}
+.jnp .box_03 li{display:inline-block}
+.jnp .box_04{background:rgba(0,0,0,.03);border:1px #dedede solid;height:130px;padding:30px 0 0 30px}
+.jnp .box_04 .tit{font-size:40px;font-weight:400;color:#000;padding-right:30px;padding-top:20px}
+.jnp .box_04 img{margin-top:-10px}
+.jnp .box_04 li{display:inline-block}
+
+/* 탭 */
+.nav-tabs {border-bottom:1px solid #da2121}
+.nav-tabs .nav-link {border-radius:0;padding:10px 40px;border-color:#f4f4f4 #f4f4f4 #da2121}
+.nav-tabs .nav-link.active{color:#da2121;border-color:#da2121 #da2121 #fff;background:url('/jnp/contents/img/arrow_01.png') no-repeat right 10px center}
+.nav-tabs .link{top:0;right:15px}
+
+/* board */
+.notice{padding-top:25px}
+.notice .box_01{background:#da2121;color:#fff;display:inline-block;padding:15px 20px;text-align:center;letter-spacing:0}
+.notice .day{font-size:30px}
+.notice .mon{font-size:12px}
+.notice .tit{font-size:18px;color:#000}
+.notice .sul{color:#8a8a8a;padding:3px 0}
+.notice .name{font-size:14px;color:#ccc}
+.all_list{padding-top:25px}
+.all_list .tit{font-size:18px;color:#000}
+.all_list .day{font-size:14px;color:#ccc;text-align:right}
+.line_gab{border-top:1px #dedede solid;margin-top:25px;height:1px}
+
+/* jnp배너 */
+.jnp_banner{width:1920px}
+.jnp_banner .left{background:url('/jnp/contents/img/banner_bg_01.jpg') repeat center center;height:575px}
+.jnp_banner .right{background:url('/jnp/contents/img/banner_bg_02.jpg') repeat center center}
+.jnp_banner .sul_box_01{color:#fff;text-align:right;padding-top:200px;padding-right:50px}
+.jnp_banner .sul_box_01 .tit{font-size:3rem}
+.jnp_banner .sul_box_01 .sul{padding:30px 0 30px 0;font-size:18px;color:rgba(255,255,255,.5);line-height:34px}
+.jnp_banner .sul_box_01 .btn{display:inline-block;color:#fff;background:#5d5c80;padding:10px 20px;border-radius:30px}
+
+.jnp_banner .sul_box_02{color:#fff;text-align:left;padding-top:200px;padding-left:50px}
+.jnp_banner .sul_box_02 .tit{font-size:3rem}
+.jnp_banner .sul_box_02 .sul{padding:30px 0 30px 0;font-size:18px;color:rgba(255,255,255,.5);line-height:34px}
+.jnp_banner .sul_box_02 .btn{}
+
+/* 커뮤니티 */
+.commu{}
+.commu .left{background:url('/jnp/contents/img/fun_bg.png') no-repeat center center;height:335px}
+.commu .fun_box {color:#fff;text-align:left;padding-top:40px;padding-left:50px}
+.commu .fun_box .tit{font-size:3.5rem}
+.commu .fun_box .sul{padding:30px 0 30px 0;color:rgba(255,255,255,.7);line-height:28px}
+
+/* ----------------------------------------------------------
+ * 서브
+---------------------------------------------------------- */
+
+/* 공통상단 */
+.sub_top{background:url('/jnp/contents/img/sub_bg.jpg') repeat center center;height:325px;margin-bottom:50px}
+.sub_top .sul_box_01{color:#fff;text-align:left;padding-top:80px}
+.sub_top .sul_box_01 .tit{font-size:3rem;padding-top:20px}
+.sub_top .sul_box_01 .sul{padding:30px 0 30px 0;font-size:18px;color:rgba(255,255,255,.5);line-height:34px}
+
+/* ----------------------------------------------------------
+ * 하단
+---------------------------------------------------------- */
+.footer{background:#383838;color:#8d8d8d;padding-top:30px;padding-bottom:30px}
+.footer a{color:#8d8d8d}
+.footer .gab{color:rgba(255,255,255,.2);font-family:dotum;padding:0 10px}

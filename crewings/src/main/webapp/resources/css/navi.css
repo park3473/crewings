@@ -1,0 +1,229 @@
+
+
+/**************
+ Layout
+***************/
+#wrapper{position:relative;width:100%;min-width:320px;height:100%_}
+#header{position:fixed_;top:0;left:0;z-index:100;width:100%;height:80px;background:#fff;border-bottom:1px solid #ebebeb}/*모바일네비세로*/
+#header:after{content:none}
+#header.scroll{height:80px}
+#header .head-title{position:absolute;top:15px;left:15px}/*모바일로고높이*/
+#header .head-title .btn-back{display:inline-block;vertical-align:top;padding-top:7px;width:16px;height:25px}
+#header .head-title .btn-back:after{display:inline-block;content:'';width:11px;height:11px;border-left:2px solid #000;border-top:2px solid #000;-ms-transform: rotate(-45deg);-o-transform: rotate(-45deg);transform: rotate(-45deg);-webkit-transform: rotate(-45deg)}
+#header .head-title h1,#header .head-title strong{display:inline-block;font-weight:normal;color:#333}
+#header .header-inner{position:relative; width:100%; height:100%; margin:0 auto;}
+#header .header-inner .logo{position:static;font-weight:normal;text-align:center}
+.header-inner .logo{width:12rem;height:2.1rem;-webkit-box-sizing:border-box;box-sizing:border-box}
+.header-inner .logo img{max-width:100%}
+
+.main .header-inner .head-title .main-logo{max-width:200px}/*모바일로고크기*/
+.main .header-inner .main-logo img{max-width:100%}
+.main #header{transition:all .3s ease-out; -webkit-transition:all .3s ease-out; -moz-transition:all .3s ease-out; -o-transition:all .3s ease-out}
+
+/**************
+ Gnb
+***************/
+#wrapper #header .header-inner .logo{display:none;position:static;text-align:center;padding-top:1.5rem}
+#nav{position:fixed; top:0;width:100%;left:100%; height:100%;z-index:1001;background:#fff}
+#nav .nav-inner{position:relative;background:#fff;height:100%}
+#nav .util-menu{text-align:left;white-space:nowrap;color:#666}
+#nav .util-menu .menu {right:0;top:25px;position:absolute}/*상단셀렉트박스간격*/
+#nav .util-menu .menu.mob-view2{display:none}
+#nav .util-menu .menu .lang-list{display:none;position:relative}
+
+/* 언어선택 */
+.lang-list > .lang{position:relative;padding:0 1.5rem 0 2rem;display:none}
+.lang-list > .lang > span{white-space:nowrap}
+.lang-list > .lang:hover{cursor:pointer}
+.lang-list > .lang .selected{display:block}
+.lang-list > .lang:after{position:absolute;top:.5rem;right:1px;content:'';width:5px;height:5px;border:solid #979797;border-width:0 1px 1px 0;margin-top:-2px;-ms-transform:rotate(-315deg);-o-transform:rotate(-315deg);transform:rotate(-315deg);-webkit-transform:rotate(-315deg)}
+.lang-list > .lang .select-link{position:absolute;top:0;left:0;width:100%;height:100%;background:transparent}
+.lang-list .select-lang{position:absolute;top:18px;left:0;z-index:10;width:100%;background:#fff;border:1px solid #ebebeb; padding:10px 8px}
+.lang-list .select-lang li{margin:0 0 10px;color:#666;text-align:left}
+.lang-list .select-lang li:last-child{margin-bottom:0}
+
+
+/* welcome */
+#nav .util-menu .welcome{display:block;position:relative;background:#014979;padding:28px 20px;color:#3a9ee0;text-align:left;font-size:16px}
+
+/* 네비(모바일인듯) */
+#nav .util-menu .util-menu-group{display:block;font-size:16px;/*opacity:.5*/}
+#nav .gnb-area > .gnb-menu:after{display:block;clear:both;content:''}
+#nav .gnb-area .gnb-menu{float:none; display:block}
+#nav .gnb-area > .gnb-menu > li{position:relative;float:none;display:block;text-align:left;font-size:1.350rem;font-weight:normal;letter-spacing:-1px}/*대메뉴크기 모바일도 같이*/
+#nav .gnb-area > .gnb-menu > li.home > a{color:#666}
+#nav .gnb-area > .gnb-menu > li.home > a > span:before{display:inline-block;content:'';width:1.4rem;height:1.3rem;margin-right:.6rem}
+#nav .gnb-area > .gnb-menu > li.home > a > span:after,
+#nav .gnb-area > .gnb-menu > li.home.on > a >span:after{-ms-transform: rotate(-45deg);-o-transform: rotate(-45deg);transform: rotate(-45deg);-webkit-transform:rotate(-45deg);margin-top:.4rem}
+#nav .gnb-area > .gnb-menu > li.on > a,
+#nav .gnb-area > .gnb-menu > li.active > a{color:#000}
+#nav .gnb-area > .gnb-menu > li:hover > a{color:#000}
+#nav .gnb-area > .gnb-menu > li > a{display:block;padding:20px;white-space:nowrap;color:#000;border-bottom:1px solid #ebebeb}
+#nav .gnb-area > .gnb-menu > li > a > span{position:relative;display:block;line-height:20px}
+#nav .gnb-area > .gnb-menu > li > a > span:after{display:block;content:'';position:absolute;top:.2rem;right:0;width:.5rem;height:.5rem;content:''; border:solid #999;border-width:0 1px 1px 0;margin:0;-ms-transform:rotate(405deg);-o-transform:rotate(405deg);transform:rotate(405deg);-webkit-transform:rotate(405deg);}
+#nav .gnb-area > .gnb-menu > li.on a > span:after{margin-top:.2rem;-ms-transform:rotate(-135deg);-o-transform:rotate(-135deg);transform:rotate(-135deg);-webkit-transform: rotate(-135deg)}
+#nav .gnb-area > .gnb-menu > li > .depth2{display:none}
+#nav .gnb-area > .gnb-menu > li > .depth2 li{background:#fbfbfb;border-bottom:1px solid #ebebeb;margin-bottom:0;font-size:1rem;letter-spacing:-1px;font-weight:normal}/*중메뉴글자크기*/
+#nav .gnb-area > .gnb-menu > li > .depth2 li > a{color:#666;display:block;padding:15px 20px}
+#nav .gnb-area > .gnb-menu > li.active > a:after,
+#nav .gnb-area > .gnb-menu > li:hover > a:after{content:none}
+
+/* 모바일삼선바 */
+.btn-gnb-open{display:block;position:absolute;top:2rem;right:1.5rem;z-index:1002;width:2rem;height:1rem;background:none}
+.btn-gnb-open > .bar{display:block; width:2rem; height:2px; background:#333; border-radius:1px}
+.btn-gnb-open:before{position:absolute; top:0;right:0;content:'';display:block;width:1rem;height:2px;background:#333;border-radius:1px}
+.btn-gnb-open:after{position:absolute;bottom:0;right:0;content:'';display:block;width:1.2rem;height:2px;background:#333;border-radius:1px}
+.btn-gnb-close.ico-close{display:block;position:absolute;top:1.5rem;right:20px; width:2rem; height:2rem;background:transparent;z-index:9002}/*클로즈버튼*/
+.btn-gnb-close.ico-close::before, .btn-gnb-close.ico-close::after {background:#fff;height:2px}
+
+/* only mobile-mode (gnb-open) */
+#header.m-gnb-open #nav{position:fixed;left:10%;z-index:9001;width:90%;min-height:100%}
+#header.m-gnb-open #nav .nav-inner{z-index:9001;width:100%;padding:80px 0 0 0}/*자동메뉴높이*/
+#header.m-gnb-open #nav .util-menu{position:absolute;top:0;right:0;padding:0;width:100%;text-align:left;white-space:nowrap;color:#666}
+#header.m-gnb-open #nav .util-menu .util-menu-group.bottom{position:relative;background:#4f3660;overflow:hidden;text-align:left;padding:26px;display:none_}/*모바일로그인처리*/
+#header.m-gnb-open #nav .util-menu .util-menu-group.bottom > a{display:inline-block;padding:0;color:#d8d8d8}
+#header.m-gnb-open #nav .util-menu .util-menu-group.bottom .gab{padding:0 5px 0 5px;color:#404040}
+#header.m-gnb-open #nav .util-menu .util-menu-group.bottom .off{display:none}
+
+#header.m-gnb-open .btn-gnb-open{z-index:0}
+#header.m-gnb-open #nav .gnb-area{height:100%;overflow-y:scroll}
+
+
+@media (min-width:769px) {
+/* Layout */
+#header{position:absolute;height:120px;border-bottom:0}/*상단메뉴 분리시 포지션 주석해제*/
+#header:after{display:block;content:'';width:100%;height:1px;background:#ebebeb;position:absolute;top:120px}
+#wrapper #header .header-inner .logo{display:block;position:absolute;top:0;left:15px;z-index:10;max-width:100%}/*pc로고*/
+#header .header-inner{max-width:1600px;padding-right:15px}/*네비전체크기*/
+#header .header-inner .logo{width:256px;max-width:165px;padding:0}
+#header .header-inner .logo img{max-width:100%}
+#header .head-title{display:none}
+#container{padding-top:120px;min-height:-webkit-calc(100% - 235px);min-height:calc(100% - 235px)}
+
+
+.main #container{padding:0}
+.main #header{background:#fff;border-bottom:0px #fff solid}/*상단네비배경*/
+.main #header:after{content:none}
+.main #header:not(.gnb-open) #nav .util-menu,
+.main #header:not(.gnb-open) #nav .util-menu > .menu{color:#000}
+.main #nav .nav-inner{background:transparent;}
+.main #header.gnb-open,.main #header.scroll{background:#fff;border-bottom:1px #dedede solid;}/*스크롤시전체배경*/
+.main #header.gnb-open:after{content:none}
+.main #header.scroll:after,
+.main #header.gnb-open:after{display:block;content:'';width:100%;height:0px;background:#ebebeb;position:absolute;top:120px}
+.main #header.scroll:after{top:80px}
+.main #header.color-bright *{color:#000}/*상단메뉴색상지정*/
+
+
+.main #header.color-bright .select-lang *{color:#666}
+.main #header.color-bright .lang-list > .lang:after{border-color:#fff}
+.main #header.color-bright.gnb-open .lang-list > .lang:after{border-color:#666}
+.main #header.gnb-open.color-bright *{color:inherit}
+.main #header.gnb-open.color-bright .gnb-area > .gnb-menu > li > a{color:#000}
+.main #header.scroll.color-bright *{color:inherit}
+.main .header-inner .head-title .main-logo{display:none}
+
+
+/* scroll */
+#header.scroll{position:fixed;height:80px}
+#header.scroll:after{top:80px}
+#wrapper #header.scroll .header-inner .logo{display:block;top:-10px;max-width:180px}/* 스크롤시 pc 로고*/
+#header.scroll .util-menu{display:none}
+#header.scroll .gnb-area{position:static;padding-top:23px;height:auto}
+
+/* Gnb(pc전체) */
+#header.gnb-open{height:300px;border-bottom:1px solid #e5e5e5}/*전체크기*/
+#header.scroll.gnb-open{height:270px;border-bottom:1px solid #e5e5e5}
+#nav .gnb-area .gnb-menu{float:right;display:table;table-layout:fixed;margin:0 !important}
+#nav .gnb-area .gnb-menu:after{clear:both; display:block; content:''}
+#nav .gnb-area > .gnb-menu > li{position:relative;display:table-cell;vertical-align:top;text-align:right;padding-left:80px}/*pc 대메뉴간격*/
+#nav .gnb-area > .gnb-menu > li > a{padding:0 !important}
+#nav .gnb-area > .gnb-menu > li.active > a{color:#da291c}
+#nav .gnb-area > .gnb-menu > li:hover > a,
+.main #header.color-bright .gnb-area > .gnb-menu > li:hover > a > span{color:#da291c}
+
+/* 언더라인 */
+#nav .gnb-area > .gnb-menu > li > a{position:relative;display:inline-block;padding:0 10px;border-bottom:0;height:40px}/*언더라인간격*/
+#nav .gnb-area > .gnb-menu > li > a:after{display:block; content:'';position:absolute;bottom:0;left:50%;z-index:1;width:1px;height:2px;background:transparent}
+#nav .gnb-area > .gnb-menu > li.active > a:after,
+#nav .gnb-area > .gnb-menu > li:hover > a:after{display:block;content:'';width:100%;left:0;background:#da291c}
+#nav .gnb-area > .gnb-menu > li > a > span:after{content:none}
+#header.scroll .gnb-area > .gnb-menu > li > a:after{bottom:0px}/*스크롤시 언더라인간격*/
+
+/* Depth2 */
+#header.gnb-open .gnb-area > .gnb-menu > li > .depth2{display:block !important;padding-top:20px;margin-top:-2px;position:relative;z-index:1}
+#nav .gnb-area{position:static;padding-top:45px;height:auto}
+#nav .gnb-area:after{display:block;clear:both;content:''}
+#nav .gnb-area > .gnb-menu > li > .depth2 li{margin-bottom:10px;background:none;border-bottom:0;margin-right:3px}/*pc 2차메뉴간격*/
+#nav .gnb-area > .gnb-menu > li > .depth2 li > a{color:#666;padding:0}
+#nav .gnb-area > .gnb-menu > li > .depth2 li > a:hover,
+#nav .gnb-area > .gnb-menu > li > .depth2 li.active > a{color:#da291c}
+
+/* util-menu */
+#nav{position:static;background:none;}
+#nav .util-menu .menu .lang-list{display:block;margin-right:0}/*랭귀지 여기만 건드리면 됨*/
+#nav .util-menu{position:static;text-align:right;padding:26px 0px 0 0;white-space:normal}/*상단메뉴간격*/
+#nav .util-menu:after{display:block;clear:both;content:''}
+#nav .util-menu > .menu{display: inline-block; margin-left:24px;color:#666}
+#nav .util-menu .menu:hover,.lang-list .select-lang li a:hover{text-decoration:underline}
+#nav .util-menu .util-menu-group.bottom > .gab{padding:0 5px !important;color:#000;opacity:0}
+
+/* welcome */
+#nav .util-menu .welcome{display:none;}
+#nav .nav-inner{height:100%}
+.btn-gnb-open,
+.btn-gnb-close.ico-close{display:none}
+
+}
+
+@media (min-width:921px) and (max-width:1120px) {
+#wrapper #header .header-inner .logo{max-width:165px;top:20px}
+#wrapper #header.scroll .header-inner .logo{display:none}
+#nav .gnb-area{padding:28px 0 0 0}
+}
+
+@media (min-width:769px) and (max-width:920px) {
+#wrapper #header .header-inner .logo{max-width:165px;top:20px}
+#wrapper #header.scroll .header-inner .logo{display:none}
+#nav .gnb-area{padding: 28px 0 0 0}
+.gnb-area > .gnb-menu > li {min-width:14.2%}
+}
+
+/*스크롤감추기 */
+@media (max-width:768px){
+/* Scroll */
+html{-ms-overflow-style:none}
+body::-webkit-scrollbar{display:none}
+.gnb-area::-webkit-scrollbar{display:none}
+}
+
+/**************
+셀렉트히든처리 
+***************/
+.blind{position:absolute;left:-99999px;display:block;width:1px;height:1px;overflow:hidden;text-indent:-99999px;clip:rect(0,0,0,0)}
+.hide{display:none}
+
+
+/**************
+ Button
+***************/
+/* 모바일 열기닫기 */
+button,[type="button"],[type="reset"],[type="submit"]{-webkit-appearance:button; cursor:pointer; border:0; padding:0; background-image:none;}
+button[disabled], html input[disabled], input[disabled] + label{cursor:default;}
+button::-moz-focus-inner, input::-moz-focus-inner{padding:0; border:0;}
+button:-moz-focusring,[type="button"]:-moz-focusring,[type="reset"]:-moz-focusring,[type="submit"]:-moz-focusring{outline:1px dotted ButtonText;}
+
+/* 공통 X */
+.ico-close {position: relative; display: inline-block; width: 50px; height: 50px; overflow: hidden;}
+.ico-close::before, .ico-close::after {content: ''; position: absolute; height: 1px; width: 100%; top: 50%; left: 0; margin-top: -1px; background: #000;}
+.ico-close::before{-webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg);}
+.ico-close::after{-webkit-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg);}
+.ico-close.small{width:12px; height:12px;}
+.btn-icon.ico-detail{display:inline-block; width:23px; height:23px; border:1px solid #ddd; background:#fff; padding:6px;}
+
+/**************
+ Layer Open
+***************/
+body.openLayer-mode{overflow:hidden}
+body.openLayer-mode #wrapper{position:fixed}
+.dim,.sys-dim,.gnb-bg{position:fixed;left:0;top:0;z-index:9000;min-width:100%;min-height:100%;background-color:#000;opacity:.75;-webkit-transition:.5s ease;-o-transition:.5s ease;transition:.5s ease;overflow:hidden}
