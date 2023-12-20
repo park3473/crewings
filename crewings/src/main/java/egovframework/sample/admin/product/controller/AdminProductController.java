@@ -9,10 +9,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.system.util.SUtil;
 
 import egovframework.sample.admin.product.model.AdminProductVo;
 import egovframework.sample.admin.product.service.AdminProductService;
+import egovframework.sample.file.model.FileVo;
 
 @Controller
 public class AdminProductController {
@@ -39,7 +43,31 @@ public class AdminProductController {
 		
 		ModelMap model = new ModelMap();
 		
-		return new ModelAndView("" , "" , model);
+		model = adminProductService.getAllList(AdminProductVo);
+		
+		model.put("before", AdminProductVo);
+		
+		return new ModelAndView("admin/product/list" , "model" , model);
+		
+	}
+	
+	
+	@RequestMapping(value="/admin/product/insert.do" , method = RequestMethod.GET)
+	public String AdminProductInsertGet(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , HttpServletRequest request , HttpServletResponse response) {
+		return "admin/product/insert";
+	}
+	
+	@RequestMapping(value="/admin/product/insert.do" , method  = RequestMethod.POST)
+	public void AdminProductInsertPost(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , MultipartHttpServletRequest request , HttpServletResponse response) {
+		
+		//파일 등록
+		String drv = request.getRealPath("");
+		drv = drv.substring(0 , drv.length()) + "./resources/" + ((HttpServletRequest) request).getContextPath() + "/upload/product/image/";
+		
+		String filename = SUtil.setFileUpload(request, drv);
+		
+		AdminProductVo.setImage(filename);
+		
 		
 	}
 	
