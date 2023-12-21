@@ -1,5 +1,6 @@
 package egovframework.sample.admin.product.controller;
 
+import javax.enterprise.inject.Model;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -54,7 +55,9 @@ public class AdminProductController {
 	
 	@RequestMapping(value="/admin/product/insert.do" , method = RequestMethod.GET)
 	public String AdminProductInsertGet(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , HttpServletRequest request , HttpServletResponse response) {
+		
 		return "admin/product/insert";
+		
 	}
 	
 	@RequestMapping(value="/admin/product/insert.do" , method  = RequestMethod.POST)
@@ -68,6 +71,34 @@ public class AdminProductController {
 		
 		AdminProductVo.setImage(filename);
 		
+		adminProductService.setProductData(AdminProductVo , "insert");
+		
+	}
+	
+	@RequestMapping(value="/admin/product/view.do" ,  method = RequestMethod.GET)
+	public ModelAndView AdminProductViewData(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		ModelMap model = new ModelMap();
+		
+		model = adminProductService.getViewData(AdminProductVo);
+		
+		model.put("before", AdminProductVo);
+		
+		return new ModelAndView("admin/product/view" , "model" , model);
+		
+	}
+	
+	@RequestMapping(value="/admin/product/delete.do" , method = RequestMethod.POST)
+	public void AdminProductDeletePost(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		adminProductService.setProductData(AdminProductVo, "delete");
+		
+	}
+	
+	@RequestMapping(value="/admin/product/update.do" , method = RequestMethod.POST)
+	public void AdminProductUpdatePost(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , MultipartHttpServletRequest request , HttpServletResponse response) {
+		
+		adminProductService.setProductData(AdminProductVo, "update");
 		
 	}
 	

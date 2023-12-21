@@ -7,6 +7,7 @@ public class AdminProductVo  extends SearchVo{
 	String idx = "";
 	String name = "";
 	String image = "";
+	String category = "";
 	String price = "";
 	String location = "";
 	String coment = "";
@@ -28,6 +29,12 @@ public class AdminProductVo  extends SearchVo{
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	public String getPrice() {
 		return price;

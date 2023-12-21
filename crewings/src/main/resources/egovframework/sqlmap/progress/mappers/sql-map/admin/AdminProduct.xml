@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.sample.admin.product.service.impl.AdminProductMapper">
+
+	<select id="getAllList" parameterType="AdminProductVo" resultType="hashMap">
+		SELECT * FROM TBL_PRODUCT
+		<if test="CATEGORY != ''">
+			CATEGORY = #{category}
+		</if>
+		ORDER BY IDX
+	</select>
+	<insert id="setProductInsertData" parameterType="AdminProductVo">
+		INSERT INTO TBL_PRODUCT (NAME , IMAGE , CATEGORY , PRICE , LOCATION , COMENT , CREATE_TM , UPDATE_TM)
+		VALUES (#{name} , #{image} , #{category} , #{price} , #{location} , #{coment} , now() , now())
+	</insert>
+	<update id="setProductUpdateData" parameterType="AdminProductVo">
+		UPDATE TBL_PRODUCT SET
+		<if test="NAME != ''">
+		NAME = #{name},
+		</if>
+		<if test="IMAGE != ''">
+		IMAGE = #{image},
+		</if>
+		<if test="CATEGORY != ''">
+		CATEGROY = #{category},
+		</if>
+		<if test="PRICE">
+		PRICE = #{price},
+		</if>
+		<if test="LOCATION">
+		LOCATION = #{location},
+		</if>
+		<if test="COMENT">
+		COMENT = #{coment},
+		</if>
+		UPDATE_TM = now()
+		
+		WHERE IDX = #{idx}
+	</update>
+	
+	<delete id="setProductDeleteData" parameterType="AdminProductVo">
+		DELETE FROM TBL_PRODUCT WHERE IDX = #{idx}
+	</delete>
+
+	<select id="getViewData" parameterType="AdminProductVo" resultType="AdminProductVo">
+		SELECT * FROM TBL_PRODUCT WHERE IDX = #{idx}
+	</select>
+
+</mapper>
