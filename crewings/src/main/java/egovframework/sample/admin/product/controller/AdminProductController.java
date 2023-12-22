@@ -32,7 +32,7 @@ public class AdminProductController {
 		System.out.println("ITEM_COUNT : " + AdminProductVo.getITEM_COUNT());
 		
 		String PAGE = request.getParameter("PAGE") != null ? request.getParameter("PAGE") : "0";
-		String ITEM_COUNT = request.getParameter("ITEM_COUNT") != null ? request.getParameter("ITEM_COUNT") : "0";
+		String ITEM_COUNT = request.getParameter("ITEM_COUNT") != null ? request.getParameter("ITEM_COUNT") : "10";
 		
 		AdminProductVo.setPAGE(Integer.parseInt(PAGE));
 		AdminProductVo.setITEM_COUNT(Integer.parseInt(ITEM_COUNT));
@@ -61,7 +61,7 @@ public class AdminProductController {
 	}
 	
 	@RequestMapping(value="/admin/product/insert.do" , method  = RequestMethod.POST)
-	public void AdminProductInsertPost(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , MultipartHttpServletRequest request , HttpServletResponse response) {
+	public String AdminProductInsertPost(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , MultipartHttpServletRequest request , HttpServletResponse response) {
 		
 		//파일 등록
 		String drv = request.getRealPath("");
@@ -72,6 +72,8 @@ public class AdminProductController {
 		AdminProductVo.setImage(filename);
 		
 		adminProductService.setProductData(AdminProductVo , "insert");
+		
+		return "admin/product/list";
 		
 	}
 	
@@ -89,16 +91,32 @@ public class AdminProductController {
 	}
 	
 	@RequestMapping(value="/admin/product/delete.do" , method = RequestMethod.POST)
-	public void AdminProductDeletePost(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , HttpServletRequest request , HttpServletResponse response) {
+	public String AdminProductDeletePost(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , HttpServletRequest request , HttpServletResponse response) {
 		
 		adminProductService.setProductData(AdminProductVo, "delete");
+		
+		return "admin/product/list";
 		
 	}
 	
 	@RequestMapping(value="/admin/product/update.do" , method = RequestMethod.POST)
-	public void AdminProductUpdatePost(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , MultipartHttpServletRequest request , HttpServletResponse response) {
+	public String AdminProductUpdatePost(@ModelAttribute("AdminProductVo")AdminProductVo AdminProductVo , MultipartHttpServletRequest request , HttpServletResponse response) {
+		
+		if(AdminProductVo.getImage_change_bool().equals("true")) {
+			
+			//파일 등록
+			String drv = request.getRealPath("");
+			drv = drv.substring(0 , drv.length()) + "./resources/" + ((HttpServletRequest) request).getContextPath() + "/upload/product/image/";
+			
+			String filename = SUtil.setFileUpload(request, drv);
+			
+			AdminProductVo.setImage(filename);
+			
+		}
 		
 		adminProductService.setProductData(AdminProductVo, "update");
+		
+		return "admin/product/list";
 		
 	}
 	

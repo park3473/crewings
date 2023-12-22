@@ -11,6 +11,7 @@ public class AdminProductVo  extends SearchVo{
 	String price = "";
 	String location = "";
 	String coment = "";
+	String image_change_bool = "";
 	
 	public String getIdx() {
 		return idx;
@@ -53,6 +54,12 @@ public class AdminProductVo  extends SearchVo{
 	}
 	public void setComent(String coment) {
 		this.coment = coment;
+	}
+	public String getImage_change_bool() {
+		return image_change_bool;
+	}
+	public void setImage_change_bool(String image_change_bool) {
+		this.image_change_bool = image_change_bool;
 	}
 	
 	

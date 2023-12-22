@@ -10,4 +10,6 @@ public interface AdminOrderService {
 
 	ModelMap getViewData(AdminOrderVo adminOrderVo);
 
+	void setOrderData(AdminOrderVo adminOrderVo, String string);
+
 }

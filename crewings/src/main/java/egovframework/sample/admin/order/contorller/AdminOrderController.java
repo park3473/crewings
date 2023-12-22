@@ -1,5 +1,6 @@
 package egovframework.sample.admin.order.contorller;
 
+import javax.enterprise.inject.Model;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -47,6 +48,20 @@ public class AdminOrderController {
 		
 	}
 	
+	@RequestMapping(value="/admin/order/insert" , method = RequestMethod.GET)
+	public String AdminOrderInsertGet(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		return "admin/order/insert";
+		
+	}
+	
+	@RequestMapping(value="/admin/order/insert" , method = RequestMethod.POST)
+	public void AdminOrderInsertData(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		adminOrderService.setOrderData(AdminOrderVo , "insert");
+		
+	}
+	
 	@RequestMapping(value="/admin/order/view" ,  method = RequestMethod.GET)
 	public ModelAndView AdminOrderViewData(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response) {
 		
@@ -55,6 +70,14 @@ public class AdminOrderController {
 		model = adminOrderService.getViewData(AdminOrderVo);
 		
 		return new ModelAndView("admin/order/view" , "model" , model);
+		
+	}
+	
+	
+	@RequestMapping(value="/admin/order/update" , method = RequestMethod.POST)
+	public void AdminOrderUpdateData(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response ) {
+		
+		adminOrderService.setOrderData(AdminOrderVo , "update");
 		
 	}
 	
