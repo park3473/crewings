@@ -5,6 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>	
 
+<div class="pad_30"></div>
 <!-- 하단 -->
 <div class="footer">
     <div class="container">

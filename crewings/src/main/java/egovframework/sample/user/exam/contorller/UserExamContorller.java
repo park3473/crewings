@@ -1,5 +1,6 @@
 package egovframework.sample.user.exam.contorller;
 
+import javax.enterprise.inject.Model;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.registry.infomodel.User;
@@ -14,14 +15,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.sample.admin.exam.model.AdminExamVo;
+import egovframework.sample.user.exam.model.UserExamResultVo;
 import egovframework.sample.user.exam.model.UserExamVo;
 import egovframework.sample.user.exam.service.UserExamService;
+import egovframework.sample.user.member.model.UserMemberVo;
+import egovframework.sample.user.member.service.UserMemberService;
 
 @Controller
 public class UserExamContorller {
 
 	@Autowired
 	UserExamService userExamService;
+	
+	@Autowired
+	UserMemberService userMemberService;
 	
 	//EXAM
 	@RequestMapping(value="/user/exam/list.do" , method = RequestMethod.GET)
@@ -61,6 +68,22 @@ public class UserExamContorller {
 		model.put("beforeData", UserExamVo);
 		
 		return new ModelAndView("user/exam/view" , "model" , model);
+		
+	}
+	
+	@RequestMapping(value="/user/exam/result/insert.do" , method = RequestMethod.POST)
+	public void UserExamResultPost(@ModelAttribute("UserExamResultVo")UserExamResultVo UserExamResultVo , HttpServletRequest request , HttpServletResponse response) {
+
+		//결과 저장
+		userExamService.setExamResultData(UserExamResultVo);
+		
+		UserMemberVo vo = new UserMemberVo();
+		
+		vo.setPoint(UserExamResultVo.getPoint());
+		vo.setMember_id(UserExamResultVo.getMember_id());
+		
+		//사용자 포인트 추가
+		userMemberService.setMemberPoint(vo);
 		
 	}
 	

@@ -17,6 +17,8 @@ public class AdminMemberVo extends SearchVo{
 	String address_detail = "";
 	String create_tm = "";
 	String update_tm = "";
+	int point = 0;
+	
 	public String getIdx() {
 		return idx;
 	}
@@ -95,6 +97,13 @@ public class AdminMemberVo extends SearchVo{
 	public void setUpdate_tm(String update_tm) {
 		this.update_tm = update_tm;
 	}
+	public int getPoint() {
+		return point;
+	}
+	public void setPoint(int point) {
+		this.point = point;
+	}
+	
 	
 	
 	

@@ -28,5 +28,7 @@ public interface UserMemberMapper {
 
 	public void setMemberPwChange(UserMemberVo userMemberVo);
 
+	public void setMemberPoint(UserMemberVo vo);
+
 
 }

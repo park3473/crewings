@@ -10,6 +10,12 @@ public interface UserOrderMapper {
 
 	List<?> getAllList(UserOrderVo userOrderVo);
 
+	void setOrderDataInsert(UserOrderVo userOrderVo);
+
+	void setOrderDataUpdate(UserOrderVo userOrderVo);
+
+	void setOrderDataDelete(UserOrderVo userOrderVo);
+
 	
 	
 }

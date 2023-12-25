@@ -13,6 +13,7 @@
 <!--공통 헤더 시작-->
 <%@ include file="../include/user//header.jsp" %>
 <%@ include file="../include/user/menu.jsp" %>
+<%@ include file="../include/user/top.jsp" %>
 <!--공통 헤더 끝-->
 
 <!-- content -->
@@ -20,7 +21,6 @@
 ${model.view.content }
 </div>
 <!-- content end -->
-
 
 <input type="hidden" name="SubPageName" value="${model.view.name }">
 <!--공통하단-->

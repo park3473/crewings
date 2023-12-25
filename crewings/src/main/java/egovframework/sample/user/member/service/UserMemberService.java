@@ -23,4 +23,7 @@ public interface UserMemberService {
 	public void setMemberPwChange(UserMemberVo userMemberVo);
 
 
+	public void setMemberPoint(UserMemberVo vo);
+
+
 }

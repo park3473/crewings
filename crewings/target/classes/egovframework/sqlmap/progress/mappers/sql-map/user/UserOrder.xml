@@ -8,5 +8,15 @@
 		SELECT * FROM TBL_ORDER
 		WHERE MEMBER_ID = #{member_id}
 	</select>
-
+	
+	<insert id="setOrderDataInsert" parameterType="UserOrderVo">
+		INSERT INTO TBL_ORDER (PRODUCT_IDX , PRODUCT_PRICE , MEMBER_IDX , MEMBER_ID , MEMBER_NAME , TYPE , CREATE_TM , UPDATE_TM )
+		VALUES(#{product_idx}, #{product_price} , #{member_idx} , #{member_id} , #{member_name} , #{type} , now() , now())
+	</insert>
+	
+	<update id="setOrderDataUpdate" parameterType="UserOrderVo">
+		UPDATE TBL_ORDER SET
+		TYPE = #{type}
+		WHERE IDX = #{idx}
+	</update>
 </mapper>

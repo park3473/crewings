@@ -32,8 +32,21 @@ public class UserOrderServiceImpl implements UserOrderService {
 	}
 
 	@Override
-	public void setOrderData(UserOrderVo userOrderVo, String string) {
-		// TODO Auto-generated method stub
+	public void setOrderData(UserOrderVo userOrderVo, String type) {
+		
+		switch (type) {
+		case "insert":
+			userOrderMapper.setOrderDataInsert(userOrderVo);
+			break;
+		case "update":
+			userOrderMapper.setOrderDataUpdate(userOrderVo);
+					break;
+		case "delete":
+			userOrderMapper.setOrderDataDelete(userOrderVo);
+			break;
+		default:
+			break;
+		}
 		
 	}
 	

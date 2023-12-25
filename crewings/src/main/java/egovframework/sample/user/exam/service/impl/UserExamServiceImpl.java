@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 
 import com.system.util.PageVO;
 
+import egovframework.sample.user.exam.model.UserExamResultVo;
 import egovframework.sample.user.exam.model.UserExamVo;
 import egovframework.sample.user.exam.service.UserExamService;
 import egovframework.sample.user.question.service.impl.UserQuestionMapper;
@@ -77,6 +78,12 @@ public class UserExamServiceImpl implements UserExamService {
 		model.put("questionlist", questionlist);
 		
 		return model;
+	}
+
+	@Override
+	public void setExamResultData(UserExamResultVo userExamResultVo) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -50,4 +50,11 @@
 		SELECT COUNT(*) FROM TBL_MEMBER WHERE MEMBER_ID = #{member_id}
 	</select>
 	
+	<update id="setMemberPoint" parameterType="UserMemberVo">
+		UPDATE TBL_MEMBER
+		SET POINT = POINT + #{point}
+		WHERE MEMBER_ID = #{member_id}
+	</update>
+	
+	
 </mapper>

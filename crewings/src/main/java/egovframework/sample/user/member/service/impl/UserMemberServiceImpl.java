@@ -162,4 +162,14 @@ public class UserMemberServiceImpl implements UserMemberService {
 		}
 
 
+		@Override
+		public void setMemberPoint(UserMemberVo vo) {
+			
+			userMemberMapper.setMemberPoint(vo);
+			
+		}
+
+
+
+
 }

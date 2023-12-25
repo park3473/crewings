@@ -38,11 +38,11 @@
     <div class="header-inner">
         <!--모바일용로고-->
         <div class="head-title">
-            <h1 class="main-logo"><a href="/cnpnel"><img src="${pageContext.request.contextPath}/resources/img/logo.png"></a></h1>
+            <h1 class="main-logo"><a href="/"><img src="${pageContext.request.contextPath}/resources/img/logo.png"></a></h1>
         </div>
         <!--모바일용로고-->
         <!--로고-->
-        <strong class="logo"><a href="/cnpnel"><img src="${pageContext.request.contextPath}/resources/img/logo_white.png"></a></strong>
+        <strong class="logo"><a href="/"><img src="${pageContext.request.contextPath}/resources/img/logo_white.png"></a></strong>
         <!--로고끝-->
         <!--모바일메뉴버튼-->
         <button type="button" class="btn-gnb-open"><span class="bar"></span><span class="blind">메뉴열기</span></button>
@@ -94,29 +94,29 @@
                     <li>
                     <a href="#"><span>CN패널</span></a>
                     <ul class="depth2">
-                        <li><a href="./sub_01a.php"><span>패널소개</span></a></li>
-                        <li><a href="<?php echo G5_THEME_URL?>/${pageContext.request.contextPath}/resources/file/sub_01b.php"><span>포인튼사용방법</span></a></li>
+                        <li><a href="/view/subpage/view.do?idx=1"><span>패널소개</span></a></li>
+                        <li><a href="${pageContext.request.contextPath}/view/subpage/view.do?idx=2"><span>포인튼사용방법</span></a></li>
                     </ul>
                     </li>
                     <li>
                     <a href="#"><span>설문참여</span></a>
                     <ul class="depth2">
-                        <li><a href="./sub_02a.php"><span>설문조사</span></a></li>
+                        <li><a href="/user/exam/list.do"><span>설문조사</span></a></li>
                     </ul>
                     </li>
                     <li>
                     <a href="#"><span>사은품안내</span></a>
                     <ul class="depth2">
-                        <li><a href="./sub_03a.php"><span>사은품리스트</span></a></li>
+                        <li><a href="/user/product/list.do"><span>사은품리스트</span></a></li>
                     </ul>
                     </li>
                     <li>
                     <a href="#"><span>패널도우미</span></a>
                     <ul class="depth2">
-                        <li><a href="./board_list.php"><span>공지사항</span></a></li>
-                        <li><a href="./board_faq.php"><span>FAQ</span></a></li>
-                        <li><a href="#"><span>광고문의</span></a></li>
-                        <li><a href="#"><span>견적문의</span></a></li>
+                        <li><a href="/user/board_data/list.do?board_idx=1"><span>공지사항</span></a></li>
+                        <li><a href="/user/board_data/list.do?board_idx=3"><span>FAQ</span></a></li>
+                        <li><a href="/user/board_data/list.do?board_idx=4"><span>광고문의</span></a></li>
+                        <li><a href="/user/board_data/list.do?board_idx=5"><span>견적문의</span></a></li>
                     </ul>
                     </li>
                     <li>
