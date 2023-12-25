@@ -1,4 +1,4 @@
-package egovframework.sample.admin.member.contorller;
+package egovframework.sample.admin.member.controller;
 
 import java.io.IOException;
 

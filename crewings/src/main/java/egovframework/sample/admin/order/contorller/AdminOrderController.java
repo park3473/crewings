@@ -56,9 +56,11 @@ public class AdminOrderController {
 	}
 	
 	@RequestMapping(value="/admin/order/insert" , method = RequestMethod.POST)
-	public void AdminOrderInsertData(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response) {
+	public String AdminOrderInsertData(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response) {
 		
 		adminOrderService.setOrderData(AdminOrderVo , "insert");
+		
+		return "admin/order/list";
 		
 	}
 	
@@ -75,9 +77,11 @@ public class AdminOrderController {
 	
 	
 	@RequestMapping(value="/admin/order/update" , method = RequestMethod.POST)
-	public void AdminOrderUpdateData(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response ) {
+	public String AdminOrderUpdateData(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response ) {
 		
 		adminOrderService.setOrderData(AdminOrderVo , "update");
+		
+		return "admin/order/list";
 		
 	}
 	
