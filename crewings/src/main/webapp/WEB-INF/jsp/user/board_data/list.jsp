@@ -60,27 +60,15 @@
     </tr>
     </thead>
     <tbody>
+    <c:forEach var="item" items="${model.BoardDataList }">
     <tr>
         <td class="pos_r"><input class="form-check-input pos_a" type="checkbox">1</td>
-        <td><a href="./board_view.php">창날패널에서 알려드립니다. 다양한 소식을 전해드립니다</a></td>
-        <td>관리자</td>
-        <td>15</td>
-		<td>2023-12-06</td>
+        <td><a href="/user/board_data/view.do?idx=${item.idx }">${item. title}</a></td>
+        <td>${item. name}</td>
+        <td>${item.rdcnt }</td>
+		<td>${item.update_tm }</td>
     </tr>
-    <tr>
-        <td>1</td>
-        <td>창날패널에서 알려드립니다. 다양한 소식을 전해드립니다</td>
-        <td>관리자</td>
-        <td>15</td>
-		<td>2023-12-06</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>창날패널에서 알려드립니다. 다양한 소식을 전해드립니다</td>
-        <td>관리자</td>
-        <td>15</td>
-		<td>2023-12-06</td>
-    </tr>
+    </c:forEach>
     </tbody>
     </table>
     <!-- 페이징 -->
@@ -103,6 +91,9 @@
 </c:if>
 
 <c:if test="${model.beforeDomain.board_idx == '2' }">
+
+
+
 </c:if>
 
 <c:if test="${model.beforeDomain.board_idx == '3' }">
@@ -174,6 +165,8 @@ $(this).parent().toggleClass('active');
 </script>
 
 </c:if>
+
+
 
 <c:if test="${model.beforeDomain.board_idx == '4' ||  model.beforeDomain.board_idx == '5'}">
 </c:if>

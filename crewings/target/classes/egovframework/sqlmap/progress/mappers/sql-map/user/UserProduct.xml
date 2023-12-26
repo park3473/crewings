@@ -5,6 +5,11 @@
 <mapper namespace="egovframework.sample.user.product.service.impl.UserProductMapper">
 	<select id="getAllList" parameterType="UserProductVo" resultType="hashMap">
 		SELECT * FROM TBL_PRODUCT
+		WHERE 1=1
+		<if test="category != ''">
+		AND CATEGORY = #{category}
+		</if>
+		ORDER BY CREATE_TM
 	</select>
 	
 	<select id="getViewData" parameterType="UserProductVo" resultType="UserProductVo">

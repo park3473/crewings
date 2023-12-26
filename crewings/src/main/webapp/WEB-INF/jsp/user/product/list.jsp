@@ -27,13 +27,13 @@
 <div class="container">
     <div class="tab-button-outer">
         <ul id="tab-button">
-            <li><a href="#tab01">전체</a></li>
-            <li><a href="#tab02">상품권.생활.도서</a></li>
-            <li><a href="#tab03">커피.음료</a></li>
-            <li><a href="#tab04">베이커리.도넛.떡</a></li>
-            <li><a href="#tab05">아이스크림.빙수</a></li>
-            <li><a href="#tab06">치킨.버거.피자</a></li>
-            <li><a href="#tab07">편의점.마트</a></li>
+            <li <c:if test="${model.before.category == '' }">class="is-active"</c:if> ><a href="#tab01"  onclick="location.href='/user/product/list.do'">전체</a></li>
+            <li  <c:if test="${model.before.category == '1' }">class="is-active"</c:if> ><a href="#tab02" onclick="location.href='/user/product/list.do?category=1'">상품권.생활.도서</a></li>
+            <li <c:if test="${model.before.category == '2' }">class="is-active"</c:if> ><a href="#tab03" onclick="location.href='/user/product/list.do?category=2'">커피.음료</a></li>
+            <li  <c:if test="${model.before.category == '3' }">class="is-active"</c:if> ><a href="#tab04" onclick="location.href='/user/product/list.do?category=3'">베이커리.도넛.떡</a></li>
+            <li  <c:if test="${model.before.category == '4' }">class="is-active"</c:if> ><a href="#tab05" onclick="location.href='/user/product/list.do?category=4'">아이스크림.빙수</a></li>
+            <li <c:if test="${model.before.category == '5' }">class="is-active"</c:if> ><a href="#tab06" onclick="location.href='/user/product/list.do?category=5'">치킨.버거.피자</a></li>
+            <li  <c:if test="${model.before.category == '6' }">class="is-active"</c:if> ><a href="#tab07" onclick="location.href='/user/product/list.do?category=6'">편의점.마트</a></li>
         </ul>
     </div>
     <div class="tab-select-outer">
@@ -47,15 +47,30 @@
         <option value="#tab07">편의점.마트</option>
         </select>
     </div>
+    
+    <!-- 전체  -->
     <div id="tab01" class="tab-contents">
         <div class="cnpnel font_noto f_wet_03">
             <div class="flexbox">
-                <c:forEach var="item" items="${model.list }">
+                <c:forEach var="item" items="${model.list }"  varStatus="status">
                 <div class="item_02 box_02">
-                    <img style="width:10rem" src="/resources/upload/product/image/${item.image }" alt="">
+                    <img style="heigth:252px;" src="/resources/upload/product/image/${item.image }" alt="">
                     <div class="sul_box">
                         <div class="txt font_noto">${item.name }</div>
-                        <div class="sul"><span class="gray_10">사용가능지역 : </span>${item.location }</div>
+                        <div class="sul"><span class="gray_10">사용가능지역 : </span><span id="location_${status.index }"></span></div>
+                        <script type="text/javascript">
+                        var location_list = [];
+                    	var location_ = '${item.location}';
+                    	var index = '${status.index}';
+                    	var location_val = '';
+                    	location_list = location_.split('%23');
+                    	location_val += location_list[1];
+                    	
+                    	for(var i=2;i < location_list.length; i++){
+                    		location_val += (','+location_list[i]);
+                    	}
+                    	$('#location_'+index).append(location_val);
+                        </script>
                         <div class="sul"><span class="red_01"><strong>${model.list[0].price }P</strong></div>
                         <div class="link pointer" data-toggle="modal" data-target="#myModal_03">구입하기</div>
                     </div>
@@ -63,12 +78,6 @@
                 </c:forEach>
             </div>
         </div>
-    </div>
-    <div id="tab02" class="tab-contents">
-        2
-    </div>
-    <div id="tab03" class="tab-contents">
-        3
     </div>
 </div>
 <!-- 사은품리스트 끝 -->

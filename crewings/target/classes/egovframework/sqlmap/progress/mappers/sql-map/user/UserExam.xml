@@ -6,6 +6,7 @@
 	<select id="getAllList" resultType="hashMap"  parameterType="UserExamVo">
 		SELECT * FROM TBL_EXAM
 		WHERE 1=1
+		AND TYPE = "1"
 		<if test="SEARCH_TEXT != ''">
 		    <if test="SEARCH_TYPE != 'ALL'">
 	    		 AND ${SEARCH_TYPE} LIKE '%${SEARCH_TEXT}%'
