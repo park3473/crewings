@@ -63,10 +63,10 @@
     <c:forEach var="item" items="${model.BoardDataList }">
     <tr>
         <td class="pos_r"><input class="form-check-input pos_a" type="checkbox">1</td>
-        <td><a href="/user/board_data/view.do?idx=${item.idx }">${item. title}</a></td>
+        <td><a href="/user/board_data/view.do?idx=${item.idx }&board_idx=${item.board_idx}">${item. title}</a></td>
         <td>${item. name}</td>
         <td>${item.rdcnt }</td>
-		<td>${item.update_tm }</td>
+		<td>${fn:substring(item.create_tm,0,11) }</td>
     </tr>
     </c:forEach>
     </tbody>
@@ -75,9 +75,24 @@
     <div class="pos_r paging">
         <ul class="pagination pos_a">
             <li class="page-item"><a class="page-link" href="#"><i class="las la-angle-left"></i></a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <c:if test="${model.itempageend > 0}">
+				<c:forEach var="i" begin="${model.itempagestart}" end="${model.itempageend}">
+					<c:choose>
+						<c:when test="${model.page == i }">
+							<li class="page-item active"><a class="page-link">${i+1 }</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link">${i }</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</c:if>
+			<c:if test="${model.itempageend == 0}">
+				<li class="page-item active"><a class="page-link">1</a></li>
+			</c:if>
+			<c:if test="${model.itempageend < 0}">
+				<li class="page-item active"><a class="page-link">1</a></li>
+			</c:if>
             <li class="page-item"><a class="page-link" href="#"><i class="las la-angle-right"></i></a></li>
         </ul>
 		<div class="pos_r">
@@ -133,22 +148,14 @@
 <div class="container">
     <div class="parent-container">
   <ul class="faq">
+  	<c:forEach var="item" items="${model.BoardDataList }">
     <li>
-      <h3 class="question">창날패널이 무엇인가요?
+      <h3 class="question">${item.title }
         <div class="plus-minus-toggle collapsed"></div>
       </h3>
-      <div class="answer">Answer. Donec vitae tellus risus. Aenean sed fermentum risus. Phasellus venenatis 
-        ultricies dignissim. Nunc ante lectus, accumsan non porta at. Donec vitae tellus risus. Aenean sed 
-        fermentum risus. Phasellus venenatis ultricies dignissim.</div>
+      <div class="answer">${item.content }</div>
     </li>
-    <li>
-      <h3 class="question">설문참여는 어떻게 하는건가요?
-        <div class="plus-minus-toggle collapsed"></div>
-      </h3>
-      <div class="answer">Answer. Donec vitae tellus risus. Aenean sed fermentum risus. Phasellus venenatis 
-        ultricies dignissim. Nunc ante lectus, accumsan non porta at. Donec vitae tellus risus. Aenean sed 
-        fermentum risus. Phasellus venenatis ultricies dignissim.</div>
-    </li>
+    </c:forEach>
   </ul>
 </div>
 

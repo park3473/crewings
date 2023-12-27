@@ -132,6 +132,11 @@
 </div>
 <!-- 설문모달 끝 -->
 
+<script type="text/javascript">
+<c:forEach var="item" items="${model.questionlist}">
+	console.log('${item.name}');
+</c:forEach>
+</script>
  
 <c:forEach var="item" items="${model.questionlist}">
     <div style="display:none">

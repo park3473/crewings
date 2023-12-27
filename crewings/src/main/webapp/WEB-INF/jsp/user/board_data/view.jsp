@@ -54,33 +54,41 @@
 
 
 
-<!-- 게시판뷰 -->
+<!-- 게시판뷰 -->+
+
 <div class="container board">
 <div class="board_view">
 
 <!-- 제목 -->
 <div class="subject">
-<div class="tit font_noto">창날패널에서 알려드립니다. 다양한 소식을 전해드립니다</div>
-<div class=""><span class="name">작성자 : 관리자</span><span class="name">조회 : 75회</span><span class="date">작성일 : 2023-12-10</span></div>	
+<div class="tit font_noto">${model.view.title }</div>
+<div class=""><span class="name">작성자 : ${model.view.name }</span><span class="name">조회 : ${model.view.rdcnt }회</span><span class="date">작성일 : ${fn:substring(model.view.create_tm,0,11) }</span></div>	
 </div>
 <!-- 제목 끝 -->
 
 <!-- 컨테이너 -->
 <div class="cont max_img">
 	
-안녕하세요. 창날패널입니다.<br>
-창날패널은 보다 나은 서비스 제공을 위해 2023년 11월 22일 '서버 점검'을 진행할 예정입니다.<br>
-서버 점검 기간 동안 모든 서비스 이용이 일시적으로 중단되오니 회원님들의 양해 부탁드립니다.<br>
-더욱 편리하고 안정적인 서비스 제공을 위해 최선을 다하겠습니다.<br>
-감사합니다.<br>
-<img src="contents/img/thum_img_02.jpg" alt="">
+${model.view.content }
 
 </div>
 <!-- 컨테이너 끝 -->
 
 <!-- 버튼 -->
     <div class="paging pos_r">
-		    <div class="btn_list pos_a"><a href=""><div class="btn_03">목록</div></a><a href=""><div class="btn_02">답변</div></a><a href=""><div class="btn_01">글쓰기</div></a></div>
+		    <div class="btn_list pos_a">
+		    	<a href="/user/board_data/list.do?board_idx=${model.view.board_idx }">
+		    		<div class="btn_03" >목록</div>
+		    	</a>
+		    	<!-- 
+		    	<a href="">
+		    		<div class="btn_02">답변</div>
+		    	</a>
+		    	<a href="">
+		    		<div class="btn_01">글쓰기</div>
+		    	</a>
+		    	-->
+		    </div>
     </div>
     <!-- 버튼 끝 -->
 
