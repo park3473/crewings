@@ -8,6 +8,57 @@
 <!DOCTYPE html>
 <html lang="ko">
 
+<style>
+
+body{
+	background-color: #eee;
+	font-size: 18px;
+}
+.grid{
+	width: 100%; height: auto;
+	margin: 0 auto;
+	background-color: #fff;
+	padding: 10px 50px 50px 50px;
+}
+
+.grid h1{
+	background-color: #57636e; color: #fff;
+	font-family: sans-serif; font-size: 60px;
+	text-align: center;
+	padding: 2px 0px;
+	border-radius: 30px;
+}
+#grid #question{
+	font-family: sans-serif;
+	font-size: 30px;
+	color: #5a6772;
+}
+#buttons{ margin-top: 30px; }
+#btn0, #btn1, #btn2, #btn3{
+	background-color: #778897; color: #fff;
+	width: 250px;
+	font-size: 16px;
+	border: 1px solid #1d3c6a;
+	border-radius: 30px;
+	margin: 10px 40px 10px 0px;
+	padding: 10px;
+}
+#progress{
+	color: #2b2b2b;
+	font-size: 20px;
+}
+
+#btn0:hover, #btn1:hover, #btn2:hover, #btn3:hover{
+	cursor: pointer;
+	background-color: #57636e;
+}
+#btn0:focus, #btn1:focus, #btn2:focus, #btn3:focus{
+	outline: 0;
+}
+
+#score{ text-align: center; } /* 결과 점수 */
+
+</style>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 
 <!--공통 헤더 시작-->
@@ -106,20 +157,42 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Modal Heading</h4>
+                    <h4 class="modal-title">Quiz</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <!-- Modal body -->
+                <!-- 
                 <c:forEach var="item" items="${model.questionlist}">
                 <div class="modal-body">
                     <h3>${item.name}</h3>
 			        <h3>${item.content}</h3>
-			        <c:forEach var="choice" items="${fn:split(item.Choices, '#')}"> <!-- 선택지 분할 -->
+			        <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
 			            <p>${choice}</p>
 			        </c:forEach>
                 </div>
                 </c:forEach>
+				-->
+				<div class="grid">
+					<div id="quiz">
+						<hr style="margin-top:20px">
+			
+						<p id="question"></p>
+			
+						<div class="button">
+							<button id="btn0"><span id="choice0"></span></button>
+							<button id="btn1"><span id="choice1"></span></button>
+							<button id="btn2"><span id="choice2"></span></button>
+							<button id="btn3"><span id="choice3"></span></button>
+						</div>
+						<hr style="margin-top:50px">
+						
+						<footer>
+							<p id="progress">Question x of y.</p>	
+						</footer>
+					</div>
+			
+				</div><!-- end grid -->
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
@@ -131,12 +204,6 @@
     </div>
 </div>
 <!-- 설문모달 끝 -->
-
-<script type="text/javascript">
-<c:forEach var="item" items="${model.questionlist}">
-	console.log('${item.name}');
-</c:forEach>
-</script>
  
 <c:forEach var="item" items="${model.questionlist}">
     <div style="display:none">
@@ -152,5 +219,85 @@
 <%@ include file="../../include/user/footer.jsp" %>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script type="text/javascript">
+
+//퀴즈 객체 생성
+function Question(text, choice, answer){
+	this.text = text;
+	this.choice = choice;
+	this.answer = answer;
+}
+
+// 퀴즈 정보 객체 생성
+function Quiz(questions){
+	this.score = 0;		// 점수
+	this.questions = questions;		// 질문[]
+	this.questionIndex = 0;		// 질문 순서
+}
+
+// ---------------------------------------------------------------------
+var questions = [];
+<c:forEach var="item" items="${model.questionlist}">
+questions.push(new Question('${item.name}',[
+		 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
+		 '${choice}',
+		 </c:forEach>
+		 ],
+		'${item.select_val}'
+		));
+</c:forEach>
+
+
+// 퀴즈 생성
+var quiz = new Quiz(questions);
+
+function update_quiz(){
+	for(var i = 0; i < 4; i++){
+		var question = document.getElementById('question');
+		var choice = document.getElementById('btn'+i);
+		question.innerHTML = quiz.questions[quiz.questionIndex].text; 
+		choice.innerHTML = quiz.questions[quiz.questionIndex].choice[i];
+		answer('btn' + i, choice,i+1);
+	}
+	progress();
+}
+
+// 판정
+function answer(id, choice,select_val){
+	choice.onclick = function(){
+		var answer = quiz.questions[quiz.questionIndex].answer; // 정답
+	console.log(id);
+		console.log(answer);
+		
+		// 정답 판정
+		if(select_val == answer){
+			console.log('true');
+			alert('정답입니다.');
+			quiz.score++;
+		} else{ alert('틀렸습니다!'); }
+
+		if(quiz.questionIndex < quiz.questions.length-1){
+			quiz.questionIndex ++;
+			update_quiz();
+		} else { result(); }
+
+	} // end onclick
+} // end anwer()
+
+// 문제 진행 정보 표시(x of y)
+function progress(){
+	var progress = document.getElementById('progress');
+	progress.innerHTML = "문제 " + (quiz.questionIndex+1) + " / " + quiz.questions.length;
+}
+
+function result(){
+	var el = document.getElementById('quiz');
+	var per = parseInt((quiz.score*100) / quiz.questions.length);
+	el.innerHTML =	'<h1>결과</h1>' +
+					'<h2 id="score"> 당신의 점수: ' + quiz.score + '/' +  
+					quiz.questions.length + '<br><br>' + per + '점</h2>'
+
+}
+
+update_quiz();
 
 </script>
