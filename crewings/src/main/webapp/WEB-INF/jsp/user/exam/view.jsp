@@ -179,11 +179,7 @@ body{
 			
 						<p id="question"></p>
 			
-						<div class="button">
-							<button id="btn0"><span id="choice0"></span></button>
-							<button id="btn1"><span id="choice1"></span></button>
-							<button id="btn2"><span id="choice2"></span></button>
-							<button id="btn3"><span id="choice3"></span></button>
+						<div class="button" id="quiz_btn">
 						</div>
 						<hr style="margin-top:50px">
 						
@@ -221,9 +217,10 @@ body{
 <script type="text/javascript">
 
 //퀴즈 객체 생성
-function Question(text, choice, answer){
+function Question(text, choice,choice_cnt, answer){
 	this.text = text;
 	this.choice = choice;
+	this.choice_cnt = choice_cnt;
 	this.answer = answer;
 }
 
@@ -242,7 +239,9 @@ questions.push(new Question('${item.name}',[
 		 '${choice}',
 		 </c:forEach>
 		 ],
-		'${item.select_val}'
+		 '${fn:length(fn:split(item.Choices, "#"))}'
+		 ,
+		'${item.select_val}',
 		));
 </c:forEach>
 
@@ -251,7 +250,13 @@ questions.push(new Question('${item.name}',[
 var quiz = new Quiz(questions);
 
 function update_quiz(){
-	for(var i = 0; i < 4; i++){
+	$("#quiz_btn").empty();
+	var html = '';
+	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
+		html += ' <button id="btn'+i+'"><span id="choice'+i+'"></span></button>' ;
+	}
+	$('#quiz_btn').append(html);
+	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
 		var question = document.getElementById('question');
 		var choice = document.getElementById('btn'+i);
 		question.innerHTML = quiz.questions[quiz.questionIndex].text; 
