@@ -19,7 +19,7 @@
 	    	order by ${DOWN} desc
 	    </if>
 	    <if test="DOWN == '' and UP == ''">
-	    	order by CREATE_TM desc
+	    	order by END_TM desc
 	    </if>
 	    LIMIT ${LIMIT} OFFSET ${OFFSET}
 	</select>
@@ -54,7 +54,8 @@
 	<select id="getQuestionList" parameterType="UserExamVo" resultType="hashMap">
 		SELECT 
 		    q.*,
-		    GROUP_CONCAT(s.content ORDER BY s.seq SEPARATOR '#') AS Choices
+		    GROUP_CONCAT(s.content ORDER BY s.seq SEPARATOR '#') AS Choices,
+		    GROUP_CONCAT(s.image ORDER BY s.seq SEPARATOR '#') AS ChoicesImage
 		FROM 
 		    tbl_question_list ql
 		JOIN 

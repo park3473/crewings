@@ -88,7 +88,7 @@ body{
                     </li>
                     <li>
                         <div class="font_noto cont"><span class="f_wet_05">응답사례 : </span>${model.view.point } 포인트 리워드</div>
-                        <div class="font_noto cont"><span class="f_wet_05">응답시간 : </span>약7분내외(10문항)</div>
+                        <div class="font_noto cont"><span class="f_wet_05">설문소개 : </span>${model.view.content }</div>
                     </li>
                     <li>
                         <div class="btn" data-toggle="modal" data-target="#myModal">참여하기</div>
@@ -182,10 +182,6 @@ body{
 						<div class="button" id="quiz_btn">
 						</div>
 						<hr style="margin-top:50px">
-						
-						<footer>
-							<p id="progress">Question x of y.</p>	
-						</footer>
 					</div>
 			
 				</div><!-- end grid -->
@@ -201,27 +197,27 @@ body{
 </div>
 <!-- 설문모달 끝 -->
  
-<c:forEach var="item" items="${model.questionlist}">
-    <div style="display:none">
-        <h3>${item.name}</h3>
-        <h3>${item.content}</h3>
-        <c:forEach var="choice" items="${fn:split(item.Choices, '#')}"> <!-- 선택지 분할 -->
-            <p>${choice}</p>
-        </c:forEach>
-    </div>
-</c:forEach>
-
+ <form style="display:none" id="exam_result" action="/user/exam/result/insert.do">
+ 	<input type="text" name="exam_idx" value="${model.view.idx }">
+ 	<input type="text" name="member_id" value="${sessionScope.UserId }">
+ 	<input type="text" name="name" value="${sessionScope.UserName }">
+ 	<input type="text" name="select_list" value="">
+ 	<input type="text" name="complete" value="1">
+ </form>
+ 
+ 
 <!--공통하단-->
 <%@ include file="../../include/user/footer.jsp" %>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script type="text/javascript">
 
 //퀴즈 객체 생성
-function Question(text, choice,choice_cnt, answer){
+function Question(text, choice,choice_cnt, answer,image){
 	this.text = text;
 	this.choice = choice;
 	this.choice_cnt = choice_cnt;
 	this.answer = answer;
+	this.image = image;
 }
 
 // 퀴즈 정보 객체 생성
@@ -242,6 +238,11 @@ questions.push(new Question('${item.name}',[
 		 '${fn:length(fn:split(item.Choices, "#"))}'
 		 ,
 		'${item.select_val}',
+		[
+			 <c:forEach var="choiceImage" items="${fn:split(item.ChoicesImage, '#')}">
+			 '${choiceImage}',
+			 </c:forEach>	
+		],
 		));
 </c:forEach>
 
@@ -253,7 +254,7 @@ function update_quiz(){
 	$("#quiz_btn").empty();
 	var html = '';
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
-		html += ' <button id="btn'+i+'"><span id="choice'+i+'"></span></button>' ;
+		html += ' <img src="/resources/upload/select/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button>' ;
 	}
 	$('#quiz_btn').append(html);
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
@@ -299,7 +300,8 @@ function result(){
 	var per = parseInt((quiz.score*100) / quiz.questions.length);
 	el.innerHTML =	'<h1>결과</h1>' +
 					'<h2 id="score"> 당신의 점수: ' + quiz.score + '/' +  
-					quiz.questions.length + '<br><br>' + per + '점</h2>'
+					quiz.questions.length + '<br><br>' + per + '점</h2>' +
+					'<button type="button" onclick="/user/exam/result/insert.do"></button>'
 
 }
 
