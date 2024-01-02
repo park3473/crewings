@@ -36,7 +36,7 @@ body{
 #buttons{ margin-top: 30px; }
 #btn0, #btn1, #btn2, #btn3{
 	background-color: #778897; color: #fff;
-	width: 250px;
+	width: 100%;
 	font-size: 16px;
 	border: 1px solid #1d3c6a;
 	border-radius: 30px;
@@ -57,6 +57,18 @@ body{
 }
 
 #score{ text-align: center; } /* 결과 점수 */
+
+#quiz_btn{
+	display:flex;
+	flex-wrap:wrap;
+	text-align : center;
+}
+
+.select_div{
+
+	flex : 0 0 50%;
+
+}
 
 </style>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
@@ -182,12 +194,16 @@ body{
 						<div class="button" id="quiz_btn">
 						</div>
 						<hr style="margin-top:50px">
+						<div id="quiz_solution" style="display:none;">
+						
+						</div>
 					</div>
 			
 				</div><!-- end grid -->
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
+                	<button type="button" class="btn btn-danger"   id="next_btn" onclick="next_quiz()">Next</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
 
@@ -212,12 +228,13 @@ body{
 <script type="text/javascript">
 
 //퀴즈 객체 생성
-function Question(text, choice,choice_cnt, answer,image){
+function Question(text, choice,choice_cnt, answer,image,solution ){
 	this.text = text;
 	this.choice = choice;
 	this.choice_cnt = choice_cnt;
 	this.answer = answer;
 	this.image = image;
+	this.solution = solution;
 }
 
 // 퀴즈 정보 객체 생성
@@ -243,6 +260,7 @@ questions.push(new Question('${item.name}',[
 			 '${choiceImage}',
 			 </c:forEach>	
 		],
+		'${item.solution}',
 		));
 </c:forEach>
 
@@ -254,7 +272,7 @@ function update_quiz(){
 	$("#quiz_btn").empty();
 	var html = '';
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
-		html += ' <img src="/resources/upload/select/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button>' ;
+		html += ' <div class="select_div" ><img src="/resources/upload/select/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
 	}
 	$('#quiz_btn').append(html);
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
@@ -264,6 +282,10 @@ function update_quiz(){
 		choice.innerHTML = quiz.questions[quiz.questionIndex].choice[i];
 		answer('btn' + i, choice,i+1);
 	}
+	$('#quiz_solution').empty();
+	var solution = '<p>'+quiz.questions[quiz.questionIndex].solution+'</p>';
+	$('#quiz_solution').append(solution);
+	
 	progress();
 }
 
@@ -272,7 +294,8 @@ function answer(id, choice,select_val){
 	choice.onclick = function(){
 		var answer = quiz.questions[quiz.questionIndex].answer; // 정답
 	console.log(id);
-		console.log(answer);
+		console.log(answer);		
+		
 		
 		// 정답 판정
 		if(select_val == answer){
@@ -281,11 +304,19 @@ function answer(id, choice,select_val){
 			quiz.score++;
 		} else{ alert('틀렸습니다!'); }
 
-		if(quiz.questionIndex < quiz.questions.length-1){
+		
+		$('#quiz_btn button').attr('disabled','disabled');
+		$('#quiz_solution').show();
+		$('#next_btn').show();
+		
+		
+		
+/* 		if(quiz.questionIndex < quiz.questions.length-1){
 			quiz.questionIndex ++;
 			update_quiz();
 		} else { result(); }
-
+ */
+ 
 	} // end onclick
 } // end anwer()
 
@@ -303,6 +334,20 @@ function result(){
 					quiz.questions.length + '<br><br>' + per + '점</h2>' +
 					'<button type="button" onclick="/user/exam/result/insert.do"></button>'
 
+}
+
+function next_quiz(){
+	
+	$('#quiz_solution').hide();
+	$('#next_btn').hide();
+	
+	if(quiz.questionIndex < quiz.questions.length-1){
+		quiz.questionIndex ++;
+		update_quiz();
+	} else { result(); }
+	
+	
+	
 }
 
 update_quiz();

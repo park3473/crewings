@@ -6,8 +6,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <% java.util.Date now = new java.util.Date(); %>
-<fmt:formatDate value="<%=now%>" pattern="yyyy-MM-dd HH:mm:ss" />
+<%--<fmt:formatDate value="<%=now%>" pattern="yyyy-MM-dd HH:mm:ss" /> --%>
 <c:set var="now" value="<%=now%>" />
+<!--  ${now} -->
 <!--삭제금지-->
 <!DOCTYPE html>
 <html lang="ko">
