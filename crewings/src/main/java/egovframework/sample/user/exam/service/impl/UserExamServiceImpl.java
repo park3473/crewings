@@ -84,6 +84,9 @@ public class UserExamServiceImpl implements UserExamService {
 	public void setExamResultData(UserExamResultVo userExamResultVo) {
 		// TODO Auto-generated method stub
 		
+		userExamMapper.setExamResultData(userExamResultVo);
+		
+		
 	}
 	
 	

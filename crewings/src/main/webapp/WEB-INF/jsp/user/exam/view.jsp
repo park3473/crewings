@@ -204,7 +204,7 @@ body{
                 <!-- Modal footer -->
                 <div class="modal-footer">
                 	<button type="button" class="btn btn-danger"   id="next_btn" onclick="next_quiz()">Next</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="Close_btn">Close</button>
                 </div>
 
             </div>
@@ -213,12 +213,13 @@ body{
 </div>
 <!-- 설문모달 끝 -->
  
- <form style="display:none" id="exam_result" action="/user/exam/result/insert.do">
+ <form style="display:none" id="exam_result" action="/user/exam/result/insert.do" method="POST">
  	<input type="text" name="exam_idx" value="${model.view.idx }">
  	<input type="text" name="member_id" value="${sessionScope.UserId }">
  	<input type="text" name="name" value="${sessionScope.UserName }">
  	<input type="text" name="select_list" value="">
  	<input type="text" name="complete" value="1">
+ 	<input type="text" name="point" value="${model.view.point }">
  </form>
  
  
@@ -296,7 +297,12 @@ function answer(id, choice,select_val){
 	console.log(id);
 		console.log(answer);		
 		
-		
+		//선택한 거 select_list 담기
+		if($('[name=select_list]').val() == ''){
+			$('[name=select_list]').val(select_val);
+		}else{
+			$('[name=select_list]').val($('[name=select_list]').val()+','+select_val);
+		}
 		// 정답 판정
 		if(select_val == answer){
 			console.log('true');
@@ -308,6 +314,8 @@ function answer(id, choice,select_val){
 		$('#quiz_btn button').attr('disabled','disabled');
 		$('#quiz_solution').show();
 		$('#next_btn').show();
+		
+		
 		
 		
 		
@@ -332,8 +340,10 @@ function result(){
 	el.innerHTML =	'<h1>결과</h1>' +
 					'<h2 id="score"> 당신의 점수: ' + quiz.score + '/' +  
 					quiz.questions.length + '<br><br>' + per + '점</h2>' +
-					'<button type="button" onclick="/user/exam/result/insert.do"></button>'
+					'<button style="width:100%" type="button" class="btn btn-danger" onclick="exam_result()">진단 종료하기</button>';
 
+					
+	$('#Close_btn').hide();
 }
 
 function next_quiz(){
@@ -347,6 +357,12 @@ function next_quiz(){
 	} else { result(); }
 	
 	
+	
+}
+
+function exam_result(){
+	
+	$('#exam_result').submit();
 	
 }
 

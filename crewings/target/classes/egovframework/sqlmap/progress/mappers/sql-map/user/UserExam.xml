@@ -69,6 +69,10 @@
 		ORDER BY 
 		    ql.seq;
 	</select>
+	<insert id="setExamResultData" parameterType="UserExamResultVo">
+		INSERT INTO TBL_EXAM_RESULT (EXAM_IDX , MEMBER_ID , NAME , SELECT_LIST , COMPLETE , COMPLETE_TM , CREATE_TM , UPDATE_TM)
+		VALUES(#{exam_idx} , #{member_id} , #{name} , #{select_list} , #{complete} , now() , now() , now())
+	</insert>
 
 
 </mapper>
