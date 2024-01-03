@@ -44,7 +44,7 @@
 
 
 /* welcome */
-#nav .util-menu .welcome{display:block;position:relative;background:#014979;padding:28px 20px;color:#3a9ee0;text-align:left;font-size:16px}
+#nav .util-menu .welcome{display:block;position:relative;background:#25a6df;padding:28px 20px;color:#fff;text-align:left;font-size:16px}
 
 /* 네비(모바일인듯) */
 #nav .util-menu .util-menu-group{display:block;font-size:16px;/*opacity:.5*/}

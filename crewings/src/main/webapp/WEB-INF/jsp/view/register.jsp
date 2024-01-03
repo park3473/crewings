@@ -15,63 +15,39 @@
 <!--공통 헤더 시작-->
 <%@ include file="../include/user/header.jsp" %>
 <%@ include file="../include/user/menu.jsp" %>
+<%@ include file="../include/user/top.jsp" %>
 <!--공통 헤더 끝-->
-
-<!-- 메인배너 -->
-<div id="cnpnel" class="carousel slide" data-ride="carousel">
-    <ul class="carousel-indicators">
-        <li data-target="#cnpnel" data-slide-to="0" class="active"></li>
-        <li data-target="#cnpnel" data-slide-to="1"></li>
-    </ul>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <div class="carousel-caption t_spa_00">
-                <div class="font_noto f_wet_01 gray_00">
-                    <div class="txt_32">창날 패널이라면 누구나</div>
-                    <div class="txt_64">국내.해외<span class="f_wet_05 blue_01">통합설문조사</span> 플랫폼</div>
-                    <div class="txt_32">창의와날개 패널이 제공하는 다양한 설문조사에 참여하고<br>포인트를 쌓아보세요.</div>
-                </div>
-            </div>
-            <img src="${pageContext.request.contextPath}/resources/img/main_bg_01.jpg">
-        </div>
-        <div class="carousel-item">
-            <div class="carousel-caption t_spa_00">
-                <div class="font_noto f_wet_01 gray_00">
-                    <div class="txt_32">회원가입만 해도</div>
-                    <div class="txt_64">포인트<span class="f_wet_05 orange_01">바로증정</span>합니다.</span></div>
-                    <div class="txt_32">회원가입하고 포인트도 받고 또 설문조사 참여하고<br>포인트 받자.</div>
-                </div>
-            </div>
-            <img src="${pageContext.request.contextPath}/resources/img/main_bg_02.jpg">
-        </div>
-    </div>
-    <a class="carousel-control-prev" href="#cnpnel" role="button" data-slide="prev"><i class="la la-angle-left" aria-hidden="true"></i></a>
-    <a class="carousel-control-next" href="#cnpnel" role="button" data-slide="next"><i class="la la-angle-right" aria-hidden="true"></i></a>
-</div>
-<!-- 메인배너끝 -->
+<style>
+#content { width: 300px; margin: auto; padding: 20px; border: 1px solid #ddd; }
+    form > input, form > select, form > button { display: block; margin-bottom: 10px; width: 100%; }
+    button { cursor: pointer; }
+</style>
 <div class="pad_35"></div>
 
 <div id="content">
 <form action="${pageContext.request.contextPath }/view/login.do" method="POST">
-	<input type="text" name="member_id" placeholder="이름입력">
-	<input type="text" name="password" placeholder="비밀번호입력">
-	<input type="text" name="name" placeholder="이름 입력">
-	<input type="text" name="phone" placeholder="핸드폰번호입력">
-	<input type="text" name="email" placeholder="이메일 입력">
-	<select name="email_address">
-		<option value="">이메일 선택</option>
-		<option value="naver.com">naver.com</option>
-		<option value="daum.net">daum.net</option>
-		<option value="gmail.com">gmail.com</option>
-		<option value="nate.com">nate.com</option>
-	</select>
-	<input type="text" name="address"><button type="button">주소검색</button>
-	<input type="text" name="address_detail" placeholder="상세주소 입력">
-	<input type="text" name="recommender" placeholder="추천인 입력"><button type="button">추천인 검색</button>
-	<button type="button" onclick="register()">회원가입</button>
+	<input type="text" name="member_id" placeholder="아이디 입력">
+        <input type="password" name="password" placeholder="비밀번호 입력">
+        <input type="text" name="name" placeholder="이름 입력">
+        <input type="text" name="phone" placeholder="핸드폰번호 입력">
+        <input type="text" name="email" placeholder="이메일 입력">@
+        <span>
+        <select name="email_address">
+            <option value="">이메일 선택</option>
+            <option value="naver.com">naver.com</option>
+            <option value="daum.net">daum.net</option>
+            <option value="gmail.com">gmail.com</option>
+            <option value="nate.com">nate.com</option>
+        </select>
+        </span>
+        <input type="text" name="address" placeholder="주소 입력"><button type="button">주소검색</button>
+        <input type="text" name="address_detail" placeholder="상세주소 입력">
+        <input type="text" name="recommender" placeholder="추천인 입력"><button type="button">추천인 검색</button>
+        <button type="button" onclick="register()">회원가입</button>
 </form>
 </div>
 
 <!--공통하단-->
 <%@ include file="../include/user/footer.jsp" %>
 <script type="text/javascript">
+</script>

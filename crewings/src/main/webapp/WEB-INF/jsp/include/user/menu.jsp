@@ -23,11 +23,8 @@
     <ul>
         <li>
 		<span class="" class="bg_01"><a href="">HOME</a></span>
-
-        <span class="float_r"><a href="" class="bg_01">로그인</a><a href="">회원가입</a></span>
+        <span class="float_r"><a href="/view/login.do" class="bg_01">로그인</a><a href="/view/agree.do">회원가입</a></span>
 		</li>
-		
-
     </ul>
 </div>
 </div>
@@ -57,16 +54,11 @@
                 <!--인사말및 로고처리끝-->
                 <!--로그인-->
                 <div class="util-menu-group bottom">
-                    <?php if ($is_member) {  ?>
-                    <a href="#"><span>정보수정</span></a><span class="gab">ㅣ</span>
+                    <a href="/"><span>정보수정</span></a><span class="gab">ㅣ</span>
                     <a href="#"><span>로그아웃</span></a><span class="gab">ㅣ</span>
-                    <?php if ($is_admin) {  ?>
                     <a href="#"><span>관리자</span></a>
-                    <?php }  ?>
-                    <?php } else {  ?>
                     <a href="#"><span>회원가입</span></a><span class="gab">ㅣ</span>
                     <a href="#"><span>로그인</span></a>
-                    <?php }  ?>
                     <a href="/"><span>HOME</span></a><span class="gab">ㅣ</span>
                     <span class="gab">ㅣ</span><a href="#"><span class="blue_01">BOOK-MARK</span></a>
                 </div>

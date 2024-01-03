@@ -52,6 +52,8 @@ public class UserMemberController {
 		
 		model = userMemberService.getMemberData(UserMemberVo);
 		
+		
+		
 		return new ModelAndView("user/mypage/view" , "model" , model);
 		
 	}

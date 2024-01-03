@@ -220,6 +220,13 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping(value="/view/agree.do" , method = RequestMethod.GET)
+	public String UserAgree(HttpServletRequest request , HttpServletResponse response) {
+		
+		return "view/agree";
+		
+	}
+	
 	@RequestMapping(value="/view/register.do" , method = RequestMethod.GET)
 	public String UserRegister(HttpServletRequest request , HttpServletResponse response) {
 		
