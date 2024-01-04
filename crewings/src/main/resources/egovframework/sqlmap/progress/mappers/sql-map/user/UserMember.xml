@@ -16,7 +16,7 @@
 		SELECT * FROM TBL_MEMBER WHERE MEMBER_ID = #{member_id} AND PASSWORD = #{password}
 	</select>
 	
-	<select id="getUserMemberData" parameterType="UserMemberVo">
+	<select id="getUserMemberData" parameterType="UserMemberVo" resultType="UserMemberVo">
 		SELECT * FROM TBL_MEMBER
 		WHERE IDX = #{idx} AND MEMBER_ID = #{member_id}
 	</select>

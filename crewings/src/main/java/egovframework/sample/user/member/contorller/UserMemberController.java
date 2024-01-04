@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.system.util.SUtil;
 
+import egovframework.sample.user.exam.service.UserExamService;
 import egovframework.sample.user.member.model.UserMemberVo;
 import egovframework.sample.user.member.service.UserMemberService;
 
@@ -27,6 +28,9 @@ public class UserMemberController {
 
 	@Autowired
 	UserMemberService userMemberService;
+	
+	@Autowired
+	UserExamService userExamService;
 	
 	@RequestMapping(value="/user/api/member/idCheck.do")
 	public @ResponseBody ModelMap UserMemberIdCehck(@ModelAttribute("UserMemberVo")UserMemberVo UserMemberVo , HttpServletRequest request , HttpServletResponse response) {
@@ -52,7 +56,9 @@ public class UserMemberController {
 		
 		model = userMemberService.getMemberData(UserMemberVo);
 		
+		List<?> list = userExamService.getResultListView(UserMemberVo);
 		
+		model.put("list", list);
 		
 		return new ModelAndView("user/mypage/view" , "model" , model);
 		

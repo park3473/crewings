@@ -114,8 +114,8 @@
                     <li>
                     <a href="#"><span>마이CN패널</span></a>
                     <ul class="depth2">
-                        <li><a href="./sub_05a.php"><span>포인트조회</span></a></li>
-                        <li><a href="#"><span>나의설문내역</span></a></li>
+                        <li><a href="/user/mypage/view.do"><span>포인트조회</span></a></li>
+                        <li><a href=""><span>나의설문내역</span></a></li>
                     </ul>
                     </li>
 

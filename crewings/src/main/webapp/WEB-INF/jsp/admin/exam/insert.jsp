@@ -60,6 +60,14 @@
                                             <input class="input_size mr" type="text" id="name" name="name">
                                         </li>
                                         <li>
+                                        	<div style="width:227px;heigth:295px;">
+											<img style="width:100%;height:100%;object-fit:cover" id="preview_img" src="" alt="no"/>
+											</div>
+                                           	<span class="list_t">상품 이미지 선택</span>
+                                            <input type="file" id="file1" name="file1" onchange="changeValue(this)">
+											<input type="hidden" id="image" name="image">
+                                        </li>
+                                        <li>
                                         	<span class="list_t">대분류</span>
                                         	<input class="input_title" type="text" name="l_category" id="l_category" list="l_category_list" >
                                         	<c:if test="${model.LCategoryList.size() > 0 }">
@@ -84,6 +92,10 @@
                                         <li>
                                         	<span class="list_t">포인트</span>
                                         	<input class="input_size mr" type="text" name="point" id="point"/>
+                                        </li>
+                                        <li>
+                                        	<span class="list_t">설명</span>
+                                        	<input class="input_size mr" type="text" name="coment" id="coment"/>
                                         </li>
                                         <li>
                                         	<span class="list_t">개요</span>
@@ -157,5 +169,57 @@ function insertClick()
 	$('#insertForm').submit();
 }
 
+
+//파일 이름 변경 함수
+function changeValue(obj){
+  var fileObj = obj.value;
+  var pathHeader , pathMiddle, pathEnd, allFilename, fileName, extName;
+  pathHeader = fileObj.lastIndexOf("\\");
+  pathMiddle = fileObj.lastIndexOf(".");
+  pathEnd = fileObj.length;
+  fileName = fileObj.substring(pathHeader+1, pathMiddle);
+  extName = fileObj.substring(pathMiddle+1, pathEnd);
+  allFilename = fileName+"."+extName;
+
+  $('#image').val(allFilename);
+  
+  $('#image_change_bool').val('ture');
+}
+
+//프로필 사진 미리보기
+function preview_img(input){
+	const reader = new FileReader();
+	reader.onload = e => {
+		const previewImage = document.getElementById('preview_img');
+		previewImage.src = e.target.result
+	}
+	
+	reader.readAsDataURL(input.files[0]);
+	
+}
+
+//프로필 사진 등록 함수 이벤트 설정
+const inputImage = document.getElementById('file1')
+inputImage.addEventListener('change' , e => {
+	preview_img(e.target);
+})
+
+$(document).ready(function(){
+$('#location_list').change(function(){
+  var selectedValue = $(this).val();
+  console.log(selectedValue); // This will log the value of the selected option
+  var html = `<span class="location_list_div">`+selectedValue+`</span>`;
+  $('#location_div').append(html);
+  
+  var location = $('[name=location]').val();
+  
+  selectedValue = '%23' + selectedValue;
+  
+  location += selectedValue;
+  
+  $('[name=location]').val(location);
+  
+});
+});
 
 </script>

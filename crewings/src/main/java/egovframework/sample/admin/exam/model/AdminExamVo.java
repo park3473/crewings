@@ -10,6 +10,9 @@ public class AdminExamVo extends SearchVo{
 	String m_category = "";
 	String type = "";
 	String content = "";
+	String image = "";
+	String image_change_bool = "";
+	String coment = "";
 	String point = "";
 	String start_tm = "";
 	String end_tm = "";
@@ -53,6 +56,18 @@ public class AdminExamVo extends SearchVo{
 	public void setContent(String content) {
 		this.content = content;
 	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public String getComent() {
+		return coment;
+	}
+	public void setComent(String coment) {
+		this.coment = coment;
+	}
 	public String getCreate_tm() {
 		return create_tm;
 	}
@@ -82,6 +97,12 @@ public class AdminExamVo extends SearchVo{
 	}
 	public void setEnd_tm(String end_tm) {
 		this.end_tm = end_tm;
+	}
+	public String getImage_change_bool() {
+		return image_change_bool;
+	}
+	public void setImage_change_bool(String image_change_bool) {
+		this.image_change_bool = image_change_bool;
 	}
 	
 	

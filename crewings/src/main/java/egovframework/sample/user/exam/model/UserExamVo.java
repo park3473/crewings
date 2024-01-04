@@ -13,6 +13,8 @@ public class UserExamVo extends SearchVo {
 	String end_tm = "";
 	String type = "";
 	String content = "";
+	String image = "";
+	String coment = "";
 	String create_tm = "";
 	String update_tm = "";
 	
@@ -48,6 +50,18 @@ public class UserExamVo extends SearchVo {
 	}
 	public String getContent() {
 		return content;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public String getComent() {
+		return coment;
+	}
+	public void setComent(String coment) {
+		this.coment = coment;
 	}
 	public void setContent(String content) {
 		this.content = content;

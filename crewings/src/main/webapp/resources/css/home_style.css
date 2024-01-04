@@ -96,13 +96,13 @@ border:1px #dedede solid !important;
 .cnpnel .box_05 .sul_box{}
 .cnpnel .box_05 .sul_box > .num{font-size:40px;font-weight:700;color:#000}
 .cnpnel .box_05 .sul_box > .tit{font-size:24px;font-weight:400;color:#000;padding:20px 0 15px}
-.cnpnel .box_05 .sul_box > .sul{background:url('/cnpnel/contents/img/blit_01.png') no-repeat 0 12px;padding:0 0 10px 10px;width:60%}
+.cnpnel .box_05 .sul_box > .sul{background:url('/resources/img/blit_01.png') no-repeat 0 12px;padding:0 0 10px 10px;width:60%}
 .cnpnel .box_05 .img{right:20px;top:20px}
 
 /* cnpnel배너 */
 .cnpnel_banner{width:100%;}
-.cnpnel_banner .left{background:url('/cnpnel/contents/img/banner_bg_01.jpg') repeat center center;height:575px}
-.cnpnel_banner .right{background:url('/cnpnel/contents/img/banner_bg_02.jpg') repeat center center;height:575px}
+.cnpnel_banner .left{background:url('/resources/img/banner_bg_01.jpg') repeat center center;height:575px}
+.cnpnel_banner .right{background:url('/resources/img/banner_bg_02.jpg') repeat center center;height:575px}
 .cnpnel_banner .sul_box_01{color:#fff;text-align:right;padding-top:200px;padding-right:50px}
 .cnpnel_banner .sul_box_01 .tit{font-size:3rem}
 .cnpnel_banner .sul_box_01 .sul{padding:30px 0 30px 0;font-size:18px;color:rgba(255,255,255,.5);line-height:34px}
@@ -131,7 +131,7 @@ border:1px #dedede solid !important;
 #tab-button li a:hover, #tab-button .is-active a{border-bottom-color:transparent;background:#5282e5;color:#fff}
 .tab-contents {border-top:2px #000 solid}
 .tab-button-outer{display:none}
-.tab-select-outer select{width:100%;padding:10px;background: url('${pageContext.request.contextPath}/resources/img/slect_arrow.png') no-repeat 95% 50%;border:1px solid #dedede;border-radius:0px;
+.tab-select-outer select{width:100%;padding:10px;background: url('/resources/img/slect_arrow.png') no-repeat 95% 50%;border:1px solid #dedede;border-radius:0px;
 -webkit-appearance:none;
 -moz-appearance:none;appearance:none}
 
@@ -141,7 +141,7 @@ border:1px #dedede solid !important;
 ---------------------------------------------------------- */
 
 /* 공통상단 */
-.sub_top{background:url('${pageContext.request.contextPath}/resources/img/mg/sub_bg.jpg') repeat center center;height:325px;margin-bottom:50px}
+.sub_top{background:url('/resources/img/sub_bg.jpg') repeat center center;height:325px;margin-bottom:50px}
 .sub_top .sul_box_01{color:#fff;text-align:left;padding-top:10%}
 .sub_top .sul_box_01 .tit{font-size:3rem;padding-top:20px}
 .sub_top .sul_box_01 .sul{padding:30px 0 30px 0;font-size:18px;color:rgba(255,255,255,.5);line-height:34px}
@@ -235,7 +235,7 @@ border:1px #dedede solid !important;
 .sub_top .sul_box_01 {color: #fff;text-align: center ;padding-top: 14%;}
 .sub_top .sul_box_01 .tit {font-size: 2rem;padding-top: 20px; line-height: 40px;}
 .sub_top .sul_box_01 .sul {padding: 15px 0 15px 0; line-height:normal}
-.sub_top {background: url(${pageContext.request.contextPath}/resources/img/mg/sub_bg.jpg) repeat center center; height: 280px;margin-bottom: 15px;}
+.sub_top {background: url(/resources/img/mg/sub_bg.jpg) repeat center center; height: 280px;margin-bottom: 15px;}
 .flex_box_01 {margin:30px 0 0 0;}
 .cnpnel .start_wrap li {display: inline-block;width: 100%;vertical-align: middle;}
 .cnpnel .box_05 .img {display: none;}

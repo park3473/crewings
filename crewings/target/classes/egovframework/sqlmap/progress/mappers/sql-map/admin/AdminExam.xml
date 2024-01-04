@@ -34,8 +34,8 @@
 	</select>
 	
 	<insert id="setAdminExamDataInsert" parameterType="AdminExamVo">
-		INSERT INTO TBL_EXAM (NAME , L_CATEGORY , M_CATEGORY , TYPE , POINT , CONTENT , CREATE_TM , UPDATE_TM)
-		VALUES(#{name} , #{l_category} , #{m_category} , 0 , #{point} , #{content} , now() , now())
+		INSERT INTO TBL_EXAM (NAME , L_CATEGORY , M_CATEGORY , TYPE , POINT , CONTENT , IMAGE , COMENT ,  CREATE_TM , UPDATE_TM)
+		VALUES(#{name} , #{l_category} , #{m_category} , 0 , #{point} , #{content} , #{image} , #{coment} , now() , now())
 	</insert>
 	
 	<update id="setAdminExamDataUpdate" parameterType="AdminExamVo">
@@ -54,6 +54,12 @@
 		</if>
 		<if test="content != ''">
 		CONTENT = #{content},
+		</if>
+		<if test="image != ''">
+		IMAGE = #{image},
+		</if>
+		<if test="coment != ''">
+			COMENT = #{coment},
 		</if>
 		<if test="start_tm != ''">
 		START_TM = #{start_tm}

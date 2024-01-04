@@ -13,6 +13,7 @@ import com.system.util.PageVO;
 import egovframework.sample.user.exam.model.UserExamResultVo;
 import egovframework.sample.user.exam.model.UserExamVo;
 import egovframework.sample.user.exam.service.UserExamService;
+import egovframework.sample.user.member.model.UserMemberVo;
 import egovframework.sample.user.question.service.impl.UserQuestionMapper;
 
 @Service("userExamService")
@@ -87,6 +88,14 @@ public class UserExamServiceImpl implements UserExamService {
 		userExamMapper.setExamResultData(userExamResultVo);
 		
 		
+	}
+
+	@Override
+	public List<?> getResultListView(UserMemberVo userMemberVo) {
+		
+		List<?> list = userExamMapper.getResultListView(userMemberVo);
+		
+		return list;
 	}
 	
 	

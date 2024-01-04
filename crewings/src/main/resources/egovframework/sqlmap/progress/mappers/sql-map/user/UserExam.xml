@@ -57,11 +57,11 @@
 		    GROUP_CONCAT(s.content ORDER BY s.seq SEPARATOR '#') AS Choices,
 		    GROUP_CONCAT(s.image ORDER BY s.seq SEPARATOR '#') AS ChoicesImage
 		FROM 
-		    tbl_question_list ql
+		    TBL_QUESTION_LIST ql
 		JOIN 
-		    tbl_question q ON ql.question_idx = q.idx
+		    TBL_QUESTION q ON ql.question_idx = q.idx
 		JOIN 
-		    tbl_select s ON q.idx = s.question_idx
+		    TBL_SELECT s ON q.idx = s.question_idx
 		WHERE 
 		    ql.exam_idx = #{idx}
 		GROUP BY 
@@ -73,6 +73,10 @@
 		INSERT INTO TBL_EXAM_RESULT (EXAM_IDX , MEMBER_ID , NAME , SELECT_LIST , COMPLETE , COMPLETE_TM , CREATE_TM , UPDATE_TM)
 		VALUES(#{exam_idx} , #{member_id} , #{name} , #{select_list} , #{complete} , now() , now() , now())
 	</insert>
+	
+	<select id="getResultListView" parameterType="UserExamResultVo" resultType="hashMap">
+		SELECT R.* , E.point FROM TBL_EXAM_RESULT R JOIN TBL_EXAM E ON R.exam_idx = E.idx WHERE R.member_id = #{member_id}
+	</select>
 
 
 </mapper>

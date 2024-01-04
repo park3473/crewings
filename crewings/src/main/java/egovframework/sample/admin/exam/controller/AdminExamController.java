@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.system.util.SUtil;
@@ -67,8 +68,16 @@ public class AdminExamController {
 		
 	}
 	
-	@RequestMapping(value="/admin/exam/insert.do", method = RequestMethod.POST)
-	public void AdminExamInsertPost(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) throws IOException {
+	@RequestMapping(value="/admin/exam/insert.do", method = RequestMethod.POST )
+	public void AdminExamInsertPost(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , MultipartHttpServletRequest request , HttpServletResponse response) throws IOException {
+		
+		//파일 등록
+		String drv = request.getRealPath("");
+		drv = drv.substring(0 , drv.length()) + "./resources/" + ((HttpServletRequest) request).getContextPath() + "/upload/exam/image/";
+				
+		String filename = SUtil.setFileUpload(request, drv);
+		
+		AdminExamVo.setImage(filename);
 		
 		adminExamService.setAdminExamData(AdminExamVo , "insert");
 		
@@ -88,7 +97,17 @@ public class AdminExamController {
 	}
 	
 	@RequestMapping(value="/admin/exam/update.do", method = RequestMethod.POST)
-	public void AdminExamUpdatePost(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) throws IOException {
+	public void AdminExamUpdatePost(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo ,  MultipartHttpServletRequest  request , HttpServletResponse response) throws IOException {
+		
+		if(AdminExamVo.getImage_change_bool().equals("true")) {
+			//파일 등록
+			String drv = request.getRealPath("");
+			drv = drv.substring(0 , drv.length()) + "./resources/" + ((HttpServletRequest) request).getContextPath() + "/upload/exam/image/";
+					
+			String filename = SUtil.setFileUpload(request, drv);
+			
+			AdminExamVo.setImage(filename);
+		}
 		
 		adminExamService.setAdminExamData(AdminExamVo , "update");
 		
