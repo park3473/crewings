@@ -37,14 +37,18 @@ public class UserLoginInterceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {
 		
 		HttpSession session = request.getSession();
-		String level = session.getAttribute("UserLevel") + "";
+		String level = (String) session.getAttribute("UserLevel");
+		if (level == null) {
+		    level = "0"; // 기본 레벨을 0으로 설정
+		}
+		
 		int levelInt = Integer.parseInt(level);
 		if(level.equals("1") || levelInt >= 1)
 		{
 			return true;
 		}else 
 		{
-			response.sendRedirect(request.getContextPath()+"/index.do");
+			response.sendRedirect(request.getContextPath()+"/view/login.do");
 			return false;
 		}
 		
