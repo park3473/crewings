@@ -18,5 +18,7 @@ public interface UserExamService {
 
 	List<?> getResultListView(UserMemberVo userMemberVo);
 
+	ModelMap getResultDataView(UserExamResultVo userExamResultVo);
+
 
 }

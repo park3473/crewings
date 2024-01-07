@@ -31,14 +31,14 @@
 <div class="container cnpnel">
     <div class="row point_wrap">
         <div class="col-sm-4">
-            <div class="font_noto cont">
+            <div class="font_noto cont_01">
                 <div class="tit">창날패널 포인트</div>
-                <div class="total">500P</div>
-                <a href="./sub_03a.php"><span class="btn_01">사은품 바꾸기</span></a><span class="btn_02 pointer" data-toggle="modal" data-target="#myModal_02">현금 바꾸기</span>
+                <div class="total">${model.view.point }</div>
+                <a href="/user/product/list.do"><span class="btn_01">사은품 바꾸기</span></a><span class="btn_02 pointer" data-toggle="modal" data-target="#myModal_02">현금 바꾸기</span>
             </div>
         </div>
         <div class="col-sm-8">
-            <div class="cont">
+            <div class="cont_02">
 				<div class="ico"><i class="las la-coins"></i></div>
                 창날 포인트란, 설문조사 참여를 통해 적립할 수 있는 창의와날개 패널만의 혜택입니다.<br>5,000P 이상부터 현금이체 신청이 가능하며 사은품으로도 교환하실 수 있습니다.
             </div>
@@ -56,36 +56,27 @@
         <th>카테고리</th>
         <th>제목</th>
         <th>포인트</th>
+        <th>상세보기</th>
     </tr>
     </thead>
     <tbody>
+    <c:forEach items="${model.list }" var="item">
     <tr>
-        <td>2023-12-06</td>
-        <td>사회여론</td>
-        <td>학교 재안안전화재강화 설문조사</td>
-        <td class="point">50P</td>
+        <td>${fn:substring(item.complete_tm,0,11) }</td>
+        <td>${item.l_category }</td>
+        <td>${item.name }</td>
+        <td class="point">${item.point }</td>
+        <td class="detail"><button type="button"  onclick="location.href='/user/exam/result/view.do?idx=${item.idx}&exam_idx=${item.exam_idx }&member_id=${item.member_id }'">상세보기</button></td>
     </tr>
-    <tr>
-        <td>2023-12-06</td>
-        <td>사회여론</td>
-        <td>학교 재안안전화재강화 설문조사</td>
-        <td class="point">100P</td>
-    </tr>
-    <tr>
-        <td>2023-12-06</td>
-        <td>사회여론</td>
-        <td>학교 재안안전화재강화 설문조사</td>
-        <td class="point">50P</td>
-    </tr>
+    </c:forEach>
     </tbody>
     </table>
     <!-- 페이징 -->
     <div class="pos_r paging">
         <ul class="pagination pos_a">
             <li class="page-item"><a class="page-link" href="#"><i class="las la-angle-left"></i></a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <!--  <li class="page-item"><a class="page-link" href="#">3</a></li> -->
             <li class="page-item"><a class="page-link" href="#"><i class="las la-angle-right"></i></a></li>
         </ul>
     </div>
@@ -103,7 +94,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="total font_noto">신청가능금액 : <span class="red_01">500P</span></div>
+                    <div class="total font_noto">신청가능금액 : <span class="red_01">${model.view.point }P</span></div>
                     <input type="text" class="form-control" id="bank" placeholder="은행명">
                     <input type="text" class="form-control" id="name" placeholder="예금주명">
                     <input type="text" class="form-control" id="number" placeholder="계좌번호">

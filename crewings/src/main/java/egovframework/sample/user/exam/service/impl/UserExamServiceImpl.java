@@ -97,6 +97,30 @@ public class UserExamServiceImpl implements UserExamService {
 		
 		return list;
 	}
+
+	@Override
+	public ModelMap getResultDataView(UserExamResultVo userExamResultVo) {
+		
+		ModelMap model = new ModelMap();
+		
+		UserExamVo vo = new UserExamVo();
+		
+		vo.setIdx(userExamResultVo.getExam_idx());
+		
+		//해당 문제들 가져오기
+		List<?> question = userExamMapper.getQuestionList(vo);
+		
+		model.put("question", question);
+		
+		UserExamResultVo view = new UserExamResultVo();
+		
+		//해당 결과 가져오기
+		view = userExamMapper.getExamResultView(userExamResultVo);
+		
+		model.put("view", view);
+		
+		return model;
+	}
 	
 	
 	

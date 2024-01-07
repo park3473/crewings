@@ -18,7 +18,7 @@
 	
 	<select id="getUserMemberData" parameterType="UserMemberVo" resultType="UserMemberVo">
 		SELECT * FROM TBL_MEMBER
-		WHERE IDX = #{idx} AND MEMBER_ID = #{member_id}
+		WHERE  MEMBER_ID = #{member_id}
 	</select>
 	
 	<insert id="setMemberDataInsert" parameterType="UserMemberVo">

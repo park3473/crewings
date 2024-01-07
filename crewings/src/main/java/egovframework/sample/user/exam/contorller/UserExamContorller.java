@@ -87,4 +87,17 @@ public class UserExamContorller {
 		
 	}
 	
+	@RequestMapping(value="/user/exam/result/view.do" , method = RequestMethod.GET)
+	public ModelAndView UserExamResultView(@ModelAttribute("UserExamResultVo")UserExamResultVo UserExamResultVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		//결과 리스트 불러오기
+		ModelMap model = new ModelMap();
+		
+		model = userExamService.getResultDataView(UserExamResultVo);
+		
+		return new ModelAndView("user/mypage/result" , "model" , model);
+		
+	}
+	
+	
 }
