@@ -58,8 +58,8 @@ console.log(select);
 <div class="container cnpnel">
     <div class="point_wrap">
         <div class="section">
-		    <h2>검사지 정보</h2>
-		    <p><strong>검사지명 : </strong> ${model.view.name }</p>
+		    <h2>검사자 정보</h2>
+		    <p><strong>검사자명 : </strong> ${model.view.name }</p>
 		    <p><strong>검사일 : </strong> ${fn:substring(model.view.complete_tm,0,11) }</p>
 		  </div>
 		
@@ -72,7 +72,9 @@ console.log(select);
 		
 		  <div class="section">
 		    <h2>영역별 분포도 (차트)</h2>
-		    <div class="chart"></div>
+		    <div class="chart">
+		    	<canvas id="chart_2"  width="400" height="400" ></canvas>
+		    </div>
 		  </div>
     </div>
 </div>
@@ -203,7 +205,7 @@ var data = {
 		  labels: Object.keys(questionsType),
 		  datasets: [{
 		    label: '정답률',
-		    data: [100  , 66 , 66],
+		    data: [100  , 50 , 50, 100 , 60 , 0 ],
 		    fill: true,
 		    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 		    borderColor: 'rgb(255, 99, 132)',
@@ -235,6 +237,48 @@ var myRadarChart = new Chart(ctx, {
   options: options
 });
 
+
+var data2 = {
+		  labels: Object.keys(questionsType),
+		  datasets: [{
+		    label: '정답률',
+		    data: [100  , 50 , 50, 100 , 60 , 0 ],
+		    backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+		  }]
+		};
+		
+//차트 옵션 설정
+var options = {
+		scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+};
+
+//캔버스 요소에 차트 생성하기
+var ctx = document.getElementById('chart_2').getContext('2d');
+var myRadarChart = new Chart(ctx, {
+type: 'bar',
+data: data,
+options: options
+});
 
 
 

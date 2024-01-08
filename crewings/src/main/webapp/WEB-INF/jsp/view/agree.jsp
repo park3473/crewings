@@ -14,7 +14,7 @@
 -->
 <!--공통 헤더 시작-->
 <%@ include file="../include/user/header.jsp" %>
-<%@ include file="../include/user/menu.jsp" %>
+<%@ include file="../include/user/menu.jsp"%>
 <%@ include file="../include/user/top.jsp" %>
 <!--공통 헤더 끝-->
 <style>

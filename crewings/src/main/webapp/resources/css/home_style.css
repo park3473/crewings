@@ -72,7 +72,7 @@ border:1px #dedede solid !important;
 .cnpnel .box_01 .counter {font-size:4em;font-weight:500;padding:20px 0 17px;color:#000}
 .cnpnel .box_01 i{font-size:4em;font-weight:700;color:#000}
 
-.cnpnel .box_02{background:rgba(255,255,255,1);border:1px #dedede solid;color:#c7c7c7;padding:0;}
+.cnpnel .box_02{background:rgba(255,255,255,1);border:1px #dedede solid;color:#c7c7c7;padding:0}
 .cnpnel .box_02 img{width:100%;border-bottom:1px #dedede solid}
 .cnpnel .box_02 .sul_box{padding:5px 20px 20px 30px}
 .cnpnel .box_02 .txt{font-size:22px;font-weight:400;padding-top:15px;padding-bottom:10px;color:#000}
@@ -235,7 +235,7 @@ border:1px #dedede solid !important;
 .sub_top .sul_box_01 {color: #fff;text-align: center ;padding-top: 14%;}
 .sub_top .sul_box_01 .tit {font-size: 2rem;padding-top: 20px; line-height: 40px;}
 .sub_top .sul_box_01 .sul {padding: 15px 0 15px 0; line-height:normal}
-.sub_top {background: url(/resources/img/mg/sub_bg.jpg) repeat center center; height: 280px;margin-bottom: 15px;}
+.sub_top {background: url(/resources/img/sub_bg.jpg) repeat center center; height: 280px;margin-bottom: 15px;}
 .flex_box_01 {margin:30px 0 0 0;}
 .cnpnel .start_wrap li {display: inline-block;width: 100%;vertical-align: middle;}
 .cnpnel .box_05 .img {display: none;}

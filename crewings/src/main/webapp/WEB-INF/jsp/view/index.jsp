@@ -60,7 +60,7 @@
     <a class="carousel-control-next" href="#cnpnel" role="button" data-slide="next"><i class="la la-angle-right" aria-hidden="true"></i></a>
 </div>
 <!-- 메인배너끝 -->
-<div class="pad_35"></div>
+<div class="pad_35 c_hide"></div>
 
 
 
@@ -234,7 +234,7 @@ $('.counter').each(function() {
 
 <div class="pad_35"></div>
 <!-- cnpnel배너 -->
-<div class="row cnpnel_banner">
+<div class="row cnpnel_banner m-0">
     <div class="col-6 left">
         <div class="sul_box_01">
 			<div class="tit font_noto f_wet_01">설문조사 <span class="f_wet_05 bora_01">의뢰하기</span></div>

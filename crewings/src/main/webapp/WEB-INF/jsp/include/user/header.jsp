@@ -18,7 +18,8 @@
 
 <!-- sample 프로젝트 -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+
+ <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">-->
 <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/popper.min.js"></script>
@@ -48,6 +49,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/js_cont.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/navi.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/aos.js"></script>
+
 
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 

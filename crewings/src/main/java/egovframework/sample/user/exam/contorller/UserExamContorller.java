@@ -72,7 +72,7 @@ public class UserExamContorller {
 	}
 	
 	@RequestMapping(value="/user/exam/result/insert.do" , method = RequestMethod.POST)
-	public void UserExamResultPost(@ModelAttribute("UserExamResultVo")UserExamResultVo UserExamResultVo , HttpServletRequest request , HttpServletResponse response) {
+	public String UserExamResultPost(@ModelAttribute("UserExamResultVo")UserExamResultVo UserExamResultVo , HttpServletRequest request , HttpServletResponse response) {
 
 		//결과 저장
 		userExamService.setExamResultData(UserExamResultVo);
@@ -84,6 +84,8 @@ public class UserExamContorller {
 		
 		//사용자 포인트 추가
 		userMemberService.setMemberPoint(vo);
+		
+		return  "redirect:/index.do";
 		
 	}
 	

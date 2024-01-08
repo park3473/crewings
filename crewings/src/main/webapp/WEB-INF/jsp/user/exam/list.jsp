@@ -41,7 +41,7 @@
                         <div class="sul_box">
                             <div class="txt font_noto">${item.name }</div>
                             <div class="sul"><span class="gray_10">응답사례 : </span>${item.point } 포인트 리워드</div>
-                            <div class="sul"><span class="gray_10">설문소개 : </span> ${item.content }</div>
+                            <div class="sul"><span class="gray_10">설문소개 : </span> ${item.coment }</div>
                             <div class="date"><span class="gray_10">응답기간 : </span>${fn:substring(item.start_tm,0,11) } ~ ${fn:substring(item.end_tm,0,11) }</div>
                             <c:choose>
                             	<c:when test="${now.after(item.start_tm) and now.before(item.end_tm)  }">

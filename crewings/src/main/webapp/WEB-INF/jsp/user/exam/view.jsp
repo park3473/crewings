@@ -100,7 +100,7 @@ body{
                     </li>
                     <li>
                         <div class="font_noto cont"><span class="f_wet_05">응답사례 : </span>${model.view.point } 포인트 리워드</div>
-                        <div class="font_noto cont"><span class="f_wet_05">설문소개 : </span>${model.view.content }</div>
+                        <div class="font_noto cont"><span class="f_wet_05">설문소개 : </span>${model.view.coment }</div>
                     </li>
                     <li>
                         <div class="btn" data-toggle="modal" data-target="#myModal">참여하기</div>
@@ -164,7 +164,7 @@ body{
 <!-- 설문 모달 -->
 <div class="cnpnel">
     <div class="modal" id="myModal">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="max-width: 900px; !important">
             <div class="modal-content">
 
                 <!-- Modal Header -->
@@ -190,10 +190,12 @@ body{
 						<hr style="margin-top:20px">
 			
 						<p id="question"></p>
-			
+						<div id="q_content" style="text-align:center">
+						
+						</div>
 						<div class="button" id="quiz_btn">
 						</div>
-						<hr style="margin-top:50px">
+						<hr style="margin-top:100px">
 						<div id="quiz_solution" style="display:none;">
 						
 						</div>
@@ -229,13 +231,14 @@ body{
 <script type="text/javascript">
 
 //퀴즈 객체 생성
-function Question(text, choice,choice_cnt, answer,image,solution ){
+function Question(text, choice,choice_cnt, answer,image,solution , content ){
 	this.text = text;
 	this.choice = choice;
 	this.choice_cnt = choice_cnt;
 	this.answer = answer;
 	this.image = image;
 	this.solution = solution;
+	this.content = content;
 }
 
 // 퀴즈 정보 객체 생성
@@ -262,6 +265,7 @@ questions.push(new Question('${item.name}',[
 			 </c:forEach>	
 		],
 		'${item.solution}',
+		'${item.content}'
 		));
 </c:forEach>
 
@@ -273,13 +277,15 @@ function update_quiz(){
 	$("#quiz_btn").empty();
 	var html = '';
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
-		html += ' <div class="select_div" ><img src="/resources/upload/select/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
+		html += ' <div class="select_div" ><img style="width:100%; height:100%;" src="/resources/upload/select/image/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
 	}
 	$('#quiz_btn').append(html);
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
 		var question = document.getElementById('question');
 		var choice = document.getElementById('btn'+i);
+		var question_content = document.getElementById('q_content');
 		question.innerHTML = quiz.questions[quiz.questionIndex].text; 
+		question_content.innerHTML = quiz.questions[quiz.questionIndex].content;
 		choice.innerHTML = quiz.questions[quiz.questionIndex].choice[i];
 		answer('btn' + i, choice,i+1);
 	}
