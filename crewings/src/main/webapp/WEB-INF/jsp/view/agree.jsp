@@ -25,14 +25,16 @@
     .submit-btn { margin-top: 20px; }
 
 </style>
-<div class="pad_35"></div>
+<div class="container" id="agree_section">
+<div class="tit_wrap col-sm-12">
+	<div class="b_txt_tit font_noto f_wet_05">회원가입 약관 동의</div>
+</div>
 
-<div id="content">
 
-<h2>회원가입 약관 동의</h2>
-
+<div id="content" class="font_noto">
     <div class="terms">
-        <h3>서비스 이용 약관</h3>
+        <p class="agree_txt">서비스 이용 약관</p>
+        <div class="line_gab_15"></div>
         <div class="terms-content">
             <!-- 서비스 이용 약관 내용 -->
             서비스 이용약관 넣을 공간
@@ -44,7 +46,8 @@
     </div>
 
     <div class="terms">
-        <h3>개인정보 처리방침</h3>
+        <p class="agree_txt">개인정보 처리방침</p>
+        <div class="line_gab_15"></div>
         <div class="terms-content">
             <!-- 개인정보 처리방침 내용 -->
             개인정보 처리방침 넣을 공간
@@ -56,7 +59,8 @@
     </div>
 
     <div class="terms">
-        <h3>마케팅 정보 수신 동의</h3>
+        <p class="agree_txt">마케팅 정보 수신 동의</p>
+        <div class="line_gab_15"></div>
         <div class="terms-content">
             <!-- 마케팅 정보 수신 동의 내용 -->
             마케팅 정보 동의 넣을 공간
@@ -66,8 +70,10 @@
             <label for="marketing">마케팅 정보 수신에 동의합니다.</label>
         </div>
     </div>
+</div>
 
-<button class="submit-btn" type="button"  onclick="location.href='/view/register.do'">회원가입</button>
+<button class="submit-btn btn_01" type="button"  onclick="location.href='/view/register.do'">회원가입</button>
+
 </div>
 
 <!--공통하단-->

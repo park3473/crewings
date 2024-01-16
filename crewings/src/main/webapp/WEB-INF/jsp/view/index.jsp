@@ -208,7 +208,7 @@ $('.counter').each(function() {
   $({ countNum: $this.text()}).animate({
     countNum: countTo
   },
-
+ 
   {
 
     duration: 8000,
@@ -235,14 +235,14 @@ $('.counter').each(function() {
 <div class="pad_35"></div>
 <!-- cnpnel배너 -->
 <div class="row cnpnel_banner m-0">
-    <div class="col-6 left">
+    <div class="col-sm-6 left">
         <div class="sul_box_01">
 			<div class="tit font_noto f_wet_01">설문조사 <span class="f_wet_05 bora_01">의뢰하기</span></div>
 			<div class="sul">설문조사나 패널과 관련한 문의가 궁금하신가요?</div>
 			<div class="btn">문의하러 <span class="bora_01">바로가기</span></div>
         </div>
     </div>
-	<div class="col-6 right">
+	<div class="col-sm-6 right">
         <div class="sul_box_02">
 			<div class="tit font_noto f_wet_01">나랑 친구랑  <span class="f_wet_05 orange_01">포인트 팡팡</span></div>
 			<div class="sul">많은 친구들을 모으면 모을수록 포인트가 쌓입니다.</div>

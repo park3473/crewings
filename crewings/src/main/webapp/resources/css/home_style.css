@@ -254,3 +254,61 @@ border:1px #dedede solid !important;
 .cnpnel .point_wrap .cont_01 {text-align: center;padding:15px 15px 0 15px;background: #f4f4f4;min-height: 215px;}
 .cnpnel .point_wrap .cont_02 {text-align: center;padding:0 15px 15px 15px;background: #f4f4f4;min-height: 215px;}
 }
+
+.pad_70 {padding:70px;}
+
+/* 로그인 */
+#login_section .border_01 {border:1px solid #ddd; border-radius: 10px;}
+#login_section .login_txt {font-size:1.5rem; font-weight: 600;}
+#login_section .btn_01 {display: flex;width: 100%;justify-content: center;padding: 10px; background-color: #25a6df; color: #fff; font-size:1.25rem; border-radius: 5px;}
+
+@media screen and (max-width:992px) {
+#login_section .login_txt {font-size:1.3rem; font-weight: 600;}
+#login_section .pad_30 {padding:20px;}
+#login_section .pad_15 {padding:10px;}
+}
+/* 로그인 */
+
+/* 회원가입 약관 */
+#agree_section .agree_txt {font-size:1.5rem; font-weight: 600;}
+#agree_section .btn_01 {display: flex;width: 100%;justify-content: center;padding: 10px; background-color: #25a6df; color: #fff; font-size:1.25rem; border-radius: 5px;}
+#agree_section.container { width: 70%; margin: auto; }
+#agree_section .line_gab_15 {margin-top:15px; margin-bottom: 15px; width:100%; height: 2px; background-color:#25a6df;}
+#agree_section .terms { margin-top: 30px; }
+#agree_section .terms-content { height: 200px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; }
+#agree_section .agree-checkbox { margin-top: 10px; }
+#agree_section .submit-btn { margin-top: 20px; }
+
+@media screen and (max-width:992px) {
+#agree_section .agree_txt {font-size:1.3rem; font-weight: 600;}
+#agree_section.container { width: 100%; margin: auto; }
+#agree_section .terms { margin-top: 20px; }
+#agree_section .pad_30 {padding:20px;}
+#agree_section .pad_15 {padding:10px;}
+}
+/* 회원가입 약관 */
+
+/* 회원가입 */
+#register_section .register_txt {font-size:1.5rem; font-weight: 600;}
+#register_section.container { width: 70%; margin: auto; }
+#register_section .border_02 {border-top: 2px solid #25a6df;}
+#register_section table tr th {background-color:aliceblue; }
+#register_section table tr td input {padding:5px;}
+#register_section table select {padding:5px; border: 1px #dedede solid !important}
+#register_section .table td, #register_section .table th {padding: 0.75rem;vertical-align: middle;border-top: 1px solid #dee2e6;}
+#register_section .btn_01 {display: flex;width: 100%;justify-content: center;padding: 10px; background-color: #25a6df; color: #fff; font-size:1.25rem; border-radius: 5px;}
+#register_section .btn_02 {padding:5px 10px  !important;  background-color: #f0f8ff; border: 1px solid #cbdcea; border-radius: 5px;}
+#register_section table input {width:40%}
+
+@media screen and (max-width:992px) {
+#register_section .register_section {font-size:1.3rem; font-weight: 600;}
+#register_section.container { width: 100%; margin: auto; }
+#register_section .pad_30 {padding:20px;}
+#register_section .pad_15 {padding:10px;}
+#register_section table input {width:100%}
+}
+
+@media screen and (max-width:576px) {
+.mar_b {margin-bottom:10px;}
+}
+/* 회원가입 */

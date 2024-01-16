@@ -18,14 +18,32 @@
 <%@ include file="../include/user/top.jsp" %>
 <!--공통 헤더 끝-->
 
-<div class="pad_35"></div>
+<div class="container" id="login_section">
+<div class="row d-flex flex-column align-items-center">
 
-<div id="content">
-<form action="${pageContext.request.contextPath }/view/login.do" method="POST">
-	<input type="text" name="member_id">
-	<input type="text" name="password">
-	<button type="button" onclick="login()">전송</button>
-</form>
+	<div class="tit_wrap col-sm-12">
+		<div class="b_txt_tit font_noto f_wet_05">Login</div>
+		<div class="s_txt_tit">CN패널설문에 오신 것을 환영합니다.</div>
+	</div>
+
+	<div id="content" class="col-lg-4 font_noto">
+	<form action="${pageContext.request.contextPath }/view/login.do" method="POST" class="pad_30 border_01 row m-0">
+		<p class="login_txt">ID</p>
+		<input type="text" name="member_id" placeholder="아이디를 입력해주세요" class="pad_10 col-sm-12">
+		<div class="pad_10 col-sm-12"></div>
+		<p class="login_txt">PASSWORD</p>
+		<input type="text" name="password"  placeholder="비밀번호를 입력해주세요" class="pad_10 col-sm-12">
+		<div class="pad_15 col-sm-12"></div>
+		<button type="button" onclick="login()" class="btn_01">Login</button>
+		<div class="col-sm-12 pad_10">
+			<div class="d-flex justify-content-end">
+				<a href="#">아이디 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="#">비밀번호 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="#">회원가입</a>
+			</div>
+		</div>
+	</form>
+	</div>
+
+</div>
 </div>
 
 <!--공통하단-->
