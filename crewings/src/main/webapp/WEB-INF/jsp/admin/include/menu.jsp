@@ -145,11 +145,17 @@
                                         <li <c:if test="${fn:indexOf(fullURL, 'exam/insert') > -1}">class="nav_active"</c:if>>
                                             <a href="${pageContext.request.contextPath}/admin/exam/insert.do">자가진단 생성</a>
                                         </li>
-                                        <li <c:if test="${fn:indexOf(fullURL, 'question/list') > -1}">class="nav_active"</c:if>>
-                                            <a href="${pageContext.request.contextPath}/admin/question/list.do">문제 리스트</a>
+                                        <li <c:if test="${fn:indexOf(fullURL, 'question/list.do?category=1') > -1}">class="nav_active"</c:if>>
+                                            <a href="${pageContext.request.contextPath}/admin/question/list.do?category=1">문제 리스트</a>
                                         </li>
-                                        <li <c:if test="${fn:indexOf(fullURL, 'question/insert') > -1}">class="nav_active"</c:if>>
-                                            <a href="${pageContext.request.contextPath}/admin/question/insert.do">문제 생성</a>
+                                        <li <c:if test="${fn:indexOf(fullURL, 'question/insert.do?category=1') > -1}">class="nav_active"</c:if>>
+                                            <a href="${pageContext.request.contextPath}/admin/question/insert.do?category=1">문제 생성</a>
+                                        </li>
+                                        <li <c:if test="${fn:indexOf(fullURL, 'question/list.do?category=0') > -1}">class="nav_active"</c:if>>
+                                            <a href="${pageContext.request.contextPath}/admin/question/list.do?category=0">설문 리스트</a>
+                                        </li>
+                                        <li <c:if test="${fn:indexOf(fullURL, 'question/insert.do?category=0') > -1}">class="nav_active"</c:if>>
+                                            <a href="${pageContext.request.contextPath}/admin/question/insert.do?category=0">설문 생성</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -162,7 +168,7 @@
                                     <ul class="sub_menu_con">
                                         <div class="title notosans">
                                             <span></span>
-                                            <span>회원 관리</span>
+                                            <span>상품 관리</span>
                                         </div>
                                         <li <c:if test="${fn:indexOf(fullURL, '/member/list') > -1}">class="nav_active"</c:if>>
                                             <a href="${pageContext.request.contextPath}/admin/product/list.do">상품 리스트</a>

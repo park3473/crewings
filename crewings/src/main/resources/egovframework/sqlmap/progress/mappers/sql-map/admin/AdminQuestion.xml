@@ -9,6 +9,9 @@
 		<if test="type != ''">
 			AND TYPE = #{type}
 		</if>
+		<if test="category != ''">
+			AND CATEGORY  = #{category}
+		</if>
 		<if test="SEARCH_TEXT != ''">
 		    <if test="SEARCH_TYPE != 'ALL'">
 	    		 AND ${SEARCH_TYPE} LIKE '%${SEARCH_TEXT}%'

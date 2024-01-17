@@ -7,6 +7,7 @@ public class AdminQuestionVo extends SearchVo {
 	String idx = "";
 	String name = "";
 	String type = "";
+	String category = "";
 	String content = "";
 	String objectives = "";
 	String select_type = "";
@@ -95,6 +96,12 @@ public class AdminQuestionVo extends SearchVo {
 	}
 	public void setExam_idx(String exam_idx) {
 		this.exam_idx = exam_idx;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 	

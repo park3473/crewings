@@ -98,6 +98,8 @@ public class AdminQuestionController {
 		
 		model.put("exam_idx", exam_idx);
 		
+		model.put("before" , AdminQuestionVo);
+		
 		return new ModelAndView("admin/question/insert" , "model" , model);
 		
 	}

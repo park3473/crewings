@@ -81,7 +81,7 @@
                                 <div class="adm_btn_wrap stats_btn_area">
                                     <ul>
                                     <li class="delete">
-                                        <a href="./insert.do">문제 생성</a>
+                                        <a href="./insert.do?category=${model.before.category }">생성</a>
                                     </li>
                                 </ul>
                                 </div>
