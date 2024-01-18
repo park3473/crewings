@@ -70,12 +70,47 @@
             <label for="marketing">마케팅 정보 수신에 동의합니다.</label>
         </div>
     </div>
+    <div class="terms">
+        <div class="line_gab_15"></div>
+        <div class="agree-checkbox">
+            <input type="checkbox" id="all_check" name="all_check">
+            <label for="all_check">전체 동의</label>
+        </div>
+    </div>
 </div>
 
-<button class="submit-btn btn_01" type="button"  onclick="location.href='/view/register.do'">회원가입</button>
+<button class="submit-btn btn_01" type="button"  onclick="agree()">회원가입</button>
 
 </div>
 
 <!--공통하단-->
 <%@ include file="../include/user/footer.jsp" %>
 <script type="text/javascript">
+$(document).ready(function() {
+    $('#all_check').click(function() {
+        $('.terms input[type="checkbox"]').not('#all_check').prop('checked', this.checked);
+    $('.terms input[type="checkbox"]').not('#all_check').click(function() {
+        var allChecked = $('.terms input[type="checkbox"]').not('#all_check').length === $('.terms input[type="checkbox"]').not('#all_check:checked').length;
+        $('#all_check').prop('checked', allChecked);
+    });
+});
+    
+});
+
+    function agree(){
+    	
+    	var allChecked = $('.terms input[type="checkbox"]:checked').not('#all_check').length;
+    	
+    	if(allChecked == 3){
+    	
+    		location.href='/view/register.do';
+    		
+    	}else{
+    		
+    		alert('동의 해주시기 바랍니다.');
+    		
+    	}
+    	
+    }
+    
+</script>

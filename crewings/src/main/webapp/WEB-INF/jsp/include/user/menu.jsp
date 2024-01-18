@@ -23,7 +23,18 @@
     <ul>
         <li>
 		<span class="" class="bg_01"><a href="">HOME</a></span>
-        <span class="float_r"><a href="/view/login.do" class="bg_01">로그인</a><a href="/view/agree.do">회원가입</a></span>
+        <span class="float_r">
+        	<c:if test="${sessionScope.Login != 'OkOk' }">
+        	<a href="/view/login.do" class="bg_01">로그인</a>
+        	<a href="/view/agree.do">회원가입</a>
+        	</c:if>
+        	<c:if test="${sessionScope.Login == 'OkOk' }">
+        	<a href="/view/loginout.do" class="bg_01">로그아웃</a>
+        	<c:if test="${sessionScope.UserLevel == '73' }">
+        	<a href="/admin/index.do">관리자</a>
+        	</c:if>
+        	</c:if>
+        </span>
 		</li>
     </ul>
 </div>
@@ -60,7 +71,6 @@
                     <a href="#"><span>회원가입</span></a><span class="gab">ㅣ</span>
                     <a href="#"><span>로그인</span></a>
                     <a href="/"><span>HOME</span></a><span class="gab">ㅣ</span>
-                    <span class="gab">ㅣ</span><a href="#"><span class="blue_01">BOOK-MARK</span></a>
                 </div>
                 <!--로그인끝-->
                 <!--셀렉트박스-->

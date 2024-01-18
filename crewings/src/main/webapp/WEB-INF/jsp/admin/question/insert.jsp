@@ -49,6 +49,7 @@
                         <input type="hidden" name="exam_idx" value="${model.exam_idx }">
                         <input type="hidden" name="question_idx" value="">
                         <input type="hidden" name="question_type" value="new">
+                        <input type="hidden" name="category" value="0">
                         <div class="sc_con" id="div_con">
                             <div class="title">
                                 <span></span>
@@ -149,6 +150,7 @@
                         <input type="hidden" name="exam_idx" value="${model.exam_idx }">
                         <input type="hidden" name="question_idx" value="">
                         <input type="hidden" name="question_type" value="new">
+                        <input type="hidden" name="category" value="1">
                         <div class="sc_con" id="div_con">
                             <div class="title">
                                 <span></span>

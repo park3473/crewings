@@ -38,13 +38,13 @@
 	</select>
 	
 	<insert id="setQuestionDataInsert" parameterType="AdminQuestionVo">
-		INSERT INTO TBL_QUESTION( NAME , TYPE , CONTENT , OBJECTIVES , SELECT_TYPE , SELECT_VAL , SOLUTION , CREATE_TM , UPDATE_TM)
-		VALUES(#{name} , #{type} , #{content} , #{objectives} , #{select_type} , #{select_val} , #{solution} , now() , now())
+		INSERT INTO TBL_QUESTION( NAME , TYPE , CATEGORY , CONTENT , OBJECTIVES , SELECT_TYPE , SELECT_VAL , SOLUTION , CREATE_TM , UPDATE_TM)
+		VALUES(#{name} , #{type} , #{category} , #{content} , #{objectives} , #{select_type} , #{select_val} , #{solution} , now() , now())
 	</insert>
 	
 	<insert id="setQuestionDataAjaxInsert" parameterType="AdminQuestionVo" useGeneratedKeys="true" keyProperty="idx">
-		INSERT INTO TBL_QUESTION( NAME , TYPE , CONTENT , OBJECTIVES , SELECT_TYPE , SELECT_VAL , SOLUTION , CREATE_TM , UPDATE_TM)
-		VALUES(#{name} , #{type} , #{content} , #{objectives} , #{select_type} , #{select_val} , #{solution} , now() , now())
+		INSERT INTO TBL_QUESTION( NAME , TYPE , CATEGORY ,  CONTENT , OBJECTIVES , SELECT_TYPE , SELECT_VAL , SOLUTION , CREATE_TM , UPDATE_TM)
+		VALUES(#{name} , #{type}  #{category} , #{content} , #{objectives} , #{select_type} , #{select_val} , #{solution} , now() , now())
 	</insert>
 	
 	<select id="getQuestionData" parameterType="AdminQuestionVo" resultType="AdminQuestionVo">
@@ -59,6 +59,9 @@
 		</if>
 		<if test="type != ''">
 			TYPE = #{type},
+		</if>
+		<if test="category != ''">
+			CATEGORY = #{category}
 		</if>
 		<if test="content != ''">
 			CONTENT = #{content},
