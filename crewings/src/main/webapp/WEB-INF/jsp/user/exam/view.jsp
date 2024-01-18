@@ -228,10 +228,10 @@ body{
 <!--공통하단-->
 <%@ include file="../../include/user/footer.jsp" %>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<c:if test="${model.beforeData.category == '1' }">
 <script type="text/javascript">
-
 //퀴즈 객체 생성
-function Question(text, choice,choice_cnt, answer,image,solution , content ){
+function Question(text, category ,choice,choice_cnt, answer,image,solution , content ){
 	this.text = text;
 	this.choice = choice;
 	this.choice_cnt = choice_cnt;
@@ -239,6 +239,7 @@ function Question(text, choice,choice_cnt, answer,image,solution , content ){
 	this.image = image;
 	this.solution = solution;
 	this.content = content;
+	this.category = category;
 }
 
 // 퀴즈 정보 객체 생성
@@ -251,7 +252,7 @@ function Quiz(questions){
 // ---------------------------------------------------------------------
 var questions = [];
 <c:forEach var="item" items="${model.questionlist}">
-questions.push(new Question('${item.name}',[
+questions.push(new Question('${item.name}','${item.category}',[
 		 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
 		 '${choice}',
 		 </c:forEach>
@@ -373,5 +374,142 @@ function exam_result(){
 }
 
 update_quiz();
-
 </script>
+</c:if>
+
+<!-- 설문js -->
+<c:if test="${model.beforeData.category == '0' }">
+<script type="text/javascript">
+//퀴즈 객체 생성
+function Question(text, category ,choice,choice_cnt, answer,image,solution , content ){
+	this.text = text;
+	this.choice = choice;
+	this.choice_cnt = choice_cnt;
+	this.answer = answer;
+	this.image = image;
+	this.solution = solution;
+	this.content = content;
+	this.category = category;
+}
+
+// 퀴즈 정보 객체 생성
+function Quiz(questions){
+	this.score = 0;		// 점수
+	this.questions = questions;		// 질문[]
+	this.questionIndex = 0;		// 질문 순서
+}
+
+// ---------------------------------------------------------------------
+var questions = [];
+<c:forEach var="item" items="${model.questionlist}">
+questions.push(new Question('${item.name}','${item.category}',[
+		 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
+		 '${choice}',
+		 </c:forEach>
+		 ],
+		 '${fn:length(fn:split(item.Choices, "#"))}'
+		 ,
+		'${item.select_val}',
+		[
+			 <c:forEach var="choiceImage" items="${fn:split(item.ChoicesImage, '#')}">
+			 '${choiceImage}',
+			 </c:forEach>	
+		],
+		'${item.solution}',
+		'${item.content}'
+		));
+</c:forEach>
+
+
+// 퀴즈 생성
+var quiz = new Quiz(questions);
+
+function update_quiz(){
+	$("#quiz_btn").empty();
+	var html = '';
+	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
+		html += ' <div class="select_div" ><img style="width:100%; height:100%;" src="/resources/upload/select/image/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
+	}
+	$('#quiz_btn').append(html);
+	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
+		var question = document.getElementById('question');
+		var choice = document.getElementById('btn'+i);
+		var question_content = document.getElementById('q_content');
+		question.innerHTML = quiz.questions[quiz.questionIndex].text; 
+		question_content.innerHTML = quiz.questions[quiz.questionIndex].content;
+		choice.innerHTML = quiz.questions[quiz.questionIndex].choice[i];
+		answer('btn' + i, choice,i+1);
+	}
+	$('#quiz_solution').empty();
+	var solution = '<p>'+quiz.questions[quiz.questionIndex].solution+'</p>';
+	$('#quiz_solution').append(solution);
+	
+	progress();
+}
+
+// 판정
+function answer(id, choice,select_val){
+	choice.onclick = function(){
+		var answer = quiz.questions[quiz.questionIndex].answer; // 정답
+	console.log(id);
+		console.log(answer);		
+		
+		//선택한 거 select_list 담기
+		if($('[name=select_list]').val() == ''){
+			$('[name=select_list]').val(select_val);
+		}else{
+			$('[name=select_list]').val($('[name=select_list]').val()+','+select_val);
+		}
+
+		next_quiz()
+		
+		
+		
+		
+		
+/* 		if(quiz.questionIndex < quiz.questions.length-1){
+			quiz.questionIndex ++;
+			update_quiz();
+		} else { result(); }
+ */
+ 
+	} // end onclick
+} // end anwer()
+
+// 문제 진행 정보 표시(x of y)
+function progress(){
+	var progress = document.getElementById('progress');
+	progress.innerHTML = "문제 " + (quiz.questionIndex+1) + " / " + quiz.questions.length;
+}
+
+function result(){
+	var el = document.getElementById('quiz');
+	el.innerHTML =	'<button style="width:100%" type="button" class="btn btn-danger" onclick="exam_result()">설문 종료하기</button>';
+
+					
+	$('#Close_btn').hide();
+}
+
+function next_quiz(){
+	
+	$('#quiz_solution').hide();
+	$('#next_btn').hide();
+	
+	if(quiz.questionIndex < quiz.questions.length-1){
+		quiz.questionIndex ++;
+		update_quiz();
+	} else { result(); }
+	
+	
+	
+}
+
+function exam_result(){
+	
+	$('#exam_result').submit();
+	
+}
+
+update_quiz();
+</script>
+</c:if>

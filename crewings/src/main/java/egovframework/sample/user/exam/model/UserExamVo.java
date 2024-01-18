@@ -17,6 +17,7 @@ public class UserExamVo extends SearchVo {
 	String coment = "";
 	String create_tm = "";
 	String update_tm = "";
+	String category = "";
 	
 	public String getIdx() {
 		return idx;
@@ -95,6 +96,12 @@ public class UserExamVo extends SearchVo {
 	}
 	public void setEnd_tm(String end_tm) {
 		this.end_tm = end_tm;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 	

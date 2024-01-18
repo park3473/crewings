@@ -1,9 +1,4 @@
 //select box 3개
-const admin_select_val_0 = `<span class="list_t">선택지</span>
-    <select name="select_val" id="select_val">
-	<option value="O">O</option>
-	<option value="X">X</option>
-</select>`;
 
 const admin_select_val_1 = `<span class="list_t">선택지</span>
     <select name="select_val" id="select_val">

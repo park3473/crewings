@@ -14,9 +14,12 @@ public class UserMemberVo extends SearchVo {
 	String email_address = "";
 	String phone = "";
 	String address = "";
+	String address_local = "";
 	String address_detail = "";
 	String create_tm = "";
 	String update_tm = "";
+	String age = "";
+	String job = "";
 	int point = 0;
 	
 	public String getIdx() {
@@ -102,6 +105,24 @@ public class UserMemberVo extends SearchVo {
 	}
 	public void setPoint(int point) {
 		this.point = point;
+	}
+	public String getAddress_local() {
+		return address_local;
+	}
+	public void setAddress_local(String address_local) {
+		this.address_local = address_local;
+	}
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
+	public String getJob() {
+		return job;
+	}
+	public void setJob(String job) {
+		this.job = job;
 	}
 	
 	

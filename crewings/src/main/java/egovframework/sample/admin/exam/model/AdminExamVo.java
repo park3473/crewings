@@ -18,6 +18,7 @@ public class AdminExamVo extends SearchVo{
 	String end_tm = "";
 	String create_tm = "";
 	String update_tm = "";
+	String category = "";
 	
 	
 	public String getIdx() {
@@ -103,6 +104,12 @@ public class AdminExamVo extends SearchVo{
 	}
 	public void setImage_change_bool(String image_change_bool) {
 		this.image_change_bool = image_change_bool;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 	

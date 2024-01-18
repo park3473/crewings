@@ -44,7 +44,7 @@
 	
 	<insert id="setQuestionDataAjaxInsert" parameterType="AdminQuestionVo" useGeneratedKeys="true" keyProperty="idx">
 		INSERT INTO TBL_QUESTION( NAME , TYPE , CATEGORY ,  CONTENT , OBJECTIVES , SELECT_TYPE , SELECT_VAL , SOLUTION , CREATE_TM , UPDATE_TM)
-		VALUES(#{name} , #{type}  #{category} , #{content} , #{objectives} , #{select_type} , #{select_val} , #{solution} , now() , now())
+		VALUES(#{name} , #{type} , #{category} , #{content} , #{objectives} , #{select_type} , #{select_val} , #{solution} , now() , now())
 	</insert>
 	
 	<select id="getQuestionData" parameterType="AdminQuestionVo" resultType="AdminQuestionVo">
@@ -61,7 +61,7 @@
 			TYPE = #{type},
 		</if>
 		<if test="category != ''">
-			CATEGORY = #{category}
+			CATEGORY = #{category},
 		</if>
 		<if test="content != ''">
 			CONTENT = #{content},

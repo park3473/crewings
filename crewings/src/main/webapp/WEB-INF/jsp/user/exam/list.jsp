@@ -45,7 +45,7 @@
                             <div class="date"><span class="gray_10">응답기간 : </span>${fn:substring(item.start_tm,0,11) } ~ ${fn:substring(item.end_tm,0,11) }</div>
                             <c:choose>
                             	<c:when test="${now.after(item.start_tm) and now.before(item.end_tm)  }">
-                            		<a href="/user/exam/view.do?idx=${item.idx }"><div class="link">참여하기</div></a>
+                            		<a href="/user/exam/view.do?idx=${item.idx }&category=${item.category}"><div class="link">참여하기</div></a>
                             		<div class="ing pos_a">진행중 </div>
                             	</c:when>
                             	<c:otherwise>
