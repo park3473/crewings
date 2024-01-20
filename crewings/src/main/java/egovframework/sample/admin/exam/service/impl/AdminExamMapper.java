@@ -33,4 +33,6 @@ public interface AdminExamMapper {
 
 	public List<?> getExamCategoryList(AdminExamVo vo);
 
+	public List<?> getQuestionList(AdminExamVo adminExamVo);
+
 }

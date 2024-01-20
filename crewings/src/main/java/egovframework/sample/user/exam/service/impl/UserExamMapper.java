@@ -24,5 +24,7 @@ public interface UserExamMapper {
 
 	UserExamResultVo getExamResultView(UserExamResultVo userExamResultVo);
 
+	List<?> getExamResultMemberAll(UserExamResultVo userExamResultVo);
+
 	
 }

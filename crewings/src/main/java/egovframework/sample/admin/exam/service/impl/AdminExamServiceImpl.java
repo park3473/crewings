@@ -13,6 +13,8 @@ import com.system.util.PageVO;
 import egovframework.sample.admin.exam.model.AdminExamVo;
 import egovframework.sample.admin.exam.service.AdminExamService;
 import egovframework.sample.admin.question.model.AdminQuestionListVo;
+import egovframework.sample.user.exam.service.impl.UserExamMapper;
+import egovframework.sample.user.question.service.impl.UserQuestionMapper;
 
 @Service
 @Transactional
@@ -164,6 +166,17 @@ public class AdminExamServiceImpl implements AdminExamService {
 		
 		return model;
 		
+	}
+
+	@Override
+	public ModelMap getStatusData(AdminExamVo adminExamVo) {
+		
+		ModelMap model = new ModelMap();
+		
+		//List<?> question = adminExamMapper.getQuestionList(adminExamVo);
+		
+		
+		return model;
 	}
 	
 }

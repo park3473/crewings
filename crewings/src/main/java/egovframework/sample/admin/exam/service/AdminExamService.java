@@ -19,5 +19,7 @@ public interface AdminExamService {
 
 	public ModelMap getExamCategoryAllList();
 
+	public ModelMap getStatusData(AdminExamVo adminExamVo);
+
 
 }

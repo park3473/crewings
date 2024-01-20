@@ -75,11 +75,24 @@
 	</insert>
 	
 	<select id="getResultListView" parameterType="UserExamResultVo" resultType="hashMap">
-		SELECT R.* , E.point , E.l_category , E.m_category , E.name  FROM TBL_EXAM_RESULT R JOIN TBL_EXAM E ON R.exam_idx = E.idx WHERE R.member_id = #{member_id}
+		SELECT R.* , E.point , E.l_category , E.m_category , E.name , E.category  FROM TBL_EXAM_RESULT R JOIN TBL_EXAM E ON R.exam_idx = E.idx WHERE R.member_id = #{member_id}
 	</select>
 	
-	<select id="getExamResultView" parameterType="UserExamResultVo" resultType="UserExamResultVo">
+	<select id="getExamResultView"  parameterType="UserExamResultVo" resultType="UserExamResultVo">
 		SELECT * FROM TBL_EXAM_RESULT WHERE member_id = #{member_id} and idx = #{idx}
+	</select>
+
+	<select id="getExamResultMemberAll"  parameterType="UserExamResultVo" resultType="hashMap">
+	SELECT 
+    er.* , m.address_local , m.age , m.job , m.sex
+	FROM 
+	    TBL_EXAM_RESULT er
+	JOIN 
+	    TBL_EXAM e ON er.exam_idx = e.idx
+	JOIN 
+	    TBL_MEMBER m ON er.member_id = m.member_id
+	WHERE 
+	    e.idx = #{exam_idx}
 	</select>
 
 

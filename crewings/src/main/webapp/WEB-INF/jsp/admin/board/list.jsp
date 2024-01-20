@@ -61,6 +61,9 @@
                                          <c:if test="${item.type == '1'}">
                                          	<td>썸네일</td>
                                          </c:if>
+                                         <c:if test="${item.type == '3'}">
+                                         	<td>FAQ</td>
+                                         </c:if>
                                         <td>${item.file}</td>
                                         <td>/user/board_data/list.do?idx=${item.idx }</td>
                                         <td>

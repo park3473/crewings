@@ -125,6 +125,19 @@ public class AdminExamController {
 		SUtil.AlertAndPageMove(response, "해당 자가진단이 삭제 되었습니다.", "/admin/exam/list.do");
 	}
 	
+	@RequestMapping(value="/admin/exam/status.do" , method = RequestMethod.GET)
+	public ModelAndView AdminExamStatusData(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response){
+		
+		ModelMap model = new ModelMap();
+	
+		model = adminExamService.getStatusData(AdminExamVo);
+		
+		model.put("before", AdminExamVo);
+		
+		return new ModelAndView( "admin/exam/status" , "model" , model);
+		
+	}
+	
 	
 	//QUESTION_LIST 부분
 	@RequestMapping(value="/admin/exam/question_list.do" , method = RequestMethod.GET)
@@ -160,5 +173,7 @@ public class AdminExamController {
 		adminExamService.setAdminExamQuestionList(AdminQuestionListVo , "delete");
 		
 	}
+	
+	
 	
 }

@@ -7,6 +7,7 @@ const admin_select_val_1 = `<span class="list_t">선택지</span>
  <option value="3">3</option>
  <option value="4">4</option>
  <option value="5">5</option>
+ <option value="6">6</option>
 </select>`;
 
 const admin_select_type_1 = `<div id="select_type_cnt_box"><br><span class="list_t">갯수</span>
@@ -16,6 +17,7 @@ const admin_select_type_1 = `<div id="select_type_cnt_box"><br><span class="list
 	<option value="3">3</option>
 	<option value="4">4</option>
 	<option value="5">5</option>
+	<option value="6">6</option>
 </select></div>`;
 
 

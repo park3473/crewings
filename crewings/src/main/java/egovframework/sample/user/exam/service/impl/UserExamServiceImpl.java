@@ -117,6 +117,10 @@ public class UserExamServiceImpl implements UserExamService {
 		//해당 결과 가져오기
 		view = userExamMapper.getExamResultView(userExamResultVo);
 		
+		List<?> member_questions = userExamMapper.getExamResultMemberAll(userExamResultVo);
+		
+		model.put("member_questions", member_questions);
+		
 		model.put("view", view);
 		
 		return model;

@@ -16,11 +16,19 @@
 <%@ include file="../../include/user/top.jsp" %>
 <!--공통 헤더 끝-->
 
-<c:if test="${model.beforeDomain.board_idx == '1' }">
+<c:if test="${model.beforeDomain.board_idx == '1' || model.beforeDomain.board_idx == '4' || model.beforeDomain.board_idx == '5'}">
 
 <!-- 타이틀 -->
 <div class="tit_wrap">
+  <c:if test="${model.beforeDomain.board_idx == '1'}">
 	<div class="b_txt_tit font_noto f_wet_01"><span class="f_wet_05">공지</span>사항</div>
+  </c:if>
+  <c:if test="${model.beforeDomain.board_idx == '4'}">
+	<div class="b_txt_tit font_noto f_wet_01"><span class="f_wet_05">광고</span>문의</div>
+  </c:if>
+  <c:if test="${model.beforeDomain.board_idx == '5'}">
+	<div class="b_txt_tit font_noto f_wet_01"><span class="f_wet_05">의뢰</span>하기</div>
+  </c:if>
 <div class="s_txt_tit">창의와날개 패널에서 다양한 소식을 알려드립니다.</div>
 </div>
 <!-- 타이틀 긑 -->

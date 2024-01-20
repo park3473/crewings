@@ -156,20 +156,20 @@
         <div class="col-sm-6">
         <div class="cnpnel font_noto f_wet_03">
             <div class="flexbox align_c gray_10">
-                <div class="item box_01 pointer" onclick="location.href='./'">
+                <div class="item box_01 pointer" onclick="location.href='/view/subpage/view.do?idx=1'">
                     <i class="las la-bullhorn"></i>
                     <div class="txt font_noto">패널이란</div>
                     창날패널이 무었인가요?
                 </div>
-                <div class="item box_01 pointer" onclick="location.href='./'">
+                <div class="item box_01 pointer" onclick="location.href='/view/subpage/view.do?idx=2'">
                     <i class="las la-thumbs-up"></i>
                     <div class="txt font_noto">포인트 사용방법</div>
                     포인트 사용방법 안내
                 </div>
-                <div class="item box_01 pointer" onclick="location.href='./'">
+                <div class="item box_01 pointer" onclick="location.href='/user/product/list.do'">
                     <i class="las la-gift"></i>
-                    <div class="txt font_noto">이벤트</div>
-                    다양한 이벤트 혜택 안내
+                    <div class="txt font_noto">사은품안내</div>
+                    다양한 사은품 혜택 안내
                 </div>
             </div>
         </div>
@@ -239,14 +239,14 @@ $('.counter').each(function() {
         <div class="sul_box_01">
 			<div class="tit font_noto f_wet_01">설문조사 <span class="f_wet_05 bora_01">의뢰하기</span></div>
 			<div class="sul">설문조사나 패널과 관련한 문의가 궁금하신가요?</div>
-			<div class="btn">문의하러 <span class="bora_01">바로가기</span></div>
+			<div class="btn" onclick="location.href='/user/board_data/list.do?board_idx=5'">문의하러 <span class="bora_01">바로가기</span></div>
         </div>
     </div>
 	<div class="col-sm-6 right">
         <div class="sul_box_02">
 			<div class="tit font_noto f_wet_01">나랑 친구랑  <span class="f_wet_05 orange_01">포인트 팡팡</span></div>
 			<div class="sul">많은 친구들을 모으면 모을수록 포인트가 쌓입니다.</div>
-			<div class="btn"><a href=""><img src="${pageContext.request.contextPath}/resources/img/link_btn.png" alt=""></a></div>
+			<div class="btn" onclick="location.href='/view/subpage/view.do?idx=2'"><img src="${pageContext.request.contextPath}/resources/img/link_btn.png" alt=""></div>
         </div>
     </div>
 </div>

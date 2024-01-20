@@ -25,14 +25,10 @@
 		<span class="" class="bg_01"><a href="">HOME</a></span>
         <span class="float_r">
         	<c:if test="${sessionScope.Login != 'OkOk' }">
-        	<a href="/view/login.do" class="bg_01">로그인</a>
-        	<a href="/view/agree.do">회원가입</a>
+        	<a href="/view/login.do" class="bg_01">로그인</a><a href="/view/agree.do">회원가입</a>
         	</c:if>
         	<c:if test="${sessionScope.Login == 'OkOk' }">
-        	<a href="/view/loginout.do" class="bg_01">로그아웃</a>
-        	<c:if test="${sessionScope.UserLevel == '73' }">
-        	<a href="/admin/index.do">관리자</a>
-        	</c:if>
+        	<a href="/view/logout.do" class="bg_01">로그아웃</a><c:if test="${sessionScope.UserLevel == '73' }"><a href="/admin/index.do">관리자</a></c:if>
         	</c:if>
         </span>
 		</li>
@@ -97,7 +93,7 @@
                     <a href="#"><span>CN패널</span></a>
                     <ul class="depth2">
                         <li><a href="/view/subpage/view.do?idx=1"><span>패널소개</span></a></li>
-                        <li><a href="${pageContext.request.contextPath}/view/subpage/view.do?idx=2"><span>포인튼사용방법</span></a></li>
+                        <li><a href="${pageContext.request.contextPath}/view/subpage/view.do?idx=2"><span>포인트사용방법</span></a></li>
                     </ul>
                     </li>
                     <li>
@@ -118,14 +114,13 @@
                         <li><a href="/user/board_data/list.do?board_idx=1"><span>공지사항</span></a></li>
                         <li><a href="/user/board_data/list.do?board_idx=3"><span>FAQ</span></a></li>
                         <li><a href="/user/board_data/list.do?board_idx=4"><span>광고문의</span></a></li>
-                        <li><a href="/user/board_data/list.do?board_idx=5"><span>견적문의</span></a></li>
+                        <li><a href="/user/board_data/list.do?board_idx=5"><span>의뢰하기</span></a></li>
                     </ul>
                     </li>
                     <li>
                     <a href="#"><span>마이CN패널</span></a>
                     <ul class="depth2">
                         <li><a href="/user/mypage/view.do"><span>포인트조회</span></a></li>
-                        <li><a href=""><span>나의설문내역</span></a></li>
                     </ul>
                     </li>
 

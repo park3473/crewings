@@ -64,7 +64,7 @@ border:1px #dedede solid !important;
 .cnpnel .flexbox_02{display:flex;flex-wrap:wrap;gap:5em}
 
 .cnpnel .item{flex-basis:150px;flex-grow:1}
-.cnpnel .item_02{flex-basis:350px;flex-grow:1}
+.cnpnel .item_02{flex-basis:378.5px;flex-grow:0}
 .cnpnel .item_03{flex-basis:500px;flex-grow:1}
 
 .cnpnel .box_01{background:rgba(255,255,255,.8);border-radius:5px;border:1px #dedede solid;color:#c7c7c7;padding:20px; flex-basis: 150px;}
@@ -243,7 +243,11 @@ border:1px #dedede solid !important;
 .cnpnel .start_wrap {border: 1px #dedede solid;padding: 30px;margin-bottom: 1rem;}
 .cnpnel .box_05 {background: rgba(0,0,0,.03);border: 1px #dedede solid;padding: 30px;}
 .cnpnel .flexbox_02 {display: flex;flex-wrap: wrap;gap: 1em;}
+
+.cnpnel .item_02{flex-basis:378.5px;flex-grow:1}
 }
+
+
 
 /* 게시판 반응형 */
 @media screen and (max-width:992px) {

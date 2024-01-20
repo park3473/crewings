@@ -34,13 +34,13 @@ body{
 	color: #5a6772;
 }
 #buttons{ margin-top: 30px; }
-#btn0, #btn1, #btn2, #btn3{
+#btn0, #btn1, #btn2, #btn3, #btn4, #btn5, #btn6{
 	background-color: #778897; color: #fff;
 	width: 100%;
 	font-size: 16px;
 	border: 1px solid #1d3c6a;
 	border-radius: 30px;
-	margin: 10px 40px 10px 0px;
+	margin: 30px 40px 10px 0px;
 	padding: 10px;
 }
 #progress{
@@ -48,11 +48,11 @@ body{
 	font-size: 20px;
 }
 
-#btn0:hover, #btn1:hover, #btn2:hover, #btn3:hover{
+#btn0:hover, #btn1:hover, #btn2:hover, #btn3:hover,#btn4:hover,#btn5:hover,#btn6:hover{
 	cursor: pointer;
 	background-color: #57636e;
 }
-#btn0:focus, #btn1:focus, #btn2:focus, #btn3:focus{
+#btn0:focus, #btn1:focus, #btn2:focus, #btn3:focus, #btn4:focus, #btn5:focus, #btn6:focus{
 	outline: 0;
 }
 
@@ -62,13 +62,25 @@ body{
 	display:flex;
 	flex-wrap:wrap;
 	text-align : center;
+	gap: 2em;
 }
+
+
 
 .select_div{
-
-	flex : 0 0 50%;
-
+    display: flex;
+    flex-direction: column;
+	flex-basis:150px;
+	flex-grow:1;
 }
+
+.select_div img {
+    border-radius: 10px;
+	flex-grow: 1;
+}
+
+.max_img img{border-radius:10px}
+
 
 </style>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
@@ -96,10 +108,10 @@ body{
                 <ul>
                     <li>
                         <div class="font_noto cont"><span class="f_wet_05">고유번호 : </span>${model.view.idx }</div>
-                        <div class="font_noto cont"><span class="f_wet_05">응답기간 : </span>${fn:substring(model.view.start_tm,0,11) } ~ ${fn:substring(model.view.end_tm,0,11) }</div>
+                        <div class="font_noto cont"><span class="f_wet_05">응답기간 : </span><span class="t_spa_00">${fn:substring(model.view.start_tm,0,11) } ~ ${fn:substring(model.view.end_tm,0,11) }</span></div>
                     </li>
                     <li>
-                        <div class="font_noto cont"><span class="f_wet_05">응답사례 : </span>${model.view.point } 포인트 리워드</div>
+                        <div class="font_noto cont"><span class="f_wet_05">응답사례 : </span><span style="color:#ff0000;font-size:24px;font-weight:700">${model.view.point }</span> 포인트 리워드</div>
                         <div class="font_noto cont"><span class="f_wet_05">설문소개 : </span>${model.view.coment }</div>
                     </li>
                     <li>
@@ -164,12 +176,12 @@ body{
 <!-- 설문 모달 -->
 <div class="cnpnel">
     <div class="modal" id="myModal">
-        <div class="modal-dialog" style="max-width: 900px; !important">
-            <div class="modal-content">
+        <div class="modal-dialog" style="max-width: 900px; !important;">
+            <div class="modal-content" style="min-height: 300px !important;">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Quiz</h4>
+                    <h4 class="modal-title txt_30 font_noto">Quiz</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -187,13 +199,13 @@ body{
 				-->
 				<div class="grid">
 					<div id="quiz">
-						<hr style="margin-top:20px">
+						<div style="margin-top:20px"></div>
 			
-						<p id="question"></p>
-						<div id="q_content" style="text-align:center">
+						<p id="question" class="font_noto txt_20"></p>
+						<div id="q_content" class="max_img" style="text-align:center;padding:30px 0">
 						
 						</div>
-						<div class="button" id="quiz_btn">
+						<div class="button d-flex" id="quiz_btn">
 						</div>
 						<hr style="margin-top:100px">
 						<div id="quiz_solution" style="display:none;">
@@ -251,6 +263,7 @@ function Quiz(questions){
 
 // ---------------------------------------------------------------------
 var questions = [];
+
 <c:forEach var="item" items="${model.questionlist}">
 questions.push(new Question('${item.name}','${item.category}',[
 		 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
@@ -278,7 +291,12 @@ function update_quiz(){
 	$("#quiz_btn").empty();
 	var html = '';
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
-		html += ' <div class="select_div" ><img style="width:100%; height:100%;" src="/resources/upload/select/image/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
+		
+		if(quiz.questions[quiz.questionIndex].image[i] == '' || quiz.questions[quiz.questionIndex].image[i] == null){
+			html += ' <div class="select_div" ><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
+		}else{
+			html += ' <div class="select_div max_img" ><img src="/resources/upload/select/image/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
+		}
 	}
 	$('#quiz_btn').append(html);
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
@@ -344,10 +362,10 @@ function progress(){
 function result(){
 	var el = document.getElementById('quiz');
 	var per = parseInt((quiz.score*100) / quiz.questions.length);
-	el.innerHTML =	'<h1>결과</h1>' +
+	el.innerHTML =	'<h1 style="font-size:24px;padding:10px 0;margin-top:50px">결과</h1>' +
 					'<h2 id="score"> 당신의 점수: ' + quiz.score + '/' +  
-					quiz.questions.length + '<br><br>' + per + '점</h2>' +
-					'<button style="width:100%" type="button" class="btn btn-danger" onclick="exam_result()">진단 종료하기</button>';
+					quiz.questions.length + '<br><br><span style="color:#dc3545;font-size:30px;font-weight:700">' + per + '</span>점</h2>' +
+					'<button style="width:100%;padding:10px 0;margin-top:15px" type="button" class="btn btn-danger" onclick="exam_result()">진단 종료하기</button>';
 
 					
 	$('#Close_btn').hide();
@@ -369,6 +387,7 @@ function next_quiz(){
 
 function exam_result(){
 	
+	alert('참여해주셔서 감사합니다.\n결과는 마이CN패널 에서 확인가능합니다.');
 	$('#exam_result').submit();
 	
 }
@@ -396,11 +415,13 @@ function Question(text, category ,choice,choice_cnt, answer,image,solution , con
 function Quiz(questions){
 	this.score = 0;		// 점수
 	this.questions = questions;		// 질문[]
-	this.questionIndex = 0;		// 질문 순서
+	this.questionIndex = 0;		// 질문 순서 dddd
 }
 
 // ---------------------------------------------------------------------
 var questions = [];
+
+
 <c:forEach var="item" items="${model.questionlist}">
 questions.push(new Question('${item.name}','${item.category}',[
 		 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
@@ -428,7 +449,11 @@ function update_quiz(){
 	$("#quiz_btn").empty();
 	var html = '';
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
-		html += ' <div class="select_div" ><img style="width:100%; height:100%;" src="/resources/upload/select/image/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
+		if(quiz.questions[quiz.questionIndex].image[i] == '' || quiz.questions[quiz.questionIndex].image[i] == null){
+			html += ' <div class="select_div" ><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
+		}else{
+			html += ' <div class="select_div max_img" ><img src="/resources/upload/select/image/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
+		}
 	}
 	$('#quiz_btn').append(html);
 	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
@@ -484,7 +509,7 @@ function progress(){
 
 function result(){
 	var el = document.getElementById('quiz');
-	el.innerHTML =	'<button style="width:100%" type="button" class="btn btn-danger" onclick="exam_result()">설문 종료하기</button>';
+	el.innerHTML =	'<button style="margin-top: 50px; width:100%;padding:15px" type="button" class="btn btn-danger" onclick="exam_result()">설문 종료하기</button>';
 
 					
 	$('#Close_btn').hide();
@@ -506,6 +531,7 @@ function next_quiz(){
 
 function exam_result(){
 	
+	alert('참여해주셔서 감사합니다.\n결과는 마이CN패널 에서 확인가능합니다.');
 	$('#exam_result').submit();
 	
 }

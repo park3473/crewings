@@ -18,6 +18,11 @@
 <%@ include file="../../include/user/top.jsp" %>
 <!--공통 헤더 끝-->
 
+<style>
+    .detail_btn button {background: #319ec2;color: #fff;padding: 5px 10px;display: inline-block;border-radius: 0.25rem;margin-left: 5px;}
+    .table td, .table th {vertical-align: middle;}
+</style>
+
 <div class="pad_35"></div>
 
 <!-- 타이틀 -->
@@ -33,8 +38,8 @@
         <div class="col-sm-4">
             <div class="font_noto cont_01">
                 <div class="tit">창날패널 포인트</div>
-                <div class="total">${model.view.point }</div>
-                <a href="/user/product/list.do"><span class="btn_01">사은품 바꾸기</span></a><span class="btn_02 pointer" data-toggle="modal" data-target="#myModal_02">현금 바꾸기</span>
+                <div class="total" style="font-size:50px;font-weight:700;color:#b42424">${model.view.point } P</div>
+                <div class="t_pad_15"><a href="/user/product/list.do"><span class="btn_01">사은품 바꾸기</span></a><span class="btn_02 pointer" data-toggle="modal" data-target="#myModal_02">현금 바꾸기</span></div>
             </div>
         </div>
         <div class="col-sm-8">
@@ -66,7 +71,7 @@
         <td>${item.l_category }</td>
         <td>${item.name }</td>
         <td class="point">${item.point }</td>
-        <td class="detail"><button type="button"  onclick="location.href='/user/exam/result/view.do?idx=${item.idx}&exam_idx=${item.exam_idx }&member_id=${item.member_id }'">상세보기</button></td>
+        <td class="detail detail_btn"><button type="button"  onclick="location.href='/user/exam/result/view.do?idx=${item.idx}&exam_idx=${item.exam_idx }&member_id=${item.member_id }&category=${item.category }'">상세보기</button></td>
     </tr>
     </c:forEach>
     </tbody>

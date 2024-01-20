@@ -97,6 +97,8 @@ public class UserExamContorller {
 		
 		model = userExamService.getResultDataView(UserExamResultVo);
 		
+		model.put("before", UserExamResultVo);
+		
 		return new ModelAndView("user/mypage/result" , "model" , model);
 		
 	}

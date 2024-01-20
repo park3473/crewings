@@ -35,17 +35,26 @@ console.log(select);
   }
   .chart {
     width: 100%;
-    height: 300px;
+    height: 500px;
     background-color: #fff;
     border: 1px solid #ccc;
     text-align: center;
-    line-height: 300px;
+    line-height: 500px;
     color: #888;
+	padding:50px
   }
+
+  h2{font-size:24px;font-family: 'Noto Sans KR',sans-serif;letter-spacing: -1px;padding:0 0 5px 0}
+
+table th{font-weight:bold !important}
 
 </style>
 
 <div class="pad_35"></div>
+
+<!-- 문제 결과 부분 -->
+
+<c:if test="${model.before.category == '1' }">
 
 <!-- 타이틀 -->
 <div class="tit_wrap">
@@ -85,8 +94,10 @@ console.log(select);
     <table class="table table-bordered">
     <thead>
     <tr>
-        <th>번호</th>
+       <th>번호</th>
+        <th>문제 제목</th>
         <th>정오</th>
+        <th>선택한 답안</th>
         <th>학습 목표</th>
     </tr>
     </thead>
@@ -94,7 +105,8 @@ console.log(select);
     <c:forEach items="${model.question }"  var="item"  varStatus="status">
     <tr>
         <td>${status.index + 1 }</td>
-        <td id="correct_${status.index + 1}">
+        <td id="question_name_${status.index + 1}" style="text-align:left">${item.name }</td>
+        <td id="correct_${status.index + 1}" style="text-align:center">
         	<script type="text/javascript">
         		var select_val = '${item.select_val}';
         		var select_correct = select[${status.index}];
@@ -107,22 +119,12 @@ console.log(select);
         		}
         	</script>
         </td>
-        <td>${item.objectives }</td>
+        <td id="question_select_${status.index + 1}" style="text-align:left"></td>
+        <td style="text-align:left">${item.objectives }</td>
     </tr>
     </c:forEach>
     </tbody>
     </table>
-    <!-- 페이징 -->
-    <div class="pos_r paging">
-        <ul class="pagination pos_a">
-            <li class="page-item"><a class="page-link" href="#"><i class="las la-angle-left"></i></a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#"><i class="las la-angle-right"></i></a></li>
-        </ul>
-    </div>
-    <!-- 페이징 끝 -->
 </div>
 <!-- 포인트리스트 끝 -->
 
@@ -131,7 +133,7 @@ console.log(select);
 <%@ include file="../../include/user/footer.jsp" %>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
-function Question(idx , name , type , content , objectives , select_type , select_val , solution , right , wrong , correct){
+function Question(idx , name , type , content , objectives , select_type , select_val , solution , right , wrong , correct , choice){
 	
 	this.idx = idx;
 	this.name = name;
@@ -143,7 +145,8 @@ function Question(idx , name , type , content , objectives , select_type , selec
 	this.solution = solution = solution;
 	this.right = right;
 	this.wrong = wrong;
-	this.correct = correct
+	this.correct = correct;
+	this.choice = choice;
 	
 }
 
@@ -162,7 +165,12 @@ questions.push(new Question(
 		'${item.solution}',
 		'${item.right}',
 		'${item.wrong}',
-		'O'
+		'O',
+		[
+			 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
+			 '${choice}',
+			 </c:forEach>
+			 ]
 		));
 }else{
 	questions.push(new Question(
@@ -176,7 +184,12 @@ questions.push(new Question(
 			'${item.solution}',
 			'${item.right}',
 			'${item.wrong}',
-			'X'
+			'X',
+			[
+				 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
+				 '${choice}',
+				 </c:forEach>
+				 ]
 			));	
 }
 </c:forEach>
@@ -201,11 +214,41 @@ for (let type in questionsType) {
 
 console.log(correctQuestions);
 
+var totalQuestionsPerType = {};
+var scoresPerType = {};
+
+// 각 주제별 총 문제 수 계산
+for (let type in questionsType) {
+    totalQuestionsPerType[type] = questionsType[type].length;
+}
+
+// 각 주제별 점수 계산
+for (let type in correctQuestions) {
+    let correctCount = correctQuestions[type].length;
+    let totalQuestions = totalQuestionsPerType[type];
+    let score = (correctCount / totalQuestions) * 100;
+    scoresPerType[type] = score;
+}
+
+console.log(scoresPerType);
+
+var scores = [];
+
+//모든 주제를 반복하면서 각 주제별 점수를 계산
+for (let type in questionsType) {
+ let totalQuestions = questionsType[type].length;
+ let correctQuestions = questionsType[type].filter(question => question.correct === "O").length;
+ let score = (correctQuestions / totalQuestions) * 100;
+ scores.push(score);
+}
+
+console.log(scores);
+
 var data = {
 		  labels: Object.keys(questionsType),
 		  datasets: [{
 		    label: '정답률',
-		    data: [100  , 50 , 50, 100 , 60 , 0 ],
+		    data: scores,
 		    fill: true,
 		    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 		    borderColor: 'rgb(255, 99, 132)',
@@ -242,7 +285,7 @@ var data2 = {
 		  labels: Object.keys(questionsType),
 		  datasets: [{
 		    label: '정답률',
-		    data: [100  , 50 , 50, 100 , 60 , 0 ],
+		    data: scores,
 		    backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -281,5 +324,321 @@ options: options
 });
 
 
+$( document ).ready(function() {
+    
+	for(var i = 0; i < questions.length; i ++){
+		
+		$('#question_select_'+(i+1)).append(questions[i].choice[parseInt(select[i])-1]);
+		
+		
+	}
+	
+});
 
 </script>
+
+</c:if>
+
+<!-- 설문 결과 부분 -->
+
+<c:if test="${model.before.category == '0' }">
+
+<!-- 타이틀 -->
+<div class="tit_wrap">
+	<div class="b_txt_tit font_noto f_wet_01"><span class="f_wet_05">결과</span>상세보기</div>
+<div class="s_txt_tit">설문조사 참여를 통해 적립할 수 있는 창날패널만의 혜택을 누려보세요.</div>
+</div>
+<!-- 타이틀 긑 -->
+
+<!-- 포인트 -->
+<div class="container cnpnel">
+    <div class="point_wrap">
+        <div class="section">
+		    <h2>검사자 정보</h2>
+		    <p><strong>검사자명 : </strong> ${model.view.name }</p>
+		    <p><strong>검사일 : </strong> ${fn:substring(model.view.complete_tm,0,11) }</p>
+		  </div>
+		
+		  <div class="section">
+		    <h2>영역별 인식도 (연령대)</h2>
+		    <div class="chart" >
+		    	<canvas id="pieChartAge"  width="400" height="400" ></canvas>
+		    </div>
+		  </div>
+		
+		  <div class="section">
+		    <h2>영역별 분포도 (지역)</h2>
+		    <div class="chart">
+		    	<canvas id="pieChartAddressLocal"  width="400" height="400" ></canvas>
+		    </div>
+		  </div>
+		  
+		  <div class="section">
+		    <h2>영역별 인식도 (직업)</h2>
+		    <div class="chart" >
+		    	<canvas id="pieChartJob"  width="400" height="400" ></canvas>
+		    </div>
+		  </div>
+		  
+		  <div class="section">
+		    <h2>영역별 인식도 (성별)</h2>
+		    <div class="chart" >
+		    	<canvas id="pieChartSex"  width="400" height="400" ></canvas>
+		    </div>
+		  </div>
+		  
+    </div>
+</div>
+<!-- 포인트 끝 -->
+
+<!-- 포인트리스트 -->
+<div class="container cnpnel">
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>설문 제목</th>
+        <th>선택 항목</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${model.question }"  var="item"  varStatus="status">
+    <tr>
+        <td>${status.index + 1 }</td>
+        <td style="text-align:left">${item.name }</td>
+        <td id="question_select_${status.index + 1}"></td>
+    </tr>
+    </c:forEach>
+    </tbody>
+    </table>
+</div>
+<!-- 포인트리스트 끝 -->
+
+
+<!--공통하단-->
+<%@ include file="../../include/user/footer.jsp" %>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+
+function Question(idx , name , type , content , objectives , select_type , select_val , solution , right , wrong , correct , choice){
+	
+	this.idx = idx;
+	this.name = name;
+	this.type = type;
+	this.content = content;
+	this.objectives = objectives;
+	this.select_type = select_type;
+	this.select_val = select_val;
+	this.solution = solution = solution;
+	this.right = right;
+	this.wrong = wrong;
+	this.correct = correct;
+	this.choice = choice;
+	
+}
+
+//=====================================================================================================
+var questions = [];
+<c:forEach var="item" items="${model.question}" varStatus="status" >
+if('${item.select_val}' == select[${status.index}]){
+questions.push(new Question(
+		'${item.idx}',
+		'${item.name}',
+		'${item.type}',
+		'${item.content}',
+		'${item.objectives}',
+		'${item.select_type}',
+		'${item.select_val}',
+		'${item.solution}',
+		'${item.right}',
+		'${item.wrong}',
+		'O',
+		[
+			 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
+			 '${choice}',
+			 </c:forEach>
+			 ]
+		));
+}else{
+	questions.push(new Question(
+			'${item.idx}',
+			'${item.name}',
+			'${item.type}',
+			'${item.content}',
+			'${item.objectives}',
+			'${item.select_type}',
+			'${item.select_val}',
+			'${item.solution}',
+			'${item.right}',
+			'${item.wrong}',
+			'X',
+			[
+				 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
+				 '${choice}',
+				 </c:forEach>
+				 ]
+			));	
+}
+</c:forEach>
+//=====================================================================================================
+
+function Result(idx , exam_idx , member_id , name , select_list , complete , address_local , age , job , sex){
+	
+	this.idx = idx;
+	this.exam_idx = exam_idx;
+	this.member_id = member_id;
+	this.name = name;
+	this.select_list = select_list;
+	this.complete = complete;
+	this.address_local = address_local;
+	this.age = age;
+	this.job = job;
+	this.sex = sex;
+	
+}
+
+//=====================================================================================================
+var results = [];
+<c:forEach var="item" items="${model.member_questions}" varStatus="status" >
+results.push(new Result(
+			'${item.idx}',
+			'${item.exam_idx}',
+			'${item.member_id}',
+			'${item.name}',
+			'${item.select_list}',
+			'${item.complete}',
+			'${item.address_local}',
+			parseInt('${item.age}'),
+			'${item.job}',
+			parseInt('${item.sex}')
+));
+</c:forEach>
+//=====================================================================================================
+	
+// 집계 함수
+function aggregateData(results, field) {
+    return results.reduce(function (acc, result) {
+        var key = result[field];
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+    }, {});
+}
+
+//연령대 매핑 함수 수정
+function mapAge(age) {
+    var startAge = age * 10;
+    var endAge = (age + 1) * 10 - 1;
+    return startAge + "~" + endAge + "세";
+}
+
+
+// 성별 매핑
+function mapSex(sex) {
+    return sex === 0 ? '여성' : '남성';
+}
+
+//변환된 데이터로 집계
+function transformAndAggregateData(results, field, mapFunction) {
+    var transformedResults = results.map(result => {
+        var transformedResult = { ...result };
+        console.log("Before transformation:", result[field]); // 변환 전 값 확인
+        transformedResult[field] = mapFunction(result[field]);
+        console.log("After transformation:", transformedResult[field]); // 변환 후 값 확인
+        return transformedResult;
+    });
+
+    return aggregateData(transformedResults, field);
+}
+
+//각 필드별로 데이터 집계
+var addressLocalData = aggregateData(results, 'address_local');
+var jobData = aggregateData(results, 'job');
+var aggregatedSexData = transformAndAggregateData(results, 'sex', mapSex);
+var aggregatedAgeData = transformAndAggregateData(results, 'age', mapAge);
+
+
+
+//Chart.js 차트 데이터 생성 (원형 그래프 형식)
+function createPieChartData(aggregateData) {
+    var labels = Object.keys(aggregateData);
+    var data = Object.values(aggregateData);
+
+    return {
+        labels: labels,
+        datasets: [{
+            label: '참여율',
+            data: data,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+}
+
+// 각 차트 데이터 생성
+var pieDataAddressLocal = createPieChartData(addressLocalData);
+var pieDataJob = createPieChartData(jobData);
+var pieDataSex = createPieChartData(aggregatedSexData);
+var pieDataAge = createPieChartData(aggregatedAgeData);
+
+console.log(pieDataAddressLocal);
+console.log(pieDataJob);
+console.log(pieDataSex);
+console.log(pieDataAge);
+
+// 차트 생성 함수
+function createPieChart(canvasId, data) {
+    var ctx = document.getElementById(canvasId).getContext('2d');
+    return new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: false,
+                    text: canvasId
+                }
+            }
+        },
+    });
+}
+
+// 각 차트 생성 (canvasId를 적절히 수정해야 함)
+createPieChart('pieChartAddressLocal', pieDataAddressLocal);
+createPieChart('pieChartJob', pieDataJob);
+createPieChart('pieChartAge', pieDataAge);
+createPieChart('pieChartSex', pieDataSex);
+
+$( document ).ready(function() {
+    
+	for(var i = 0; i < questions.length; i ++){
+		
+		$('#question_select_'+(i+1)).append(questions[i].choice[parseInt(select[i])-1]);
+		
+		
+	}
+	
+});
+
+
+</script>
+
+</c:if>
