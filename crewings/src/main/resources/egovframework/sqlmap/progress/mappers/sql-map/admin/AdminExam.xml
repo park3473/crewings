@@ -34,8 +34,8 @@
 	</select>
 	
 	<insert id="setAdminExamDataInsert" parameterType="AdminExamVo">
-		INSERT INTO TBL_EXAM (NAME , L_CATEGORY , M_CATEGORY , TYPE , POINT , CONTENT , IMAGE , COMENT ,  CREATE_TM , UPDATE_TM)
-		VALUES(#{name} , #{l_category} , #{m_category} , 0 , #{point} , #{content} , #{image} , #{coment} , now() , now())
+		INSERT INTO TBL_EXAM (NAME , CATEGORY , L_CATEGORY , M_CATEGORY , TYPE , POINT , CONTENT , GREET ,  IMAGE , COMENT ,  CREATE_TM , UPDATE_TM)
+		VALUES(#{name} , #{category} , #{l_category} , #{m_category} , 0 , #{point} , #{content} , #{greet} , #{image} , #{coment} , now() , now())
 	</insert>
 	
 	<update id="setAdminExamDataUpdate" parameterType="AdminExamVo">
@@ -52,6 +52,9 @@
 		<if test="type != ''">
 		TYPE = #{type},
 		</if>
+		<if test="greet != ''">
+		GREET = #{greet},
+		</if>
 		<if test="content != ''">
 		CONTENT = #{content},
 		</if>
@@ -62,10 +65,10 @@
 			COMENT = #{coment},
 		</if>
 		<if test="start_tm != ''">
-		START_TM = #{start_tm}
+		START_TM = #{start_tm},
 		</if>
 		<if test="end_tm != ''">
-		END_TM = #{end_tm}
+		END_TM = #{end_tm},
 		</if>
 		UPDATE_TM = now()
 		
@@ -117,6 +120,30 @@
 		DELETE FROM TBL_QUESTION_LIST
 		WHERE IDX = #{idx}
 	</delete>
+	
+	<select id="getStatusQuestionList" parameterType="AdminExamVo" resultType="hashMap">
+		SELECT Q.*, COUNT(S.idx) AS select_count , GROUP_CONCAT(S.content ORDER BY S.seq SEPARATOR '#') AS Choices,
+		    GROUP_CONCAT(S.image ORDER BY S.seq SEPARATOR '#') AS ChoicesImage
+		FROM TBL_QUESTION Q
+		JOIN TBL_QUESTION_LIST L ON Q.idx = L.question_idx 
+		LEFT JOIN TBL_SELECT S ON Q.idx = S.question_idx
+		WHERE L.exam_idx = #{idx}
+		GROUP BY Q.idx
+		ORDER BY L.SEQ
+	</select>
+	
+	<select id="getExamResultMemberAll" parameterType="AdminExamVo" resultType="hashMap">
+	SELECT 
+    er.* , m.address_local , m.age , m.job , m.sex
+	FROM 
+	    TBL_EXAM_RESULT er
+	JOIN 
+	    TBL_EXAM e ON er.exam_idx = e.idx
+	JOIN 
+	    TBL_MEMBER m ON er.member_id = m.member_id
+	WHERE 
+	    e.idx = #{idx}
+	</select>
 
 
 </mapper>

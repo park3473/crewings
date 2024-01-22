@@ -7,10 +7,13 @@ public class AdminOrderVo  extends SearchVo{
 	String idx = "";
 	String product_idx = "";
 	String product_price = "";
+	String product_name = "";
 	String member_idx = "";
 	String member_id = "";
 	String member_name = "";
 	String type = "";
+	String coment = "";
+	String category = "";
 	String create_tm = "";
 	String update_tm = "";
 	String cancel_tm = "";
@@ -74,6 +77,24 @@ public class AdminOrderVo  extends SearchVo{
 	}
 	public void setCancel_tm(String cancel_tm) {
 		this.cancel_tm = cancel_tm;
+	}
+	public String getComent() {
+		return coment;
+	}
+	public void setComent(String coment) {
+		this.coment = coment;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getProduct_name() {
+		return product_name;
+	}
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
 	}
 	
 	

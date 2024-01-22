@@ -150,28 +150,33 @@ function question_connect(connect_type , e){
 	var name = $(e).attr('data-name');
 	var type = $(e).attr('data-type');
 	var content = $(e).attr('data-content');
-	var objectives = $(e).attr('data-objectives');
 	var select_type = $(e).attr('data-select_type');
+	<c:if test="${model.before.category == '1'}">
+	var objectives = $(e).attr('data-objectives');
 	var select_val = $(e).attr('data-select_val');
 	var solution = $(e).attr('data-solution');
+	</c:if>
 	
 	console.log("idx : " + idx);
 	console.log("name : " + name);
 	console.log("type : " + type);
 	console.log("content : " + content);
-	console.log("objectives : " + objectives);
 	console.log("select_type : " + select_type);
+	<c:if test="${model.before.category == '1'}">
+	console.log("objectives : " + objectives);
 	console.log("select_val : " + select_val);
 	console.log("solution : " + solution);
+	</c:if>
 	
 	opener.document.getElementsByName('name')[0].value = name;
 	opener.ckeditorInstance.setData(content);
-	opener.document.getElementsByName('objectives')[0].value = objectives;
 	opener.document.getElementsByName('select_type')[0].value = select_type;
 	opener.select_type_change();
+	<c:if test="${model.before.category == '1'}">
+	opener.document.getElementsByName('objectives')[0].value = objectives;
 	opener.document.getElementsByName('select_val')[0].value = select_val;
 	opener.document.getElementsByName('solution')[0].value = solution;
-	
+	</c:if>
 	console.log(type);
 	
 	$.ajax({

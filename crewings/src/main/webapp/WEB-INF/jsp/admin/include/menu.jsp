@@ -178,6 +178,22 @@
                                         </li>
                                     </ul>
                                 </li>
+                                <li <c:if test="${fn:indexOf(fullURL , '/order/') > -1}">
+                                    class="adm_menu_active"
+                                    </c:if>>
+                                    <a href="${pageContext.request.contextPath}/admin/order/list.do">
+                                        <img src="${pageContext.request.contextPath}/resources/img/admin/file_icon.png" alt="파일관리" />
+                                    </a>
+                                    <ul class="sub_menu_con">
+                                        <div class="title notosans">
+                                            <span></span>
+                                            <span>상품 관리</span>
+                                        </div>
+                                        <li <c:if test="${fn:indexOf(fullURL, '/order/list') > -1}">class="nav_active"</c:if>>
+                                            <a href="${pageContext.request.contextPath}/admin/order/list.do">주문 리스트</a>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <!-- 
                                 <li <c:if test="${fn:indexOf(fullURL , '/file/') > -1}">
                                     class="adm_menu_active"

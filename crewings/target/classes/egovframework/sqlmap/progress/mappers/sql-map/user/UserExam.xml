@@ -95,5 +95,9 @@
 	    e.idx = #{exam_idx}
 	</select>
 
+	<select id="getIndexList" resultType="hashMap">
+		SELECT  * FROM TBL_EXAM LIMIT 4
+	</select>
+
 
 </mapper>

@@ -184,19 +184,6 @@ body{
                     <h4 class="modal-title txt_30 font_noto">Quiz</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-
-                <!-- Modal body -->
-                <!-- 
-                <c:forEach var="item" items="${model.questionlist}">
-                <div class="modal-body">
-                    <h3>${item.name}</h3>
-			        <h3>${item.content}</h3>
-			        <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
-			            <p>${choice}</p>
-			        </c:forEach>
-                </div>
-                </c:forEach>
-				-->
 				<div class="grid">
 					<div id="quiz">
 						<div style="margin-top:20px"></div>
@@ -243,7 +230,7 @@ body{
 <c:if test="${model.beforeData.category == '1' }">
 <script type="text/javascript">
 //퀴즈 객체 생성
-function Question(text, category ,choice,choice_cnt, answer,image,solution , content ){
+function Question(text, category ,choice,choice_cnt, answer,image,solution , content  , greet ){
 	this.text = text;
 	this.choice = choice;
 	this.choice_cnt = choice_cnt;
@@ -252,6 +239,7 @@ function Question(text, category ,choice,choice_cnt, answer,image,solution , con
 	this.solution = solution;
 	this.content = content;
 	this.category = category;
+	this.greet = greet;
 }
 
 // 퀴즈 정보 객체 생성
@@ -264,6 +252,9 @@ function Quiz(questions){
 // ---------------------------------------------------------------------
 var questions = [];
 
+questions.push(new Question('','','','','','','','<img src="/resources/upload/exam/image/${model.view.image}">',''));
+questions.push(new Question('','','','','','','','${model.view.content}',''));
+questions.push(new Question('','','','','','','','${model.view.greet}',''));
 <c:forEach var="item" items="${model.questionlist}">
 questions.push(new Question('${item.name}','${item.category}',[
 		 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
@@ -279,7 +270,8 @@ questions.push(new Question('${item.name}','${item.category}',[
 			 </c:forEach>	
 		],
 		'${item.solution}',
-		'${item.content}'
+		'${item.content}',
+		'${item.greet}'
 		));
 </c:forEach>
 
@@ -289,25 +281,39 @@ var quiz = new Quiz(questions);
 
 function update_quiz(){
 	$("#quiz_btn").empty();
-	var html = '';
-	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
-		
-		if(quiz.questions[quiz.questionIndex].image[i] == '' || quiz.questions[quiz.questionIndex].image[i] == null){
-			html += ' <div class="select_div" ><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
-		}else{
-			html += ' <div class="select_div max_img" ><img src="/resources/upload/select/image/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
-		}
-	}
-	$('#quiz_btn').append(html);
-	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
-		var question = document.getElementById('question');
-		var choice = document.getElementById('btn'+i);
-		var question_content = document.getElementById('q_content');
-		question.innerHTML = quiz.questions[quiz.questionIndex].text; 
-		question_content.innerHTML = quiz.questions[quiz.questionIndex].content;
-		choice.innerHTML = quiz.questions[quiz.questionIndex].choice[i];
-		answer('btn' + i, choice,i+1);
-	}
+    var currentQuestion = quiz.questions[quiz.questionIndex];
+
+    var questionElement = document.getElementById('question');
+    var questionContentElement = document.getElementById('q_content');
+
+    // 문제 내용과 추가 내용을 표시
+    questionElement.innerHTML = currentQuestion.text; 
+    questionContentElement.innerHTML = currentQuestion.content;
+
+    // 선택지가 있는 경우에만 선택지 관련 HTML 생성
+    if(currentQuestion.choice_cnt && currentQuestion.choice_cnt > 0){
+        var html = '';
+        for(var i = 0; i < currentQuestion.choice_cnt; i++){
+            if(currentQuestion.image[i] == '' || currentQuestion.image[i] == null){
+                html += '<div class="select_div"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>';
+            } else {
+                html += '<div class="select_div max_img"><img src="/resources/upload/select/image/'+currentQuestion.image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>';
+            }
+        }
+        $('#quiz_btn').append(html);
+        for(var i = 0; i < currentQuestion.choice_cnt; i++){
+            var choiceButton = document.getElementById('btn'+i);
+            choiceButton.innerHTML = currentQuestion.choice[i];
+            answer('btn' + i, choiceButton, i+1);
+        }
+
+        // 선택지가 있으므로 next 버튼은 숨김
+        $('#next_btn').hide();
+    } else {
+        // 선택지가 없으면 next 버튼을 바로 표시
+        $('#next_btn').show();
+    }
+    
 	$('#quiz_solution').empty();
 	var solution = '<p>'+quiz.questions[quiz.questionIndex].solution+'</p>';
 	$('#quiz_solution').append(solution);
@@ -361,10 +367,10 @@ function progress(){
 
 function result(){
 	var el = document.getElementById('quiz');
-	var per = parseInt((quiz.score*100) / quiz.questions.length);
+	var per = parseInt((quiz.score*100) / (quiz.questions.length -2) );
 	el.innerHTML =	'<h1 style="font-size:24px;padding:10px 0;margin-top:50px">결과</h1>' +
 					'<h2 id="score"> 당신의 점수: ' + quiz.score + '/' +  
-					quiz.questions.length + '<br><br><span style="color:#dc3545;font-size:30px;font-weight:700">' + per + '</span>점</h2>' +
+					(quiz.questions.length -2) + '<br><br><span style="color:#dc3545;font-size:30px;font-weight:700">' + per + '</span>점</h2>' +
 					'<button style="width:100%;padding:10px 0;margin-top:15px" type="button" class="btn btn-danger" onclick="exam_result()">진단 종료하기</button>';
 
 					
@@ -400,7 +406,7 @@ update_quiz();
 <c:if test="${model.beforeData.category == '0' }">
 <script type="text/javascript">
 //퀴즈 객체 생성
-function Question(text, category ,choice,choice_cnt, answer,image,solution , content ){
+function Question(text, category ,choice,choice_cnt, answer,image,solution , content , greet  ){
 	this.text = text;
 	this.choice = choice;
 	this.choice_cnt = choice_cnt;
@@ -408,6 +414,7 @@ function Question(text, category ,choice,choice_cnt, answer,image,solution , con
 	this.image = image;
 	this.solution = solution;
 	this.content = content;
+	this.greet = greet;
 	this.category = category;
 }
 
@@ -420,7 +427,9 @@ function Quiz(questions){
 
 // ---------------------------------------------------------------------
 var questions = [];
-
+questions.push(new Question('','','','','','','','<img src="/resources/upload/exam/image/${model.view.image}">',''));
+questions.push(new Question('','','','','','','','${model.view.content}',''));
+questions.push(new Question('','','','','','','','${model.view.greet}',''));
 
 <c:forEach var="item" items="${model.questionlist}">
 questions.push(new Question('${item.name}','${item.category}',[
@@ -437,7 +446,8 @@ questions.push(new Question('${item.name}','${item.category}',[
 			 </c:forEach>	
 		],
 		'${item.solution}',
-		'${item.content}'
+		'${item.content}',
+		'${item.greet}'
 		));
 </c:forEach>
 
@@ -447,24 +457,39 @@ var quiz = new Quiz(questions);
 
 function update_quiz(){
 	$("#quiz_btn").empty();
-	var html = '';
-	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
-		if(quiz.questions[quiz.questionIndex].image[i] == '' || quiz.questions[quiz.questionIndex].image[i] == null){
-			html += ' <div class="select_div" ><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
-		}else{
-			html += ' <div class="select_div max_img" ><img src="/resources/upload/select/image/'+quiz.questions[quiz.questionIndex].image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>' ;
-		}
-	}
-	$('#quiz_btn').append(html);
-	for(var i = 0; i < quiz.questions[quiz.questionIndex].choice_cnt; i++){
-		var question = document.getElementById('question');
-		var choice = document.getElementById('btn'+i);
-		var question_content = document.getElementById('q_content');
-		question.innerHTML = quiz.questions[quiz.questionIndex].text; 
-		question_content.innerHTML = quiz.questions[quiz.questionIndex].content;
-		choice.innerHTML = quiz.questions[quiz.questionIndex].choice[i];
-		answer('btn' + i, choice,i+1);
-	}
+    var currentQuestion = quiz.questions[quiz.questionIndex];
+
+    var questionElement = document.getElementById('question');
+    var questionContentElement = document.getElementById('q_content');
+
+    // 문제 내용과 추가 내용을 표시
+    questionElement.innerHTML = currentQuestion.text; 
+    questionContentElement.innerHTML = currentQuestion.content;
+
+    // 선택지가 있는 경우에만 선택지 관련 HTML 생성
+    if(currentQuestion.choice_cnt && currentQuestion.choice_cnt > 0){
+        var html = '';
+        for(var i = 0; i < currentQuestion.choice_cnt; i++){
+            if(currentQuestion.image[i] == '' || currentQuestion.image[i] == null){
+                html += '<div class="select_div"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>';
+            } else {
+                html += '<div class="select_div max_img"><img src="/resources/upload/select/image/'+currentQuestion.image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>';
+            }
+        }
+        $('#quiz_btn').append(html);
+        for(var i = 0; i < currentQuestion.choice_cnt; i++){
+            var choiceButton = document.getElementById('btn'+i);
+            choiceButton.innerHTML = currentQuestion.choice[i];
+            answer('btn' + i, choiceButton, i+1);
+        }
+
+        // 선택지가 있으므로 next 버튼은 숨김
+        $('#next_btn').hide();
+    } else {
+        // 선택지가 없으면 next 버튼을 바로 표시
+        $('#next_btn').show();
+    }
+    
 	$('#quiz_solution').empty();
 	var solution = '<p>'+quiz.questions[quiz.questionIndex].solution+'</p>';
 	$('#quiz_solution').append(solution);
@@ -510,8 +535,6 @@ function progress(){
 function result(){
 	var el = document.getElementById('quiz');
 	el.innerHTML =	'<button style="margin-top: 50px; width:100%;padding:15px" type="button" class="btn btn-danger" onclick="exam_result()">설문 종료하기</button>';
-
-					
 	$('#Close_btn').hide();
 }
 

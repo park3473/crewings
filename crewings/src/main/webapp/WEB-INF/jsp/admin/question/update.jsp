@@ -63,10 +63,12 @@
                                             <span class="list_t">문제 제목</span>
                                             <input class="input_title" type="text" id="name" name="name" value="${model.view.name }" >
                                         </li>
+                                        <c:if test="${model.view.category == '1'  }">
                                         <li>
                                             <span class="list_t">진단 목표</span>
                                             <input class="input_title" type="text" id="objectives" name="objectives" value="${model.view.objectives }" >
                                         </li>
+                                        </c:if>
                                         <li id="select_type_li">
                                             <span class="list_t">답안 타입</span>
                                             <select name="select_type" id="select_type" onchange="select_type_change()" disabled="disabled">
@@ -76,6 +78,7 @@
                                             </select>
                                             <button type="button" onclick="select_change()">답안 수정</button>
                                         </li>
+                                        <c:if test="${model.view.category == '1'  }">
                                         <li id="select_val_li">
                                             <span class="list_t">답안</span>
                                             <select name="select_val" id="select_val" onchange="select_form_open()">
@@ -83,14 +86,17 @@
                                             	<option value="X">X</option>
                                             </select>
                                         </li>
+                                        </c:if>
                                         <li>
                                         	<span class="list_t">문제 내용</span>
                                         	<textarea name="content" id="editor">${model.view.content }</textarea>
                                         </li>
+                                        <c:if test="${model.view.category == '1'  }">
                                         <li>
                                             <span class="list_t">해설</span>
                                             <input class="input_title" type="text" id="solution" name="solution" value="${model.view.solution }"  >
                                         </li>
+                                        </c:if>
                                     </ul>
                                 </div>
                             </div>
@@ -186,9 +192,9 @@ if($('#select_type').val() == '0'){
 		
 	}
 	
-	
 });
 
+<c:if test="${model.view.category == '1'  }">
 //select box 3개
 const admin_select_val_0 = `<span class="list_t">답안</span>
     <select name="select_val" id="select_val" onchange="select_form_open()">
@@ -196,6 +202,7 @@ const admin_select_val_0 = `<span class="list_t">답안</span>
 	<option value="O">O</option>
 	<option value="X">X</option>
 </select>`;
+</c:if>
 
 const admin_select_val_1 = `<span class="list_t">답안</span>
     <select name="select_val" id="select_val" onchange="select_form_open()">
@@ -204,7 +211,7 @@ const admin_select_val_1 = `<span class="list_t">답안</span>
 	<option value="2">2</option>
  <option value="3">3</option>
  <option value="4">4</option>
- <option value="5">5</option>
+ <option value="6">6</option>
 </select>`;
 
 const admin_select_type_1 = `<div id="select_type_cnt_box"><br><span class="list_t">갯수</span>
@@ -214,7 +221,9 @@ const admin_select_type_1 = `<div id="select_type_cnt_box"><br><span class="list
 	<option value="3">3</option>
 	<option value="4">4</option>
 	<option value="5">5</option>
+	<option value="6">6</option>
 </select></div>`;
+
 
 //타입 변경시
 function select_type_change(){
@@ -426,7 +435,9 @@ function updateClick(InsertToConnectType)
 		
 		alert('제목을 입력 하여 주세요.');
 		return;
-	}else if($('#question_insertForm [name=objectives]').val() == ''){
+	}
+	<c:if test="${model.view.category == '1'  }">
+	else if($('#question_insertForm [name=objectives]').val() == ''){
 		
 		alert('진단 목표를 입력 하여 주세요.');
 		return;
@@ -442,7 +453,6 @@ function updateClick(InsertToConnectType)
 		alert('해설을 입력 하여 주세요.');
 		return;
 	}
-	
 	if($('#select_insertForm #select_input_warp ul').length <= 0){
 	
 		alert('답안 작성을 해주세요.');
@@ -467,6 +477,7 @@ function updateClick(InsertToConnectType)
 		}
 		
 	}
+	</c:if>
 
 	//방식 변경 => question form submit 으로 보내는것이 아닌
 	//ajax 로 보내는것으로 변경
@@ -486,6 +497,7 @@ function updateClick(InsertToConnectType)
 			console.log('question_idx : ' + $('[name=idx]').val());
 			
 			var question_idx = $('[name=idx]').val();
+			
 			var select_cnt = $('#select_insertForm #select_input_warp ul').length;
 			
 			//업데이트 이므로 답안 수정이 안됬을시에는 넘어가기
@@ -563,6 +575,9 @@ function updateClick(InsertToConnectType)
 					}
 				})
 				
+				console.log('수정 완료');
+				alert('해당 문제가 수정되었습니다.');
+				location.href = '/admin/question/list.do';	
 				
 			}else{
 				

@@ -43,7 +43,7 @@
                                 <div class="adm_btn_wrap stats_btn_area">
                                     <ul>
                                     <li class="delete">
-                                        <a href="${pageContext.request.contextPath}/admin/question/insert.do?exam_idx=${model.exam_idx}">문제 등록</a>
+                                        <a href="${pageContext.request.contextPath}/admin/question/insert.do?exam_idx=${model.exam_idx}&category=${model.category}">문제 등록</a>
                                     </li>
                                 </ul>
                                 </div>

@@ -30,5 +30,7 @@ public interface UserMemberMapper {
 
 	public void setMemberPoint(UserMemberVo vo);
 
+	public void setRecommendPointUp(UserMemberVo userMemberVo);
+
 
 }

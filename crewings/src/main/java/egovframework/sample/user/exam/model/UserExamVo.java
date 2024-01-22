@@ -14,6 +14,7 @@ public class UserExamVo extends SearchVo {
 	String type = "";
 	String content = "";
 	String image = "";
+	String greet = "";
 	String coment = "";
 	String create_tm = "";
 	String update_tm = "";
@@ -48,6 +49,12 @@ public class UserExamVo extends SearchVo {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getGreet() {
+		return greet;
+	}
+	public void setGreet(String greet) {
+		this.greet = greet;
 	}
 	public String getContent() {
 		return content;

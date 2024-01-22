@@ -22,4 +22,8 @@ public interface AdminMemberMapper {
 
 	public int getIdCheck(AdminMemberVo adminMemberVo);
 
+	public void setMemberPointUp(AdminMemberVo adminMemberVo);
+
+	public void setMemberPointDown(AdminMemberVo adminMemberVo);
+
 }

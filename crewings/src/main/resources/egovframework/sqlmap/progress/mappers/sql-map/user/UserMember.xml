@@ -22,8 +22,8 @@
 	</select>
 	
 	<insert id="setMemberDataInsert" parameterType="UserMemberVo">
-		INSERT INTO TBL_MEMBER (LEVEL , TYPE , MEMBER_ID , PASSWORD , NAME , PHONE , EMAIL , EMAIL_ADDRESS , ADDRESS , ADDRESS_DETAIL , CREATE_TM , UPDATE_TM)
-		VALUES (#{level} , #{type} , #{member_id} , #{password} , #{name} , #{phone} , #{email} , #{email_address} , #{address} , #{address_detail} , now() , now())
+		INSERT INTO TBL_MEMBER (LEVEL , TYPE , MEMBER_ID , PASSWORD , NAME , PHONE , EMAIL , EMAIL_ADDRESS , ADDRESS , ADDRESS_DETAIL , ADDRESS_LOCAL , JOB , AGE , SEX,  POINT , CREATE_TM , UPDATE_TM)
+		VALUES (#{level} , #{type} , #{member_id} , #{password} , #{name} , #{phone} , #{email} , #{email_address} , #{address} , #{address_detail} , #{address_local} , #{job}, #{age} , #{sex} , 0 , now() , now())
 	</insert>
 	
 	<update id="setMemberDataUpdate" parameterType="UserMemberVo">

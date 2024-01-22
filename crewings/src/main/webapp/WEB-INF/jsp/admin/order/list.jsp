@@ -35,27 +35,38 @@
                         <div class="sc_con">
                             <div class="title">
                                 <span></span>
-                                <span>회원 관리</span>
+                                <span>주문 관리</span>
                             </div>
                             <div class="table_wrap">
                                 <table id="bootstrap-data-table">
                                     <tr>
-                                        <th class="number">기본1</th>
-                                        <th class="type">기본2</th>
-                                        <th class="level">기본3</th>
+                                        <th class="number">번호</th>
+                                        <th class="level">상태</th>
+                                        <th class="type">상품이름</th>
+                                        <th class="level">주문자</th>
+                                        <th class="level">가격</th>
+                                        <th class="level">신청일</th>
+                                        <th class="level">비고</th>
                                     </tr>
                                     <c:forEach var="item" items="${model.list}" varStatus="status">
                                     <tr data-role="button" data-id="${item.idx}"  >
                                         <td>${model.itemtotalcount - (status.index + model.page *  model.itemcount)}</td>
                                         <td>
                                         	<c:choose>
-                                        		<c:when test="${item.type == '2' }">삭제</c:when>
-                                        		<c:when test="${item.type == '1' }">승인</c:when>
-                                        		<c:when test="${item.type == '0' }">미승인</c:when>
+                                        		<c:when test="${item.type == '3' }">완료</c:when>
+                                        		<c:when test="${item.type == '2' }">처리대기</c:when>
+                                        		<c:when test="${item.type == '1' }">거절</c:when>
+                                        		<c:when test="${item.type == '0' }">신청</c:when>
                                         	</c:choose>
                                         </td>
+                                        <td>${item.product_name }</td>
+                                        <td>${item.member_id }</td>
+                                        <td>${item.product_price }</td>
                                         <td>
                                             ${fn:substring(item.create_tm,0,11)}
+                                        </td>
+                                        <td>
+                                        	<button type="button" onclick="orderUpdateModal('${item.idx}','${item.type}','${item.category}','${item.coment}','${item.product_price}')">관리</button>
                                         </td>
                                     </tr>
                                     </c:forEach>
@@ -63,6 +74,7 @@
                             </div>
 
                             <!--관리자 버튼-->
+                            <!-- 
                             <div class="page_seach">
                                 <div>
                                     <select id="SEARCH_TYPE" name="SEARCH_TYPE">
@@ -75,18 +87,8 @@
                                     <input style="width: 191px;" type="text" value="${model.SEARCH_TEXT }" name="SEARCH_TEXT" id="SEARCH_TEXT" >
                                     <button type="button" value="검색" onClick="searchBtnClick()">검색</button>
                                 </div>
-                                <div class="adm_btn_wrap stats_btn_area">
-                                    <ul>
-                                    <li class="delete">
-                                        <a href="javascript:deleteArrClick()">선택삭제</a>
-                                    </li>
-                                    <li class="delete">
-                                        <a href="./insert.do">회원 등록</a>
-                                    </li>
-                                </ul>
-                                </div>
                             </div>
-
+							-->
                             <!--관리자 버튼 end-->
 
 
@@ -106,6 +108,11 @@
     </section>
     <!--본문 end-->
 
+	<form action="/" name="orderUpdateForm"  id="orderUpdateForm" style="display:none;">
+		<input type="hidden" name="idx" value="">
+		<input type="hidden" name="type" value="">
+	</form>
+
     <!--푸터-->
     <footer>
 	<%@ include file="../include/footer.jsp" %>
@@ -118,11 +125,86 @@
 //해당 메뉴 번호
 $(document).ready(function () {
 	
-	$(".adm_menu_con > li").eq(0).find(".sub_menu_con").show();
-	$(".adm_menu_con > li").eq(0).css({
+	$(".adm_menu_con > li").eq(5).find(".sub_menu_con").show();
+	$(".adm_menu_con > li").eq(5).css({
 	    backgroundColor: "#fff"
 	});
 });
+
+function orderUpdateModal(idx, type, category, coment, product_price) {
+    Swal.fire({
+        title: '주문 상태 변경',
+        html: 
+            '<div>' +
+                '<label>주문 번호: </label>' +
+                '<span>' + idx + '</span>' +
+            '</div>' +
+            '<div>' +
+                '<label>주문 상태: </label>' +
+                '<select id="order-type">' +
+                    '<option value="0"' + (type === '0' ? ' selected' : '') + '>신청</option>' +
+                    '<option value="1"' + (type === '1' ? ' selected' : '') + '>거절</option>' +
+                    '<option value="2"' + (type === '2' ? ' selected' : '') + '>처리대기</option>' +
+                    '<option value="3"' + (type === '3' ? ' selected' : '') + '>처리완료</option>' +
+                '</select>' +
+            '</div>' +
+            '<div>' +
+                '<label>주문자 요청사항: </label>' +
+                '<span>' + coment + '</span>' +
+            '</div>' +
+            '<div>' +
+                '<label>가격: </label>' +
+                '<span>' + product_price + '원</span>' +
+            '</div>',
+        showCancelButton: true,
+        confirmButtonText: '변경하기',
+        cancelButtonText: '취소',
+        preConfirm: () => {
+            const selectedType = document.getElementById('order-type').value;
+            return { idx: idx, type: selectedType };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            orderUpdate(result.value.idx, result.value.type);
+        }
+    });
+}
+
+function orderUpdate(idx, type) {
+    // 여기에 주문 업데이트 로직 구현
+   var result = confirm('정말 변경하시겠습니까?');
+    
+    if(!result){
+    	return;
+    }
+    
+    $('[name=idx]').val(idx);
+    $('[name=type]').val(type);
+    
+    var formData = $('#orderUpdateForm').serialize();
+	
+	$.ajax({
+		url : '/admin/order/update.do',
+		type : 'POST',
+		data : formData,
+		success : function(status , success , xhr){
+			
+			console.log('order_update : success');
+			
+			alert('주문 상태 변경이 완료되었습니다.');
+			location.href='/admin/index.do';
+			
+		},
+		error : function(status , error , xhr){
+			
+			console.log('order_update : fail');
+			
+		}
+	})
+    
+}
+
+
 
 </script>
 

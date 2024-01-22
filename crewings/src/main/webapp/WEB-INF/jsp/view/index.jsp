@@ -6,6 +6,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!--삭제금지-->
+<% java.util.Date now = new java.util.Date(); %>
+<%--<fmt:formatDate value="<%=now%>" pattern="yyyy-MM-dd HH:mm:ss" /> --%>
+<c:set var="now" value="<%=now%>" />
 <script src="${pageContext.request.contextPath}/resources/sweetalert/jquery-1.12.4.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 
@@ -78,50 +81,27 @@
         <div class="col-sm-12">
             <div class="cnpnel font_noto f_wet_03">
                 <div class="flexbox">
+                    
+                    <c:forEach var="item" items="${model.ExamList }" >
                     <div class="item box_02 pos_r">
                         <img src="${pageContext.request.contextPath}/resources/img/thum_img.jpg" alt="">
                         <div class="sul_box">
-                            <div class="txt font_noto">살아있는 영어로 가는...</div>
-                            <div class="sul"><span class="gray_10">응답사례 : </span>700 포인트 리워드</div>
-							<div class="sul"><span class="gray_10">응답시간 : </span> 약7분내외(10문항) </div>
-                            <div class="date"><span class="gray_10">응답기간 : </span>2023.09-01 ~ 2023.09.31</div>
-							<a href="/cnpnel/sub_02a_01.php"><div class="link">참여하기</div></a>
-							<div class="ing pos_a">진행중</div>
+                            <div class="txt font_noto">${item.name }</div>
+                            <div class="sul"><span class="gray_10">응답사례 : </span>${item.point } 포인트 리워드</div>
+							<div class="sul"><span class="gray_10">설문소개 : </span> ${item.coment }</div>
+                            <div class="date"><span class="gray_10">응답기간 : </span>${fn:substring(item.start_tm,0,11) } ~ ${fn:substring(item.end_tm,0,11) }</div>
+							<c:choose>
+                            	<c:when test="${now.after(item.start_tm) and now.before(item.end_tm)  }">
+                            		<a href="/user/exam/view.do?idx=${item.idx }&category=${item.category}"><div class="link">참여하기</div></a>
+                            		<div class="ing pos_a">진행중 </div>
+                            	</c:when>
+                            	<c:otherwise>
+                            		<div class="end pos_a">진행종료 </div>
+                            	</c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
-                    <div class="item box_02 pos_r">
-                        <img src="${pageContext.request.contextPath}/resources/img/thum_img.jpg" alt="">
-                        <div class="sul_box">
-                            <div class="txt font_noto">살아있는 영어로 가는...</div>
-                            <div class="sul"><span class="gray_10">응답사례 : </span>700 포인트 리워드</div>
-							<div class="sul"><span class="gray_10">응답시간 : </span> 약7분내외(10문항) </div>
-                            <div class="date"><span class="gray_10">응답기간 : </span>2023.09-01 ~ 2023.09.31</div>
-							<div class="link">참여하기</div>
-							<div class="ing pos_a">진행중</div>
-                        </div>
-                    </div>
-					 <div class="item box_02 pos_r">
-                        <img src="${pageContext.request.contextPath}/resources/img/thum_img.jpg" alt="">
-                       <div class="sul_box">
-                            <div class="txt font_noto">살아있는 영어로 가는...</div>
-                            <div class="sul"><span class="gray_10">응답사례 : </span>700 포인트 리워드</div>
-							<div class="sul"><span class="gray_10">응답시간 : </span> 약7분내외(10문항) </div>
-                            <div class="date"><span class="gray_10">응답기간 : </span>2023.09-01 ~ 2023.09.31</div>
-							<div class="link">참여하기</div>
-							<div class="end pos_a">진행마감</div>
-                        </div>
-                    </div>
-					 <div class="item box_02 pos_r">
-                        <img src="${pageContext.request.contextPath}/resources/img/thum_img.jpg" alt="">
-                        <div class="sul_box">
-                            <div class="txt font_noto">살아있는 영어로 가는...</div>
-                            <div class="sul"><span class="gray_10">응답사례 : </span>700 포인트 리워드</div>
-							<div class="sul"><span class="gray_10">응답시간 : </span> 약7분내외(10문항) </div>
-                            <div class="date"><span class="gray_10">응답기간 : </span>2023.09-01 ~ 2023.09.31</div>
-							<div class="link">참여하기</div>
-							<div class="ing pos_a">진행중</div>
-                        </div>
-                    </div>
+                    </c:forEach>
 
                 </div>
             </div>
@@ -178,17 +158,17 @@
         <div class="cnpnel font_noto f_wet_03 t_spa_00">
             <div class="flexbox align_c gray_10">
                 <div class="item box_01">
-                   <div class="counter" data-count="23">0</div>
+                   <div class="counter" data-count="24">24</div>
 				   <div class="txt font_noto t_spa_00">YEAR</div>
-					AS OF 23 CHANGNAL PANEL
+					AS OF 24 CHANGNAL PANEL
                 </div>
                 <div class="item box_01">
-                    <div class="counter" data-count="96">0</div>
+                    <div class="counter" data-count="96">96</div>
 				   <div class="txt font_noto t_spa_00">%</div>
 					PROJECT PROGRESS
                 </div>
                 <div class="item box_01">
-                    <div class="counter" data-count="235">0</div>
+                    <div class="counter" data-count="5">5</div>
 				   <div class="txt font_noto t_spa_00">CLIENT</div>
 					CUMULATIVE CLIENT
                 </div>

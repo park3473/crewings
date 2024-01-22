@@ -173,8 +173,13 @@ public class AdminExamServiceImpl implements AdminExamService {
 		
 		ModelMap model = new ModelMap();
 		
-		//List<?> question = adminExamMapper.getQuestionList(adminExamVo);
+		List<?> question = adminExamMapper.getStatusQuestionList(adminExamVo);
 		
+		List<?> resultList = adminExamMapper.getExamResultMemberAll(adminExamVo);
+		
+		model.put("question" , question);
+		
+		model.put("resultList", resultList);
 		
 		return model;
 	}

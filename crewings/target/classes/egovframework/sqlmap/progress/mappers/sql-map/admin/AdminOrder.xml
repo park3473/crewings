@@ -55,25 +55,25 @@
 	
 	<update id="setOrderDataUpdate" parameterType="AdminOrderVo">
 		UPDATE TBL_ORDER SET
-		<if test="product_idx != ''' ">
+		<if test="product_idx !=  ''">
 			PRODUCT_IDX = #{product_idx]
 		</if>
-		<if test="product_price != '' ">
+		<if test="product_price != ''">
 			PRODUCT_PRICE = #{product_price}
 		</if>
-		<if test="member_idx != '' ">
+		<if test="member_idx != ''">
 			MEMBER_IDX = #{member_idx}
 		</if>
-		<if test="member_id != ''">
+		<if test="member_id !=  ''">
 			MEMBER_ID = #{member_id}
 		</if>
-		<if test="member_name != '' ">
+		<if test="member_name != ''">
 			MEMBER_NAME = #{member_name}
 		</if>
-		<if test="type!= '' ">
+		<if test="type!= ''">
 			TYPE = #{type}
 		</if>
-		UPDATE_TM = now();
+		UPDATE_TM = now()
 		WHERE IDX = #{idx}
 	</update>
 	

@@ -26,6 +26,7 @@ import com.system.util.SUtil;
 import egovframework.sample.menu.model.MenuVo;
 import egovframework.sample.menu.service.MenuService;
 import egovframework.sample.user.config.service.UserConfigService;
+import egovframework.sample.user.exam.service.UserExamService;
 import egovframework.sample.user.member.model.UserMemberVo;
 import egovframework.sample.user.member.service.UserMemberService;
 import egovframework.sample.user.board.service.UserBoardDataService;
@@ -57,6 +58,9 @@ public class UserController {
 	@Autowired
 	UserBoardDataService userBoardDataService;
 	
+	@Autowired
+	UserExamService userExamService;
+	
 	/**
 	 * @param request
 	 * @param response
@@ -64,6 +68,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = {"/view/index.do", "/index.do", "/"}, method = RequestMethod.GET)
 	public ModelAndView Main(HttpServletRequest request, HttpServletResponse response) {
+		
 		
 		System.out.println("Index Page");
 		
@@ -77,6 +82,10 @@ public class UserController {
 			
 			model = userBoardDataService.getIndexBoardData();
 			
+			List<?> ExamList = userExamService.getIndexList();
+			
+			model.put("ExamList", ExamList);
+			
 			return new ModelAndView("view/index" , "model" , model);
 			
 		}else {
@@ -84,6 +93,7 @@ public class UserController {
 			return new ModelAndView("view/parking");
 			
 		}
+		
 		
 		
 	}
@@ -311,6 +321,13 @@ public class UserController {
 			
 			return "redirect:/index.do";
 		}
+		
+	}
+	
+	@RequestMapping(value="/view/recommend.do" , method = RequestMethod.POST)
+	public void UserRecommend (@ModelAttribute("UserMemberVo")UserMemberVo UserMemberVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		userMemberService.setMemberPoint(UserMemberVo);
 		
 	}
 	

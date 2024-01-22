@@ -20,6 +20,7 @@ public class UserMemberVo extends SearchVo {
 	String update_tm = "";
 	String age = "";
 	String job = "";
+	String sex = "";
 	int point = 0;
 	
 	public String getIdx() {
@@ -123,6 +124,12 @@ public class UserMemberVo extends SearchVo {
 	}
 	public void setJob(String job) {
 		this.job = job;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 	
 	

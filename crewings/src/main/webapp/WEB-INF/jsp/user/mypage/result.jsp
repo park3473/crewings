@@ -195,7 +195,7 @@ questions.push(new Question(
 </c:forEach>
 //=====================================================================================================
 	
-// type 속성을 기준으로 분류dasdsa
+// type 속성을 기준으로 분류
 var questionsType= questions.reduce(function (acc, question) {
     // acc는 누적값, question은 현재 처리중인 Question 객체
     if (!acc[question.type]) {

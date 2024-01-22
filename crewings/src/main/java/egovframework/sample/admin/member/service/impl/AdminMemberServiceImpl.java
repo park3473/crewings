@@ -105,5 +105,19 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		return Result;
 	}
+
+	@Override
+	public void setPoint(AdminMemberVo adminMemberVo, String point_type) {
+		
+		switch (point_type) {
+		case "UP":
+				adminMemberMapper.setMemberPointUp(adminMemberVo);
+			break;
+		case "DOWN":
+				adminMemberMapper.setMemberPointDown(adminMemberVo);
+			break;
+		}
+		
+	}
 	
 }

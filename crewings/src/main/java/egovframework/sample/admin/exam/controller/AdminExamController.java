@@ -149,6 +149,10 @@ public class AdminExamController {
 		
 		model.put("exam_idx", AdminQuestionListVo.getExam_idx());
 		
+		String category = request.getParameter("category") != null ? request.getParameter("category") : "0";
+		
+		model.put("category", category);
+		
 		return new ModelAndView("admin/exam/question_list" , "model" , model);
 		
 	}

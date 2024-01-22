@@ -15,7 +15,7 @@
 	#bootstrap-data-table tr th{
 	
 	text-align: center;
-	
+		
 	}
 </style>
 
@@ -42,6 +42,7 @@
                                     <tr>
                                         <th class="number">번호</th>
                                         <th class="name">제목</th>
+                                        <th class="category">유형</th>
                                         <th class="l_category">대분류</th>
                                         <th class="m_category">소분류</th>
                                         <th class="type">사용여부</th>
@@ -53,6 +54,12 @@
                                     <tr data-role="button" data-id="${item.idx}"  >
                                         <td>${model.itemtotalcount - (status.index + model.page *  model.itemcount)}</td>
                                         <td>${item.name }</td>
+                                        <td>
+                                        	<c:choose>
+                                        		<c:when test="${item.category == '0' }">설문</c:when>
+                                        		<c:when test="${item.category == '1' }">진단</c:when>
+                                        	</c:choose>
+                                        </td>
                                         <td>${item.l_category }</td>
                                         <td>${item.m_category }</td>
                                         <td>
@@ -68,7 +75,7 @@
                                             ${fn:substring(item.update_tm,0,11)}
                                         </td>
                                         <td>
-                                        	<button type="button" onclick="location.href='/admin/exam/question_list.do?exam_idx=${item.idx}'">문제 확인</button>
+                                        	<button type="button" onclick="location.href='/admin/exam/question_list.do?exam_idx=${item.idx}&category=${item.category }'">문제 확인</button>
                                         	<button type="button" onclick="location.href='/admin/exam/update.do?idx=${item.idx}'">관리</button>
                                         	<button type="button"  onclick="location.href='/admin/exam/status.do?idx=${item.idx}&category=${item.category }'">통계</button>
                                         </td>

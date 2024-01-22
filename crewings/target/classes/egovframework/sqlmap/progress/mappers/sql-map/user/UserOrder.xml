@@ -10,8 +10,8 @@
 	</select>
 	
 	<insert id="setOrderDataInsert" parameterType="UserOrderVo">
-		INSERT INTO TBL_ORDER (PRODUCT_IDX , PRODUCT_PRICE , MEMBER_IDX , MEMBER_ID , MEMBER_NAME , TYPE , CREATE_TM , UPDATE_TM )
-		VALUES(#{product_idx}, #{product_price} , #{member_idx} , #{member_id} , #{member_name} , #{type} , now() , now())
+		INSERT INTO TBL_ORDER (PRODUCT_IDX , PRODUCT_PRICE , PRODUCT_NAME ,  MEMBER_IDX , MEMBER_ID , MEMBER_NAME , TYPE , COMENT , CATEGORY ,  CREATE_TM , UPDATE_TM )
+		VALUES(#{product_idx}, #{product_price} , #{product_name} , #{member_idx} , #{member_id} , #{member_name} , #{type} , #{coment} , #{category} , now() , now())
 	</insert>
 	
 	<update id="setOrderDataUpdate" parameterType="UserOrderVo">

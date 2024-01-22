@@ -52,7 +52,7 @@
                         <div class="sc_con" id="div_con">
                             <div class="title">
                                 <span></span>
-                                <span>게시글 등록</span>
+                                <span>진단 수정</span>
                             </div>
                             <div class="member_register_wrap">
                                 <div class="member_input_wrap">
@@ -60,6 +60,21 @@
                                         <li>
                                             <span class="list_t">자가진단 명</span>
                                             <input class="input_title" type="text" id="name" name="name" value="${model.view.name }">
+                                        </li>
+                                        <li>
+                                        	<div id="changeImg" style="width:227px;heigth:295px;">
+											<img style="width:100%;height:100%;object-fit:cover" id="preview_img" src="/resources/upload/exam/image/${model.view.image }"    alt="no"/>
+											</div>
+                                           	<span class="list_t">대표 이미지 선택</span>
+                                            <input type="file" id="file1" name="file1" onchange="changeValue(this)">
+											<input type="hidden" id="image" name="image">
+                                        </li>
+                                        <li>
+                                        	<span class="list_t">유형</span>
+                                        	<select name="category">
+                                        		<option value="0"   <c:if test="${model.view.category == '0' }">selected="selected"</c:if>  >설문</option>
+                                        		<option value="1" <c:if test="${model.view.category == '1' }">selected="selected"</c:if> >진단</option>
+                                        	</select>
                                         </li>
                                         <li>
                                         	<span class="list_t">대분류</span>
@@ -88,8 +103,16 @@
                                         	<input type="text" name="point" value="${model.view.point }"> 
                                         </li>
                                         <li>
+                                        	<span class="list_t">설명</span>
+                                        	<input class="input_size mr" type="text" name="coment" id="coment" value="${model.view.coment }"/>
+                                        </li>
+                                        <li>
                                         	<span class="list_t">개요</span>
                                         	<textarea name="content" id="editor">${model.view.content }</textarea>
+                                        </li>
+                                        <li>
+                                        	<span class="list_t">인사말</span>
+                                        	<textarea name="greet" id="editor2">${model.view.greet }</textarea>
                                         </li>
                                     </ul>
                                 </div>
@@ -139,6 +162,10 @@
 	import editor from '/resources/ckeditor/editor.js'
     $(document).ready(function () {
         editor("#editor").then(editor => {
+        	// some code..
+            // then 이후에 받은 editor를 다른 변수로 받아주시는 편이 좋습니다!
+        })
+editor("#editor2").then(editor2 => {
         	// some code..
             // then 이후에 받은 editor를 다른 변수로 받아주시는 편이 좋습니다!
         })

@@ -72,7 +72,7 @@
                     	$('#location_'+index).append(location_val);
                         </script>
                         <div class="sul"><span class="red_01"><strong>${model.list[0].price }P</strong></div>
-                        <div class="link pointer" data-toggle="modal" data-target="#myModal_03">구입하기</div>
+                        <div class="link pointer" data-toggle="modal" data-target="#myModal_03"  onclick="ProductOrder('${item.name}','${item.price}','${item.image}','${item.idx}')">구입하기</div>
                     </div>
                 </div>
                 </c:forEach>
@@ -92,12 +92,12 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="total font_noto">차감포인트 : <span class="red_01">${model.list[0].price }P</span></div>
-                    <div class="img max_img"><img src="/resources/upload/product/image/${model.list[0].image }" alt=""></div>
-					<div class="tit">${model.list[0].name }</div>
+                    <div class="total font_noto">차감포인트 : <span class="red_01" name="product_point"></span></div>
+                    <div class="img max_img"><img name="product_img" src="/resources/upload/product/image/" alt=""></div>
+					<div class="tit" name="product_name"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">구매하기</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="orderInsert()">구매하기</button>
                 </div>
             </div>
         </div>
@@ -105,9 +105,66 @@
 </div>
 <!-- 사은품모달 끝 -->
 
+<form action="/" name="orderForm" id="orderForm" style="display:none;">
+	<input type="hidden" name="product_idx" value="">
+	<input type="hidden" name="product_price" value="">
+	<input type="hidden" name="product_name" value="">
+	<input type="hidden" name="member_id" value="${sessionScope.UserId }">
+	<input type="hidden" name="member_name" value="${sessionScope.UserName }">
+	<input type="hidden" name="member_idx" value="${sessionScope.UserIdx }">
+	<input type="hidden" name="type" value="0">
+	<input type="hidden" name="category" value="0">
+	<input type="hidden" name="coment" value="">
+</form>
+
 <!--공통하단-->
 <%@ include file="../../include/user/footer.jsp" %>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script type="text/javascript">
+
+	function ProductOrder(name , price , image , product_idx){
+		
+		$('[name=product_idx]').val(product_idx);
+		$('[name=product_price]').val(price);
+		$('[name=product_point]').html(price);
+		$('[name=product_name]').val(name);
+		$('[name=product_img]').attr('src','/resources/upload/product/image/'+image);
+		$('[name=product_name2]').html(name);
+		
+		
+	}
+	
+	function orderInsert(){
+		
+		var result = confirm('구매신청 하시겠습니까?');
+		
+		if(!result){
+			return;
+		}
+		
+		var formData = $('#orderForm').serialize();
+		
+		$.ajax({
+			url : '/user/order/insert.do',
+			type : 'POST',
+			data : formData,
+			success : function(status , success , xhr){
+				
+				console.log('product_order : success');
+				
+				alert('상품신청이 완료되었습니다.');
+				location.href='/index.do';
+				
+			},
+			error : function(status , error , xhr){
+				
+				console.log('product_order : fail');
+				
+			}
+		})
+		
+		
+		
+	}
 
 </script>

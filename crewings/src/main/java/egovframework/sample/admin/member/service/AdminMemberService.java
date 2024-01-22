@@ -14,4 +14,6 @@ public interface AdminMemberService {
 
 	public String getIdCheck(AdminMemberVo adminMemberVo);
 
+	public void setPoint(AdminMemberVo adminMemberVo, String string);
+
 }

@@ -10,6 +10,7 @@ public class AdminExamVo extends SearchVo{
 	String m_category = "";
 	String type = "";
 	String content = "";
+	String greet = "";
 	String image = "";
 	String image_change_bool = "";
 	String coment = "";
@@ -50,6 +51,12 @@ public class AdminExamVo extends SearchVo{
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getGreet() {
+		return greet;
+	}
+	public void setGreet(String greet) {
+		this.greet = greet;
 	}
 	public String getContent() {
 		return content;

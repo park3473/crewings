@@ -330,7 +330,8 @@ function question_select(){
 	//window.open('/admin/question/select_list.do?type='+$('[name=type]').val()+'' , '_blank' ,'width=1200,heigth=1600');
 	var typeValue = $('#question_insertForm [name=type]').val();
 	var exam_idx = $('#question_insertForm [name=exam_idx]').val();
-	var url = '/admin/question/select_list.do?type=' + typeValue+'&exam_idx='+exam_idx;
+	var category = $('#question_insertForm [name=category]').val();
+	var url = '/admin/question/select_list.do?type=' + typeValue+'&exam_idx='+exam_idx+'&category='+category;
 
 	window.open(url, '문제 연결', 'width=1600, height=800');
 	

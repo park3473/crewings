@@ -125,6 +125,14 @@ public class UserExamServiceImpl implements UserExamService {
 		
 		return model;
 	}
+
+	@Override
+	public List<?> getIndexList() {
+		
+		List<?> list = userExamMapper.getIndexList();
+		
+		return list;
+	}
 	
 	
 	

@@ -148,6 +148,15 @@ public class AdminMemberController {
 		
 	}
 	
+	@RequestMapping(value="/admin/member/point.do" , method = RequestMethod.POST)
+	public void AdminMemberPoing(@ModelAttribute("AdminMemberVo")AdminMemberVo AdminMemberVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		String POINT_TYPE = request.getParameter("POINT_TYPE") != null ? request.getParameter("POINT_TYPE") : "UP";
+		
+		adminMemberService.setPoint(AdminMemberVo , POINT_TYPE);
+		
+	}
+	
 	
 	
 }

@@ -44,7 +44,6 @@
                 	<div>
                     <form action="./insert.do" method="post" name="insertForm" id="insertForm" enctype="multipart/form-data">
                         <input type="hidden"  name="csrf" value="${CSRF_TOKEN}" />
-                        <input type="hidden" name="board_idx" value="${model.BoardConfig.idx }"  />
                         <input type="hidden" name="level" value="1"  />
                         <input type="hidden" name="type" value="0"  />
                         <div class="sc_con" id="div_con">
@@ -60,12 +59,19 @@
                                             <input class="input_size mr" type="text" id="name" name="name">
                                         </li>
                                         <li>
-                                        	<div style="width:227px;heigth:295px;">
+                                        	<div id="changeImg" style="width:227px;heigth:295px; display:none;">
 											<img style="width:100%;height:100%;object-fit:cover" id="preview_img" src="" alt="no"/>
 											</div>
-                                           	<span class="list_t">상품 이미지 선택</span>
+                                           	<span class="list_t">대표 이미지 선택</span>
                                             <input type="file" id="file1" name="file1" onchange="changeValue(this)">
 											<input type="hidden" id="image" name="image">
+                                        </li>
+                                        <li>
+                                        	<span class="list_t">유형</span>
+                                        	<select name="category">
+                                        		<option value="0">설문</option>]
+                                        		<option value="1">진단</option>]
+                                        	</select>
                                         </li>
                                         <li>
                                         	<span class="list_t">대분류</span>
@@ -100,6 +106,10 @@
                                         <li>
                                         	<span class="list_t">개요</span>
                                         	<textarea name="content" id="editor"></textarea>
+                                        </li>
+                                        <li>
+                                        	<span class="list_t">인사말</span>
+                                        	<textarea name="greet" id="editor2"></textarea>
                                         </li>
                                     </ul>
                                 </div>
@@ -142,6 +152,10 @@
 	import editor from '/resources/ckeditor/editor.js'
     $(document).ready(function () {
         editor("#editor").then(editor => {
+        	// some code..
+            // then 이후에 받은 editor를 다른 변수로 받아주시는 편이 좋습니다!
+        })
+	editor("#editor2").then(editor2 => {
         	// some code..
             // then 이후에 받은 editor를 다른 변수로 받아주시는 편이 좋습니다!
         })
@@ -195,6 +209,8 @@ function preview_img(input){
 	}
 	
 	reader.readAsDataURL(input.files[0]);
+	
+	$('#changeImg').show();
 	
 }
 

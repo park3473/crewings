@@ -67,6 +67,18 @@
 	<select id="getIdCheck" parameterType="AdminMemberVo" resultType="int">
 		SELECT COUNT(*) FROM TBL_MEMBER WHERE MEMBER_ID = #{member_id}
 	</select>
+	
+	<update id="setMemberPointUp" parameterType="AdminMemberVo">
+		UPDATE TBL_MEMBER
+		SET POINT = POINT + #{point}
+		WHERE MEMBER_ID = #{member_id}
+	</update>
+	
+	<update id="setMemberPointDown" parameterType="AdminMemberVo">
+		UPDATE TBL_MEMBER
+		SET POINT = POINT - #{point}
+		WHERE MEMBER_ID = #{member_id}
+	</update>
 
 
 </mapper>
