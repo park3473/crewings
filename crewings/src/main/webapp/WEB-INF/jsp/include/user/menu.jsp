@@ -28,7 +28,7 @@
         	<a href="/view/login.do" class="bg_01">로그인</a><a href="/view/agree.do">회원가입</a>
         	</c:if>
         	<c:if test="${sessionScope.Login == 'OkOk' }">
-        	<a href="/view/logout.do" class="bg_01">로그아웃</a><c:if test="${sessionScope.UserLevel == '73' }"><a href="/admin/index.do">관리자</a></c:if>
+        	<a href="/view/logout.do" class="bg_01">로그아웃</a><c:if test="${sessionScope.UserLevel == '73' }"><a href="/admin/exam/list.do">관리자</a></c:if>
         	</c:if>
         </span>
 		</li>
@@ -53,21 +53,13 @@
         <!--모바일메뉴버튼-->
         <nav id="nav">
         <div class="nav-inner">
-            <div class="util-menu c_none">
+            <div class="util-menu">
                 <!--인사말및 로고처리-->
                 <div class="welcome">
                     Welcome to THERASET®
                 </div>
                 <!--인사말및 로고처리끝-->
                 <!--로그인-->
-                <div class="util-menu-group bottom">
-                    <a href="/"><span>정보수정</span></a><span class="gab">ㅣ</span>
-                    <a href="#"><span>로그아웃</span></a><span class="gab">ㅣ</span>
-                    <a href="#"><span>관리자</span></a>
-                    <a href="#"><span>회원가입</span></a><span class="gab">ㅣ</span>
-                    <a href="#"><span>로그인</span></a>
-                    <a href="/"><span>HOME</span></a><span class="gab">ㅣ</span>
-                </div>
                 <!--로그인끝-->
                 <!--셀렉트박스-->
                 <div class="menu">

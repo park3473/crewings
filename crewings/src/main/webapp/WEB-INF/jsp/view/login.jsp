@@ -32,12 +32,12 @@
 		<input type="text" name="member_id" placeholder="아이디를 입력해주세요" class="pad_10 col-sm-12">
 		<div class="pad_10 col-sm-12"></div>
 		<p class="login_txt">PASSWORD</p>
-		<input type="text" name="password"  placeholder="비밀번호를 입력해주세요" class="pad_10 col-sm-12">
+		<input type="password" name="password"  placeholder="비밀번호를 입력해주세요" class="pad_10 col-sm-12">
 		<div class="pad_15 col-sm-12"></div>
 		<button type="button" onclick="login()" class="btn_01">Login</button>
 		<div class="col-sm-12 pad_10">
 			<div class="d-flex justify-content-end">
-				<a href="#">아이디 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="#">비밀번호 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="#">회원가입</a>
+				<a href="#" onclick="IdCheck()">아이디 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="#" onclick="PwCheck()">비밀번호 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="/view/agree.do">회원가입</a>
 			</div>
 		</div>
 	</form>
@@ -48,4 +48,38 @@
 
 <!--공통하단-->
 <%@ include file="../include/user/footer.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/sweetalert/sweetalert2.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript">
+
+	function IdCheck(){
+
+		Swal.fire({
+        title: '아이디 찾기',
+        html:
+			'<input id="input1" name="name" class="swal2-input" placeholder="이름 입력">' +
+			'<input id="input2" name="phone" class="swal2-input" placeholder="번호 입력">',
+		focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: '아이디 찾기',
+        cancelButtonText: '취소',
+        preConfirm: () => {
+            const MemberName = $('[name=name]').val();
+			const MemberPhone = $('[name=phone]').val();
+            return { MemberName: MemberName, MemberPhone: MemberPhone };
+        }
+    }).then((result) => {
+        if (result.value) {
+            console.log('이름' + result.value.MemberName + '전화번호' + result.value.MemberPhone);
+        }
+    });
+
+	}
+
+	function PwCheck(){
+
+	}
+
+</script>

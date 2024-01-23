@@ -48,7 +48,7 @@
                                         <th class="setting">비고</th>
                                     </tr>
                                     <c:forEach var="item" items="${model.list}" varStatus="status">
-                                    <tr data-role="button" data-id="${item.idx}"  >
+                                    <tr data-role="button" data-id="${item.idx}"  data-itemtotalcount="${model.itemtotalcount}" data-page="${model.page}" data-itemcount="${model.itemcount}">
                                         <td>${model.itemtotalcount - (status.index + model.page *  model.itemcount)}</td>
                                         <td>${item.name }</td>
                                         <td>${item.type }</td>

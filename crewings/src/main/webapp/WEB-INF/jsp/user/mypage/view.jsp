@@ -100,12 +100,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="total font_noto">신청가능금액 : <span class="red_01">${model.view.point }P</span></div>
+                    <div>
+                        <select name="price" class="form-control" style="color: black;">
+                            <option value="">금액을 선택해주세요.</option>
+                        </select>
+                    </div>
                     <input type="text" class="form-control" id="bank" placeholder="은행명">
-                    <input type="text" class="form-control" id="name" placeholder="예금주명">
-                    <input type="text" class="form-control" id="number" placeholder="계좌번호">
+                    <input type="text" class="form-control" id="bank_name" placeholder="예금주명">
+                    <input type="text" class="form-control" id="bank_number" placeholder="계좌번호 - 없이 적어주세요">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">신청하기</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="orderInsert()">신청하기</button>
                 </div>
             </div>
         </div>
@@ -113,7 +118,61 @@
 </div>
 <!-- 현금모달 끝 -->
 
+<form action="/" name="orderForm" id="orderForm" style="display:none;">
+	<input type="hidden" name="product_idx" value="0">
+	<input type="hidden" name="product_price" value="">
+	<input type="hidden" name="product_name" value="현금">
+	<input type="hidden" name="member_id" value="${sessionScope.UserId }">
+	<input type="hidden" name="member_name" value="${sessionScope.UserName }">
+	<input type="hidden" name="member_idx" value="${sessionScope.UserIdx }">
+	<input type="hidden" name="type" value="0">
+	<input type="hidden" name="category" value="1">
+	<input type="hidden" name="coment" value="">
+</form>
+
 <!--공통하단-->
 <%@ include file="../../include/user/footer.jsp" %>
 <script type="text/javascript">
+    $(document).ready(function(){
+        var total_point = parseInt('${model.view.point}');
+        for(var i = 0; i < Math.floor(total_point/1000) ; i ++){
+            var html = '<option value="'+(i+1)*1000+'">'+(i+1)*1000+'</option>'
+            $('[name=price]').append(html);
+        }
+    });
+
+    function orderInsert(){
+
+        var result = confirm('해당 포인트를 현금으로 교환신청 하시겠습니까?');
+        if(!result){
+            return;
+        }
+
+        $('[name=product_price]').val($('[name=price]').val());
+        $('[name=coment]').val($('#bank').val() + '_' + $('#bank_name').val() + '_' + $('#bank_number').val());
+
+        var formData = $('#orderForm').serialize();
+		
+		$.ajax({
+			url : '/user/order/insert.do',
+			type : 'POST',
+			data : formData,
+			success : function(status , success , xhr){
+				
+				console.log('product_order : success');
+				
+				alert('현금교환신청이 완료되었습니다.');
+				location.href='/index.do';
+				
+			},
+			error : function(status , error , xhr){
+				
+				console.log('product_order : fail');
+				
+			}
+		})
+
+
+    }
+
 </script>

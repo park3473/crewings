@@ -304,7 +304,19 @@ function createPieChart(canvasId, data) {
                 title: {
                     display: false,
                     text: canvasId
-                }
+                },
+                datalabels: {
+                    backgroundColor: function(context) {
+                      return context.dataset.backgroundColor;
+                    },
+                    borderRadius: 4,
+                    color: 'white',
+                    font: {
+                      weight: 'bold'
+                    },
+                    formatter: Math.round,
+                    padding: 6
+                  }
             }
         },
     });
@@ -431,7 +443,14 @@ $(document).ready(function () {
 					    	<canvas id="pieChartAddressLocal"  width="400px" height="400px" ></canvas>
 					    </div>
                     </div>
-                    
+                
+                    <div class="status_div">
+                        <h2>전체 인식도 (차트)</h2>
+                        <div class="chart" >
+                            <canvas id="chart_0"  width="400" height="400" ></canvas>
+                        </div>
+                      </div>
+
                 	<div class="status_div">
 		    <h2>영역별 인식도 (차트)</h2>
 		    <div class="chart" >
@@ -675,6 +694,9 @@ questions.forEach(function(question) {
     answerKey[question.idx] = question.select_val;
 });
 
+var totalCorrectCounts = 0;
+var totalQuestionCounts = 0;
+
 // 문제 유형별 정답 카운트 및 전체 문제 수 카운트
 var correctCounts = {}, totalCounts = {};
 results.forEach(function(result) {
@@ -688,8 +710,10 @@ results.forEach(function(result) {
 
         if (answer === answerKey[questionIdx]) {
             correctCounts[questionType]++;
+            totalCorrectCounts++;
         }
         totalCounts[questionType]++;
+        totalQuestionCounts++;
     });
 });
 
@@ -698,6 +722,39 @@ var scoresPerType = {};
 for (var type in correctCounts) {
     scoresPerType[type] = (correctCounts[type] / totalCounts[type]) * 100;
 }
+
+var totalScoresPer = (totalCorrectCounts / totalQuestionCounts) * 100;
+
+var ctx = document.getElementById('chart_0').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [''],
+            datasets: [{
+                label: '전체 정답률',
+                data: [totalScoresPer],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+               options: {
+            scales: {
+                x : {
+    		ticks: {
+        	stepSize: 10,
+      },
+max : 100,
+      beginAtZero : true,
+    }
+            },
+			indexAxis : 'y'
+        }
+});
 
 // 차트 데이터 생성
 var data = {
@@ -729,6 +786,7 @@ var barChart = new Chart(ctxBar, {
     }
 });
 
+
 $(document).ready(function () {
 	
 	$(".adm_menu_con > li").eq(3).find(".sub_menu_con").show();
@@ -736,6 +794,7 @@ $(document).ready(function () {
 	    backgroundColor: "#fff"
 	});
 });
+
 
 </script>
 

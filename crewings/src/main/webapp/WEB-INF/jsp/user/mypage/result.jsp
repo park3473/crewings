@@ -73,6 +73,13 @@ table th{font-weight:bold !important}
 		  </div>
 		
 		  <div class="section">
+		    <h2>전체 인식도 (차트)</h2>
+		    <div class="chart" >
+		    	<canvas id="chart_0"  width="400" height="400" ></canvas>
+		    </div>
+		  </div>
+
+		  <div class="section">
 		    <h2>영역별 인식도 (차트)</h2>
 		    <div class="chart" >
 		    	<canvas id="chart_1"  width="400" height="400" ></canvas>
@@ -195,6 +202,45 @@ questions.push(new Question(
 </c:forEach>
 //=====================================================================================================
 	
+// 전체 정답 갯수 구하기
+var totalQuestions = questions.length;
+var correctQuestionsCount = questions.filter(q => q.correct === 'O').length;
+var correctPercentage = (correctQuestionsCount / totalQuestions) * 100;
+
+
+console.log(correctPercentage);
+
+var ctx = document.getElementById('chart_0').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [''],
+            datasets: [{
+                label: '전체 정답률',
+                data: [correctPercentage],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x : {
+    		ticks: {
+        	stepSize: 10,
+      },
+max : 100,
+      beginAtZero : true,
+    }
+            },
+			indexAxis : 'y'
+        }
+});
+
 // type 속성을 기준으로 분류
 var questionsType= questions.reduce(function (acc, question) {
     // acc는 누적값, question은 현재 처리중인 Question 객체
