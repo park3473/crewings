@@ -8,6 +8,7 @@ public class AdminQuestionListVo {
 	String question_idx = "";
 	String create_tm = "";
 	String update_tm = "";
+	String coment = "";
 	
 	public String getIdx() {
 		return idx;
@@ -44,6 +45,12 @@ public class AdminQuestionListVo {
 	}
 	public void setUpdate_tm(String update_tm) {
 		this.update_tm = update_tm;
+	}
+	public String getComent() {
+		return coment;
+	}
+	public void setComent(String coment) {
+		this.coment = coment;
 	}
 	
 	

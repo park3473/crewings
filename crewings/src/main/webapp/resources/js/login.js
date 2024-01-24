@@ -26,7 +26,7 @@ function login(){
 						console.log(data.indexOf('true'));
 						
 						alert('로그인 성공');
-						location.href='/index.do';
+						location.href = '${model.URL}';
 					}else if(data.indexOf('false') > -1){
 						
 						if(data.indexOf('0') > 0){

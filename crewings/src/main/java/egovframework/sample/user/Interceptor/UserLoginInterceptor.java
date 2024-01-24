@@ -1,5 +1,6 @@
 package egovframework.sample.user.Interceptor;
 
+import java.net.URLEncoder;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +49,14 @@ public class UserLoginInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		}else 
 		{
-			response.sendRedirect(request.getContextPath()+"/view/login.do");
+			StringBuffer url = request.getRequestURL();
+			String queryString = request.getQueryString();
+
+			if (queryString != null) {
+			    url.append("?").append(queryString);
+			}
+
+			response.sendRedirect(request.getContextPath() + "/view/login.do?URL=" + URLEncoder.encode(url.toString(), "UTF-8"));
 			return false;
 		}
 		

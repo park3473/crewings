@@ -37,4 +37,6 @@ public interface AdminExamMapper {
 
 	public List<?> getExamResultMemberAll(AdminExamVo adminExamVo);
 
+	public void setAdminExamQuestionListComent(AdminQuestionListVo adminQuestionListVo);
+
 }

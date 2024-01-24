@@ -18,6 +18,7 @@ public class AdminQuestionVo extends SearchVo {
 	String create_tm = "";
 	String update_tm = "";
 	String exam_idx = "";	//다른 exam_idx 필요할때
+	String coment = "";
 	
 	public String getIdx() {
 		return idx;
@@ -102,6 +103,12 @@ public class AdminQuestionVo extends SearchVo {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public String getComent() {
+		return coment;
+	}
+	public void setComent(String coment) {
+		this.coment = coment;
 	}
 	
 	

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.system.util.SUtil;
 
+import egovframework.sample.admin.question.model.AdminQuestionListVo;
 import egovframework.sample.admin.question.model.AdminQuestionVo;
 import egovframework.sample.admin.question.service.AdminQuestionService;
 

@@ -89,8 +89,26 @@ console.log(select);
                     <c:forEach var="item" items="${model.question }" varStatus="status">
                     <div class="status_div">
                     	<h2>문제별 차트 (${status.index + 1 }번 문항)</h2>
+                    	<div>
+                    		<h1>${item.name }</h1>
+                    		<p>
+                    		<c:forEach var="choice" items="${fn:split(item.Choices, '#')}"  varStatus="select_status">
+							 	${select_status.index + 1 }. ${choice}
+							 </c:forEach>
+							 </p>
+                    	</div>
 					    <div class="chart">
 					    	<canvas id="questionChart_${status.index + 1 }"  width="400px" height="400px" ></canvas>
+					    </div>
+					    <div>
+					    	<div>
+					    		<form id="select_coment"  class="select_coment">
+					    			<input type="hidden" name="idx" value="${item.list_idx }" >
+						    		<h1>진단 평가</h1>
+						    		<textarea name="coment"  rows="" cols="">${item.coment }</textarea>
+						    		<button type="submit" >평가 저장</button>
+					    		</form>
+					    	</div>
 					    </div>
                     </div>
                     </c:forEach>
@@ -115,7 +133,7 @@ console.log(select);
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
 
-function Question(idx , name , type , content , objectives , select_type , select_val , solution , right , wrong , correct , select_cnt){
+function Question(idx , name , type , content , objectives , select_type , select_val , solution , right , wrong , correct , select_cnt , select){
 	
 	this.idx = idx;
 	this.name = name;
@@ -129,6 +147,7 @@ function Question(idx , name , type , content , objectives , select_type , selec
 	this.wrong = wrong;
 	this.correct = correct;
 	this.select_cnt = select_cnt;
+	this.select = select;
 	
 }
 
@@ -143,11 +162,16 @@ questions.push(new Question(
 		'${item.objectives}',
 		'${item.select_type}',
 		'${item.select_val}',
-		'${item.solution}',
+		`${item.solution}`,
 		'${item.right}',
 		'${item.wrong}',
 		'O',
-		'${item.select_count}'
+		'${item.select_count}',
+		[
+			 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
+			 '${choice}',
+			 </c:forEach>
+			 ]
 		));
 </c:forEach>
 //=====================================================================================================
@@ -394,6 +418,41 @@ function createPieCharts(answerFrequencies) {
 // 차트 생성
 createPieCharts(answerFrequencies);
 
+document.querySelectorAll('.select_coment').forEach(function(form) {
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // 폼의 기본 제출 동작을 방지
+
+        var result = confirm('정말 해당 평가를 저장하시겠습니까?');
+        
+        if(!result){
+        	return;
+        }
+        
+        var formData = new FormData(this); // 현재 폼의 데이터
+
+        question_comment($( this ).serialize()); // 함수에 폼 데이터를 전달
+    });
+});
+
+function question_comment(formData){
+	
+	console.log(formData);
+	
+	$.ajax({
+		url : '/admin/question/coment.do',
+		type : 'POST',
+		data : formData,
+		success : function(status , xhr , success){
+			console.log('coment set : success');
+			alert('평가가 저장 되었습니다.');
+		},
+		error : function(xhr , error , status){
+			console.log('coment set : error');
+		}
+	})
+	
+}
+
 
 $(document).ready(function () {
 	
@@ -512,7 +571,7 @@ questions.push(new Question(
 		'${item.objectives}',
 		'${item.select_type}',
 		'${item.select_val}',
-		'${item.solution}',
+		`${item.solution}`,
 		'${item.right}',
 		'${item.wrong}',
 		[

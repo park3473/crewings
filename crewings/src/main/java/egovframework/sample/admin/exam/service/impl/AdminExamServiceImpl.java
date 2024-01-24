@@ -183,5 +183,12 @@ public class AdminExamServiceImpl implements AdminExamService {
 		
 		return model;
 	}
+
+	@Override
+	public void setAdminExamQuestionListComent(AdminQuestionListVo adminQuestionListVo) {
+		
+		adminExamMapper.setAdminExamQuestionListComent(adminQuestionListVo);
+		
+	}
 	
 }

@@ -445,7 +445,7 @@ questions.push(new Question('${item.name}','${item.category}',[
 			 '${choiceImage}',
 			 </c:forEach>	
 		],
-		'${item.solution}',
+		`${item.solution}`,
 		'${item.content}',
 		'${item.greet}'
 		));
@@ -511,7 +511,9 @@ function answer(id, choice,select_val){
 			$('[name=select_list]').val($('[name=select_list]').val()+','+select_val);
 		}
 
-		next_quiz()
+		$('#quiz_btn button').attr('disabled','disabled');
+		$('#quiz_solution').show();
+		$('#next_btn').show();
 		
 		
 		

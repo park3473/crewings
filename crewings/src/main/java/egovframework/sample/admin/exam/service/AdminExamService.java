@@ -21,5 +21,7 @@ public interface AdminExamService {
 
 	public ModelMap getStatusData(AdminExamVo adminExamVo);
 
+	public void setAdminExamQuestionListComent(AdminQuestionListVo adminQuestionListVo);
+
 
 }

@@ -74,10 +74,14 @@
                                         <td>
                                             ${fn:substring(item.update_tm,0,11)}
                                         </td>
+                                        <td style="display:none;">
+                                        	<div id="qrcode_${status.index + 1 }"></div>
+                                        </td>
                                         <td>
                                         	<button type="button" onclick="location.href='/admin/exam/question_list.do?exam_idx=${item.idx}&category=${item.category }'">문제 확인</button>
                                         	<button type="button" onclick="location.href='/admin/exam/update.do?idx=${item.idx}'">관리</button>
                                         	<button type="button"  onclick="location.href='/admin/exam/status.do?idx=${item.idx}&category=${item.category }'">통계</button>
+                                        	<button type="button"  onclick="qrCode('http://ktest01.cafe24.com//user/exam/view.do?idx=${item.idx}&category=${item.category }','${status.index + 1 }')" >Qr코드 생성</button>
                                         </td>
                                     </tr>
                                     </c:forEach>
@@ -132,6 +136,7 @@
     <!--푸터 end-->
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1/qrcode.min.js"></script>
 <script>
 
 function searchBtnClick(){
@@ -154,6 +159,28 @@ $(document).ready(function () {
 	    backgroundColor: "#fff"
 	});
 });
+
+//QR 코드 생성
+function qrCode(link , statusNumber){
+	new QRCode(document.getElementById("qrcode_"+statusNumber), {
+	    text: link,
+	    width: 128,
+	    height: 128
+	});
+	
+	// QR 코드 이미지가 생성될 때까지 기다림
+    setTimeout(function() {
+        var canvas = document.getElementById("qrcode_"+statusNumber).getElementsByTagName("canvas")[0];
+        var imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        var a = document.createElement("a");
+        a.href = imgData;
+        a.download = "QRCode.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }, 300);
+	
+}
 
 </script>
 

@@ -92,6 +92,10 @@
                                         	<span class="list_t">설문 내용</span>
                                         	<textarea name="content" id="editor"></textarea>
                                         </li>
+                                        <li>
+                                            <span class="list_t">해설</span>
+                                            <input class="input_title" type="text" id="solution" name="solution">
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

@@ -178,6 +178,13 @@ public class AdminExamController {
 		
 	}
 	
+	@RequestMapping(value="/admin/question/coment.do" , method = RequestMethod.POST)
+	public void AdminQuestionComentPost(@ModelAttribute("AdminQuestionListVo")AdminQuestionListVo AdminQuestionListVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		adminExamService.setAdminExamQuestionListComent(AdminQuestionListVo);
+		
+	}
+	
 	
 	
 }

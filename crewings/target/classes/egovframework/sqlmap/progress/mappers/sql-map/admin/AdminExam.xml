@@ -122,7 +122,7 @@
 	</delete>
 	
 	<select id="getStatusQuestionList" parameterType="AdminExamVo" resultType="hashMap">
-		SELECT Q.*, COUNT(S.idx) AS select_count , GROUP_CONCAT(S.content ORDER BY S.seq SEPARATOR '#') AS Choices,
+		SELECT Q.*,  L.idx AS list_idx , L.coment , COUNT(S.idx) AS select_count , GROUP_CONCAT(S.content ORDER BY S.seq SEPARATOR '#') AS Choices,
 		    GROUP_CONCAT(S.image ORDER BY S.seq SEPARATOR '#') AS ChoicesImage
 		FROM TBL_QUESTION Q
 		JOIN TBL_QUESTION_LIST L ON Q.idx = L.question_idx 
@@ -144,6 +144,13 @@
 	WHERE 
 	    e.idx = #{idx}
 	</select>
+	
+	<update id="setAdminExamQuestionListComent" parameterType="AdminQuestionListVo">
+		UPDATE TBL_QUESTION_LIST SET
+		COMENT = #{coment},
+		UPDATE_TM= now()
+		WHERE IDX = #{idx}
+	</update>
 
 
 </mapper>

@@ -91,12 +91,10 @@
                                         	<span class="list_t">문제 내용</span>
                                         	<textarea name="content" id="editor">${model.view.content }</textarea>
                                         </li>
-                                        <c:if test="${model.view.category == '1'  }">
                                         <li>
                                             <span class="list_t">해설</span>
                                             <input class="input_title" type="text" id="solution" name="solution" value="${model.view.solution }"  >
                                         </li>
-                                        </c:if>
                                     </ul>
                                 </div>
                             </div>

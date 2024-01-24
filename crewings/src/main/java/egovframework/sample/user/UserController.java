@@ -120,10 +120,25 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping(value = "/view/login.do" , method = RequestMethod.GET)
-	public String UserLoginPage(HttpServletRequest request , HttpServletResponse response) {
+	@RequestMapping(value = {"/view/login.do" , "/view/logout.do"} , method = RequestMethod.GET)
+	public ModelAndView UserLoginPage(HttpServletRequest request , HttpServletResponse response) {
 		
-		return "view/login";
+		String URL = request.getParameter("URL") != null ? request
+				.getParameter("URL") : ((HttpServletRequest) request).getContextPath()+"/index.do";
+		
+		ModelMap model = new ModelMap();
+
+		HttpSession session = request.getSession();
+		session.setAttribute("Login", "NoNo");
+		session.setAttribute("UserId", null);
+		session.setAttribute("UserIdx", null);
+		session.setAttribute("UserLevel", null);
+		session.setAttribute("UserName", null);
+		session.setAttribute("UserType", null);
+		
+		model.put("URL", URL);
+		
+		return new ModelAndView("view/login" , "model" , model);
 		
 	}
 	
@@ -213,21 +228,6 @@ public class UserController {
 		}
 		
 
-	}
-	
-	@RequestMapping(value = "/view/logout.do" , method = RequestMethod.GET)
-	public String UserLogOut(HttpServletRequest request , HttpServletResponse response) {
-		
-		HttpSession session = request.getSession();
-		session.setAttribute("Login", "NoNo");
-		session.setAttribute("UserId", null);
-		session.setAttribute("UserIdx", null);
-		session.setAttribute("UserLevel", null);
-		session.setAttribute("UserName", null);
-		session.setAttribute("UserType", null);
-		
-		return "view/index";
-		
 	}
 	
 	@RequestMapping(value="/view/agree.do" , method = RequestMethod.GET)
