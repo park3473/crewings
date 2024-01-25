@@ -116,9 +116,6 @@
 	                                        </ul>
                                         	</c:if>
                                         </li>
-                                        <li <c:if test="${fn:indexOf(fullURL, '/banner/list') > -1}">class="nav_active"</c:if>>
-                                            <a href="${pageContext.request.contextPath}/admin/banner/list.do">배너 관리</a>
-                                        </li>
                                     </ul>
                                 </li>
                                 <li <c:if test="${fn:indexOf(fullURL , '/exam/') > -1}">
@@ -146,27 +143,27 @@
                                         	</c:if>
                                         </li>
                                         <li <c:if test="${fn:indexOf(fullURL, 'question/list.do?category=1') > -1}">class="nav_active"</c:if>>
-                                            <a href="${pageContext.request.contextPath}/admin/question/list.do?category=1">진단 리스트</a>
+                                            <a href="${pageContext.request.contextPath}/admin/question/list.do?category=1">진단 문제</a>
 			<c:if test="${fn:indexOf(fullURL , '/question/list.do?category=1') > -1}">
 	                                        <ul class="sub_menu_ob">
 		                                        <li <c:if test="${fn:indexOf(fullURL, '/question/list.do?category=1') > -1}">class="nav_active"</c:if>>
-		                                            <a href="#">진단 리스트</a>
+		                                            <a href="#">진단 문제 리스트</a>
 		                                        </li>
 					<li <c:if test="${fn:indexOf(fullURL, 'question/insert.do?category=1') > -1}">class="nav_active"</c:if>>
-                                            			<a href="${pageContext.request.contextPath}/admin/question/insert.do?category=1">진단 생성</a>
+                                            			<a href="${pageContext.request.contextPath}/admin/question/insert.do?category=1">진단 문제 생성</a>
                                         		</li>
 	                                        </ul>
                                         	</c:if>
                                         </li>                                    
                                         <li <c:if test="${fn:indexOf(fullURL, 'question/list.do?category=0') > -1}">class="nav_active"</c:if>>
-                                            <a href="${pageContext.request.contextPath}/admin/question/list.do?category=0">설문 리스트</a>
+                                            <a href="${pageContext.request.contextPath}/admin/question/list.do?category=0">설문 문제</a>
 				<c:if test="${fn:indexOf(fullURL , '/question/list.do?category=0') > -1}">
 	                                        <ul class="sub_menu_ob">
 		                                        <li <c:if test="${fn:indexOf(fullURL, '/question/list.do?category=0') > -1}">class="nav_active"</c:if>>
-		                                            <a href="#">설문 리스트</a>
+		                                            <a href="#">설문 문제 리스트</a>
 		                                        </li>
 					<li <c:if test="${fn:indexOf(fullURL, 'question/insert.do?category=0') > -1}">class="nav_active"</c:if>>
-                                            			<a href="${pageContext.request.contextPath}/admin/question/insert.do?category=0">설문 생성</a>
+                                            			<a href="${pageContext.request.contextPath}/admin/question/insert.do?category=0">설문 문제 생성</a>
                                         		</li>
 	                                        </ul>
                                         	</c:if>
@@ -184,10 +181,10 @@
                                             <span></span>
                                             <span>상품 관리</span>
                                         </div>
-                                        <li <c:if test="${fn:indexOf(fullURL, '/member/list') > -1}">class="nav_active"</c:if>>
+                                        <li <c:if test="${fn:indexOf(fullURL, '/product/list') > -1}">class="nav_active"</c:if>>
                                             <a href="${pageContext.request.contextPath}/admin/product/list.do">상품 리스트</a>
                                         </li>
-                                        <li <c:if test="${fn:indexOf(fullURL, 'member/insert') > -1}">class="nav_active"</c:if>>
+                                        <li <c:if test="${fn:indexOf(fullURL, '/product/insert') > -1}">class="nav_active"</c:if>>
                                             <a href="${pageContext.request.contextPath}/admin/product/insert.do">상품 등록</a>
                                         </li>
                                     </ul>

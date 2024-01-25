@@ -227,6 +227,62 @@ body{
 <!--공통하단-->
 <%@ include file="../../include/user/footer.jsp" %>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="/resources/js/api_key.js"></script>
+<script type="text/javascript">
+
+let currentAudio = null;
+
+function speak(speech_text) {
+	
+	if(currentAudio) {
+	    currentAudio.pause(); // 현재 재생 중인 오디오가 있다면 중지
+	    currentAudio = null;
+	  }
+	
+	  const url = "https://texttospeech.googleapis.com/v1/text:synthesize?key=" + apiKey;
+	  const data = {
+	        "audioConfig": {
+	        "audioEncoding": "LINEAR16",
+	        "effectsProfileId": [
+	          "small-bluetooth-speaker-class-device"
+	        ],
+	        "pitch": 0,
+	        "speakingRate": 1
+	      },
+	      "input": {
+	        "text": speech_text
+	      },
+	      "voice": {
+	        "languageCode": "ko-KR",
+	        "name": "ko-KR-Neural2-A"
+	      }
+	  }
+	  const otherparam = {
+	    headers: {
+	      "content-type": "application/json; charset=UTF-8"
+	    },
+	    body: JSON.stringify(data),
+	    method: "POST"
+	  }
+	  fetch(url, otherparam)
+	    .then(response => response.json())
+	    .then(res => {
+	      const blobUrl = base64ToBlobUrl(res.audioContent)
+	     currentAudio = new Audio(blobUrl); // 오디오 객체를 전역 변수에 저장
+	      currentAudio.play();
+	    })
+	    .catch(error => console.error(error));
+	}
+
+	function base64ToBlobUrl(base64) {
+	  const bin = atob(base64.replace(/^.*,/, ''));
+	  const buffer = new Uint8Array(bin.length);
+	  for (let i = 0; i < bin.length; i++) {
+	    buffer[i] = bin.charCodeAt(i);
+	  }
+	  return URL.createObjectURL(new Blob([buffer.buffer], {type: "audio/mp3"}));
+	}
+</script>
 <c:if test="${model.beforeData.category == '1' }">
 <script type="text/javascript">
 //퀴즈 객체 생성
@@ -290,6 +346,9 @@ function update_quiz(){
     questionElement.innerHTML = currentQuestion.text; 
     questionContentElement.innerHTML = currentQuestion.content;
 
+    var speech_text = '';
+	speech_text += currentQuestion.text;
+    
     // 선택지가 있는 경우에만 선택지 관련 HTML 생성
     if(currentQuestion.choice_cnt && currentQuestion.choice_cnt > 0){
         var html = '';
@@ -305,6 +364,9 @@ function update_quiz(){
             var choiceButton = document.getElementById('btn'+i);
             choiceButton.innerHTML = currentQuestion.choice[i];
             answer('btn' + i, choiceButton, i+1);
+            speech_text += (i+1)+'번'
+            speech_text += currentQuestion.choice[i];
+            
         }
 
         // 선택지가 있으므로 next 버튼은 숨김
@@ -317,6 +379,12 @@ function update_quiz(){
 	$('#quiz_solution').empty();
 	var solution = '<p>'+quiz.questions[quiz.questionIndex].solution+'</p>';
 	$('#quiz_solution').append(solution);
+	
+	console.log(speech_text);
+	
+	if(speech_text != ''){
+		speak(speech_text);
+	}
 	
 	progress();
 }
@@ -334,19 +402,33 @@ function answer(id, choice,select_val){
 		}else{
 			$('[name=select_list]').val($('[name=select_list]').val()+','+select_val);
 		}
+		
+		var speech_text = '';
+		
 		// 정답 판정
 		if(select_val == answer){
 			console.log('true');
 			alert('정답입니다.');
 			quiz.score++;
-		} else{ alert('틀렸습니다!'); }
+			speech_text += '정답입니다.';
+		} else{
+			alert('오답입니다!'); 
+			speech_text += '오답입니다.';	
+		}
 
+		speech_text += quiz.questions[quiz.questionIndex].solution;
+		
+		console.log(speech_text);
+		
+		if(speech_text != ''){
+			speak(speech_text);
+		}
+		
 		
 		$('#quiz_btn button').attr('disabled','disabled');
 		$('#quiz_solution').show();
 		$('#next_btn').show();
-		
-		
+
 		
 		
 		
@@ -378,6 +460,11 @@ function result(){
 }
 
 function next_quiz(){
+	
+	if(currentAudio) {
+	    currentAudio.pause(); // 현재 재생 중인 오디오를 중지
+	    currentAudio = null;
+	  }
 	
 	$('#quiz_solution').hide();
 	$('#next_btn').hide();
@@ -466,6 +553,10 @@ function update_quiz(){
     questionElement.innerHTML = currentQuestion.text; 
     questionContentElement.innerHTML = currentQuestion.content;
 
+    //문제 음성 생성
+    var speech_text = '';
+	speech_text += currentQuestion.text;
+    
     // 선택지가 있는 경우에만 선택지 관련 HTML 생성
     if(currentQuestion.choice_cnt && currentQuestion.choice_cnt > 0){
         var html = '';
@@ -481,6 +572,8 @@ function update_quiz(){
             var choiceButton = document.getElementById('btn'+i);
             choiceButton.innerHTML = currentQuestion.choice[i];
             answer('btn' + i, choiceButton, i+1);
+            speech_text += (i+1)+'번'
+            speech_text += currentQuestion.choice[i];
         }
 
         // 선택지가 있으므로 next 버튼은 숨김
@@ -493,6 +586,12 @@ function update_quiz(){
 	$('#quiz_solution').empty();
 	var solution = '<p>'+quiz.questions[quiz.questionIndex].solution+'</p>';
 	$('#quiz_solution').append(solution);
+	
+	console.log(speech_text);
+	
+	if(speech_text != ''){
+		speak(speech_text);
+	}
 	
 	progress();
 }
@@ -515,6 +614,14 @@ function answer(id, choice,select_val){
 		$('#quiz_solution').show();
 		$('#next_btn').show();
 		
+		var speech_text = '';
+		speech_text += quiz.questions[quiz.questionIndex].solution;
+		
+		console.log(speech_text);
+		
+		if(speech_text != ''){
+			speak(speech_text);
+		}
 		
 		
 		
@@ -541,6 +648,11 @@ function result(){
 }
 
 function next_quiz(){
+	
+	if(currentAudio) {
+	    currentAudio.pause(); // 현재 재생 중인 오디오를 중지
+	    currentAudio = null;
+	  }
 	
 	$('#quiz_solution').hide();
 	$('#next_btn').hide();

@@ -66,7 +66,8 @@
                                             ${fn:substring(item.create_tm,0,11)}
                                         </td>
                                         <td>
-                                        	<button type="button" onclick="orderUpdateModal('${item.idx}','${item.type}','${item.category}','${item.coment}','${item.product_price}')">관리</button>
+                                        	<button type="button" onclick="orderUpdateModal('${item.idx}','${item.member_id }','${item.type}','${item.category}','${item.coment}','${item.product_price}')">관리</button>
+                                        	<button type="button" onclick="orderMemberModal('${item.member_name}' , '${item.phone}' , '${item.email}' , '${item.email_address}' , '${item.address}' , '${item.address_detail}' ,'${item.address_local}' )">주문자 확인</button>
                                         </td>
                                     </tr>
                                     </c:forEach>
@@ -110,7 +111,9 @@
 
 	<form action="/" name="orderUpdateForm"  id="orderUpdateForm" style="display:none;">
 		<input type="hidden" name="idx" value="">
+		<input type="hidden" name="member_id" value="">
 		<input type="hidden" name="type" value="">
+		<input type="hidden" name="product_price" value="">
 	</form>
 
     <!--푸터-->
@@ -131,7 +134,7 @@ $(document).ready(function () {
 	});
 });
 
-function orderUpdateModal(idx, type, category, coment, product_price) {
+function orderUpdateModal(idx,member_id ,type, category, coment, product_price) {
     Swal.fire({
         title: '주문 상태 변경',
         html: 
@@ -161,25 +164,27 @@ function orderUpdateModal(idx, type, category, coment, product_price) {
         cancelButtonText: '취소',
         preConfirm: () => {
             const selectedType = document.getElementById('order-type').value;
-            return { idx: idx, type: selectedType };
+            return { idx: idx, member_id : member_id , type: selectedType , price : product_price };
         }
     }).then((result) => {
         if (result.isConfirmed) {
-            orderUpdate(result.value.idx, result.value.type);
+            orderUpdate(result.value.idx, result.value.member_id , result.value.type , result.value.price);
         }
     });
 }
 
-function orderUpdate(idx, type) {
+function orderUpdate(idx,member_id ,type,price) {
     // 여기에 주문 업데이트 로직 구현
-   var result = confirm('정말 변경하시겠습니까?');
+   var result = confirm('정말 변경하시겠습니까?\n 처리완료로 변경시 차감된 포인트는 복구 불가능합니다.');
     
     if(!result){
     	return;
     }
     
     $('[name=idx]').val(idx);
+    $('[name=member_id]').val(member_id);
     $('[name=type]').val(type);
+    $('[name=product_price]').val(price);
     
     var formData = $('#orderUpdateForm').serialize();
 	
@@ -202,6 +207,33 @@ function orderUpdate(idx, type) {
 		}
 	})
     
+}
+
+function orderMemberModal(name , phone , email , email_address , address , address_detail , address_local ){
+	
+	Swal.fire({
+        title: '주문자 정보',
+        html: 
+            '<div>' +
+                '<label>주문자 명 : </label>' +
+                '<span>' + name + '</span>' +
+            '</div>' +
+            '<div>' +
+                '<label>주문자 번호 :  </label>' +
+                '<span>' + phone + '</span>' +
+            '</div>' +
+            '<div>' +
+            '<label>주문자 이메일 : </label>' +
+            '<span>' + email + ' @ '+ email_address+'</span>' +
+        	'</div>' +
+            '<div>' +
+            '<label>주문자 주소 : </label>' +
+            '<span>['+address_local+']' + address + ' ('+address_detail+')</span>' +
+        	'</div>' ,
+        showCancelButton: true,
+        cancelButtonText: '닫기',
+    })
+	
 }
 
 

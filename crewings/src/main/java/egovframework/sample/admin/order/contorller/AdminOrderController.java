@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import egovframework.sample.admin.member.model.AdminMemberVo;
+import egovframework.sample.admin.member.service.AdminMemberService;
 import egovframework.sample.admin.order.model.AdminOrderVo;
 import egovframework.sample.admin.order.service.AdminOrderService;
 
@@ -20,6 +22,9 @@ public class AdminOrderController {
 
 	@Autowired
 	AdminOrderService adminOrderService;
+	
+	@Autowired
+	AdminMemberService adminMemberService;
 	
 	@RequestMapping(value="/admin/order/list.do"  , method = RequestMethod.GET)
 	public ModelAndView AdminOrderAllList(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response) {
@@ -80,6 +85,19 @@ public class AdminOrderController {
 	public String AdminOrderUpdateData(@ModelAttribute("AdminOrderVo")AdminOrderVo AdminOrderVo , HttpServletRequest request , HttpServletResponse response ) {
 		
 		adminOrderService.setOrderData(AdminOrderVo , "update");
+		
+		if(AdminOrderVo.getType().equals("3")) {
+			
+			int Price = Integer.parseInt(AdminOrderVo.getProduct_price());
+			
+			AdminMemberVo member = new AdminMemberVo();
+			
+			member.setMember_id(AdminOrderVo.getMember_id());
+			member.setPoint(Price);
+			
+			adminMemberService.setPoint(member, "DOWN");
+			
+		}
 		
 		return "admin/order/list";
 		

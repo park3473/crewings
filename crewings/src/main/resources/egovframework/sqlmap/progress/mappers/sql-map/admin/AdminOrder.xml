@@ -5,21 +5,22 @@
 <mapper namespace="egovframework.sample.admin.order.service.impl.AdminOrderMapper">
 
 	<select id="getAllList" parameterType="AdminOrderVo" resultType="hashMap">
-		SELECT * FROM TBL_ORDER
+		SELECT O.* , M.phone , M.email , M.email_address , M.address , M.address_detail , M.address_local  
+		FROM TBL_ORDER O JOIN TBL_MEMBER M ON O.member_idx = M.idx
 		WHERE 1=1
 		<if test="SEARCH_TEXT != ''">
 		    <if test="SEARCH_TYPE != 'ALL'">
-	    		 AND ${SEARCH_TYPE} LIKE '%${SEARCH_TEXT}%'
+	    		 AND O.${SEARCH_TYPE} LIKE '%${SEARCH_TEXT}%'
 	    	</if>
 	    </if>
 	    <if test="UP != ''">
-	    	order by ${UP} asc
+	    	order by O.${UP} asc
 	    </if>
 	    <if test="DOWN != ''">
-	    	order by ${DOWN} desc
+	    	order by O.${DOWN} desc
 	    </if>
 	    <if test="DOWN == '' and UP == ''">
-	    	order by CREATE_TM desc
+	    	order by O.CREATE_TM desc
 	    </if>
 	    LIMIT ${LIMIT} OFFSET ${OFFSET}
 	</select>
@@ -56,22 +57,22 @@
 	<update id="setOrderDataUpdate" parameterType="AdminOrderVo">
 		UPDATE TBL_ORDER SET
 		<if test="product_idx !=  ''">
-			PRODUCT_IDX = #{product_idx]
+			PRODUCT_IDX = #{product_idx],
 		</if>
 		<if test="product_price != ''">
-			PRODUCT_PRICE = #{product_price}
+			PRODUCT_PRICE = #{product_price},
 		</if>
 		<if test="member_idx != ''">
-			MEMBER_IDX = #{member_idx}
+			MEMBER_IDX = #{member_idx},
 		</if>
 		<if test="member_id !=  ''">
-			MEMBER_ID = #{member_id}
+			MEMBER_ID = #{member_id},
 		</if>
 		<if test="member_name != ''">
-			MEMBER_NAME = #{member_name}
+			MEMBER_NAME = #{member_name},
 		</if>
 		<if test="type!= ''">
-			TYPE = #{type}
+			TYPE = #{type},
 		</if>
 		UPDATE_TM = now()
 		WHERE IDX = #{idx}
