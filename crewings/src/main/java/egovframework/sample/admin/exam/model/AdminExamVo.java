@@ -20,7 +20,7 @@ public class AdminExamVo extends SearchVo{
 	String create_tm = "";
 	String update_tm = "";
 	String category = "";
-	
+	String inquiries = "";
 	
 	public String getIdx() {
 		return idx;
@@ -117,6 +117,12 @@ public class AdminExamVo extends SearchVo{
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public String getInquiries() {
+		return inquiries;
+	}
+	public void setInquiries(String inquiries) {
+		this.inquiries = inquiries;
 	}
 	
 	

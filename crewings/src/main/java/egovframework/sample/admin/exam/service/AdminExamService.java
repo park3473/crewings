@@ -23,5 +23,11 @@ public interface AdminExamService {
 
 	public void setAdminExamQuestionListComent(AdminQuestionListVo adminQuestionListVo);
 
+	public void setAdminExamQuestionSort(AdminQuestionListVo adminQuestionListVo);
+
+	public ModelMap getResultAllList(AdminExamVo adminExamVo);
+
+	public ModelMap getExamExcelAll(AdminExamVo adminExamVo);
+
 
 }

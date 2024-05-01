@@ -75,17 +75,17 @@ public class UserExamContorller {
 	public String UserExamResultPost(@ModelAttribute("UserExamResultVo")UserExamResultVo UserExamResultVo , HttpServletRequest request , HttpServletResponse response) {
 
 		//결과 저장
-		userExamService.setExamResultData(UserExamResultVo);
+		String result_idx = userExamService.setExamResultData(UserExamResultVo);
 		
-		UserMemberVo vo = new UserMemberVo();
+		//UserMemberVo vo = new UserMemberVo();
 		
-		vo.setPoint(UserExamResultVo.getPoint());
-		vo.setMember_id(UserExamResultVo.getMember_id());
+		//vo.setPoint(UserExamResultVo.getPoint());
+		//vo.setMember_id(UserExamResultVo.getMember_id());
 		
 		//사용자 포인트 추가
-		userMemberService.setMemberPoint(vo);
+		//userMemberService.setMemberPoint(vo);
 		
-		return  "redirect:/index.do";
+		return  "redirect:/user/exam/result/view.do?idx="+result_idx+"&exam_idx="+UserExamResultVo.getExam_idx()+"&category="+UserExamResultVo.getCategory();
 		
 	}
 	

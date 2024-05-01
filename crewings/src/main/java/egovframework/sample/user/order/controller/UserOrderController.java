@@ -29,7 +29,7 @@ public class UserOrderController {
 		
 		model = userOrderService.getAllList(UserOrderVo);
 		
-		return new ModelAndView("user/order/list" , "model" , model);
+		return new ModelAndView("user/mypage/order" , "model" , model);
 		
 	}
 	

@@ -49,6 +49,7 @@
                         <input type="hidden" name="type" value="${model.view.type }" />
                         <input type="hidden" name="start_tm" value="" />
                         <input type="hidden" name="end_tm" value="" />
+						<input type="hidden" name="image_change_bool" id="image_change_bool" value="false" />
                         <div class="sc_con" id="div_con">
                             <div class="title">
                                 <span></span>
@@ -106,6 +107,16 @@
                                         	<span class="list_t">설명</span>
                                         	<input class="input_size mr" type="text" name="coment" id="coment" value="${model.view.coment }"/>
                                         </li>
+										<c:if test="${model.view.type == '1'}">
+											<li>
+												<span class="list_t">시작일</span>
+												<input class="input_size mr" type="text" name="start_tm" id="start_tm" value="${fn:substring(model.view.start_tm,0,11) }" disabled/>
+											</li>
+											<li>
+												<span class="list_t">종료일</span>
+												<input class="input_size mr" type="text" name="end_tm" id="end_tm" value="${fn:substring(model.view.end_tm,0,11) }"  disabled/>
+											</li>
+										</c:if>
                                         <li>
                                         	<span class="list_t">개요</span>
                                         	<textarea name="content" id="editor">${model.view.content }</textarea>
@@ -181,6 +192,41 @@ $(document).ready(function () {
 	});
 });
 
+//파일 이름 변경 함수
+function changeValue(obj){
+  var fileObj = obj.value;
+  var pathHeader , pathMiddle, pathEnd, allFilename, fileName, extName;
+  pathHeader = fileObj.lastIndexOf("\\");
+  pathMiddle = fileObj.lastIndexOf(".");
+  pathEnd = fileObj.length;
+  fileName = fileObj.substring(pathHeader+1, pathMiddle);
+  extName = fileObj.substring(pathMiddle+1, pathEnd);
+  allFilename = fileName+"."+extName;
+
+  $('#image').val(allFilename);
+  
+  $('#image_change_bool').val('true');
+}
+
+//프로필 사진 미리보기
+function preview_img(input){
+	const reader = new FileReader();
+	reader.onload = e => {
+		const previewImage = document.getElementById('preview_img');
+		previewImage.src = e.target.result
+	}
+	
+	reader.readAsDataURL(input.files[0]);
+	
+	$('#changeImg').show();
+	
+}
+
+//프로필 사진 등록 함수 이벤트 설정
+const inputImage = document.getElementById('file1')
+inputImage.addEventListener('change' , e => {
+	preview_img(e.target);
+})
 
 function updateClick(){
 	
@@ -239,6 +285,23 @@ function startClick(){
 	        }
 	        
 	    });
+		
+	}else{
+		console.log('시작프로세스 cancel');
+	}
+	
+}
+
+function endClick(){
+
+	console.log('종료하기');
+	var result = confirm('해당 자가진단을 종료하시겠습니까?');
+	if(result){
+		
+		$('[name=start_tm]').val('');
+		$('[name=end_tm]').val('');
+		$('[name=type]').val('0');
+		updateClick();
 		
 	}else{
 		console.log('시작프로세스 cancel');

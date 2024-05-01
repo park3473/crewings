@@ -38,7 +38,8 @@ console.log(select);
     	height: 100%;
     	padding: 0px;
     }
-	.status_div{text-align:center;margin-bottom:50px;border-bottom:1px #ccc solid}
+	.status_div2{width:50%;float: left;text-align:center;margin-bottom:50px;border-bottom:1px #ccc solid;background:#fff;border:1px #ccc solid;padding:100px 0}
+	.status_div{width:50%;float: left;text-align:center;margin-bottom:50px;border-bottom:1px #ccc solid;min-height:900px}
 	h2{font-size:24px;letter-spacing:-2px;font-weight:500}
 </style>
 <!-- ckeditor필요한 부분 -->
@@ -58,34 +59,35 @@ console.log(select);
 
                 <!--본문 내용-->
                 <section class="adm_sc_txt">
-                	<div class="status_div">
+                	<!-- 
+                	<div class="status_div2">
                     	<h2>영역별 인식도 (연령대)</h2>
 		    <div class="chart" >
 		    	<canvas id="pieChartAge"  width="400px" height="400px" ></canvas>
 		    </div>
                     </div>
                     
-                    <div class="status_div">
+                    <div class="status_div2">
                     	<h2>영역별 인식도 (직업)</h2>
 		    <div class="chart" >
 		    	<canvas id="pieChartJob"  width="400px" height="400px" ></canvas>
 		    </div>
                     </div>
                     
-                    <div class="status_div">
+                    <div class="status_div2">
                     	<h2>영역별 인식도 (성별)</h2>
 					    <div class="chart" >
 					    	<canvas id="pieChartSex"  width="400px" height="400px" ></canvas>
 					    </div>
                     </div>
                     
-                    <div class="status_div">
+                    <div class="status_div2">
                     	<h2>영역별 분포도 (지역)</h2>
 					    <div class="chart">
 					    	<canvas id="pieChartAddressLocal"  width="400px" height="400px" ></canvas>
 					    </div>
                     </div>
-                    
+                    -->
                     <c:forEach var="item" items="${model.question }" varStatus="status">
                     <div class="status_div">
                     	<h2>문제별 차트 (${status.index + 1 }번 문항)</h2>
@@ -104,9 +106,9 @@ console.log(select);
 					    	<div>
 					    		<form id="select_coment"  class="select_coment">
 					    			<input type="hidden" name="idx" value="${item.list_idx }" >
-						    		<h1>진단 평가</h1>
-						    		<textarea name="coment"  rows="" cols="">${item.coment }</textarea>
-						    		<button type="submit" >평가 저장</button>
+						    		<h1 style="font-size:20px">진단 평가</h1>
+						    		<div class=""><textarea name="coment"  rows="5" cols="" style="width:60%">${item.coment }</textarea></div>
+						    		<div style="margin:10px 0 30px"><button type="submit" style="background:#009dc4;color:#fff;border-radius:3px;font-weight:bold;height:35px;line-height:35px">평가 저장</button></div>
 					    		</form>
 					    	</div>
 					    </div>
@@ -131,7 +133,10 @@ console.log(select);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script type="text/javascript">
+Chart.register(ChartDataLabels);
 
 function Question(idx , name , type , content , objectives , select_type , select_val , solution , right , wrong , correct , select_cnt , select){
 	
@@ -263,13 +268,13 @@ function sortDataByFixedOrder(data, fixedOrder) {
 }
 
 // 각 필드별로 데이터 집계
-var addressLocalData = aggregateData(results, 'address_local');
-var jobData = aggregateData(results, 'job');
-var aggregatedSexData = transformAndAggregateData(results, 'sex', mapSex); // 성별 데이터
-var aggregatedAgeData = transformAndAggregateData(results, 'age', mapAge); // 연령대 데이터
+//var addressLocalData = aggregateData(results, 'address_local');
+//var jobData = aggregateData(results, 'job');
+//var aggregatedSexData = transformAndAggregateData(results, 'sex', mapSex); // 성별 데이터
+//var aggregatedAgeData = transformAndAggregateData(results, 'age', mapAge); // 연령대 데이터
 
 // 연령대 데이터 정렬
-aggregatedAgeData = sortDataByFixedOrder(aggregatedAgeData, ageRanges);
+//aggregatedAgeData = sortDataByFixedOrder(aggregatedAgeData, ageRanges);
 
 //Chart.js 차트 데이터 생성 (원형 그래프 형식)
 function createPieChartData(aggregateData) {
@@ -303,15 +308,15 @@ function createPieChartData(aggregateData) {
 }
 
 // 각 차트 데이터 생성
-var pieDataAddressLocal = createPieChartData(addressLocalData);
-var pieDataJob = createPieChartData(jobData);
-var pieDataSex = createPieChartData(aggregatedSexData);
-var pieDataAge = createPieChartData(aggregatedAgeData);
+//var pieDataAddressLocal = createPieChartData(addressLocalData);
+//var pieDataJob = createPieChartData(jobData);
+//var pieDataSex = createPieChartData(aggregatedSexData);
+//var pieDataAge = createPieChartData(aggregatedAgeData);
 
-console.log(pieDataAddressLocal);
-console.log(pieDataJob);
-console.log(pieDataSex);
-console.log(pieDataAge);
+//console.log(pieDataAddressLocal);
+//console.log(pieDataJob);
+//console.log(pieDataSex);
+//console.log(pieDataAge);
 
 // 차트 생성 함수
 function createPieChart(canvasId, data) {
@@ -320,37 +325,47 @@ function createPieChart(canvasId, data) {
         type: 'pie',
         data: data,
         options: {
-            responsive: true,
             plugins: {
                 legend: {
-                    position: 'top',
+                    position: 'right',
+                    align : 'center',
+                    labels: {
+                            generateLabels: function(chart) {
+                                console.log(chart);
+                                const data = chart.data;
+                                console.log(data);
+                                return data.labels.map((label, index) => ({
+                                    text: label + ": " + data.datasets[0].data[index],
+                                    fillStyle: data.datasets[0].backgroundColor[index],
+                                }));
+                            }
+                    }
                 },
                 title: {
                     display: false,
                     text: canvasId
                 },
                 datalabels: {
-                    backgroundColor: function(context) {
-                      return context.dataset.backgroundColor;
-                    },
-                    borderRadius: 4,
-                    color: 'white',
-                    font: {
-                      weight: 'bold'
-                    },
-                    formatter: Math.round,
-                    padding: 6
-                  }
+                color: '#000000',
+                anchor: 'center',
+                align: 'center',
+                formatter: (value, context) => {
+                        const data = context.chart.data;
+                        const total = data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+                        const percentage = total > 0 ? (value / total * 100).toFixed(2) : 0;
+                        return percentage + "%";
+                    }
+                }
             }
         },
     });
 }
 
 // 각 차트 생성 (canvasId를 적절히 수정해야 함)
-createPieChart('pieChartAddressLocal', pieDataAddressLocal);
-createPieChart('pieChartJob', pieDataJob);
-createPieChart('pieChartAge', pieDataAge);
-createPieChart('pieChartSex', pieDataSex);
+//createPieChart('pieChartAddressLocal', pieDataAddressLocal);
+//createPieChart('pieChartJob', pieDataJob);
+//createPieChart('pieChartAge', pieDataAge);
+//createPieChart('pieChartSex', pieDataSex);
 
 //사용자 응답 분석 및 빈도 계산
 function calculateAnswerFrequencies(results) {
@@ -410,7 +425,41 @@ function createPieCharts(answerFrequencies) {
         var ctx = document.getElementById(canvasId).getContext('2d');
         new Chart(ctx, {
             type: 'pie',
-            data: chartData
+            data: chartData,
+            options: {
+            plugins: {
+                legend: {
+                    position: 'right',
+                    align : 'center',
+                    labels: {
+                            generateLabels: function(chart) {
+                                console.log(chart);
+                                const data = chart.data;
+                                console.log(data);
+                                return data.labels.map((label, index) => ({
+                                    text: label + ": " + data.datasets[0].data[index],
+                                    fillStyle: data.datasets[0].backgroundColor[index],
+                                }));
+                            }
+                    }
+                },
+                title: {
+                    display: false,
+                    text: canvasId
+                },
+                datalabels: {
+                color: '#000000',
+                anchor: 'center',
+                align: 'center',
+                formatter: (value, context) => {
+                        const data = context.chart.data;
+                        const total = data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+                        const percentage = total > 0 ? (value / total * 100).toFixed(2) : 0;
+                        return percentage + "%";
+                    }
+                }
+            }
+        },
         });
     });
 }
@@ -475,49 +524,49 @@ $(document).ready(function () {
 
                 <!--본문 내용-->
                 <section class="adm_sc_txt">
-                	<div class="status_div">
+                	<div class="status_div2">
                     	<h2>영역별 인식도 (연령대)</h2>
 		    <div class="chart" >
 		    	<canvas id="pieChartAge"  width="400px" height="400px" ></canvas>
 		    </div>
                     </div>
                     
-                    <div class="status_div">
+                    <div class="status_div2">
                     	<h2>영역별 인식도 (직업)</h2>
 		    <div class="chart" >
 		    	<canvas id="pieChartJob"  width="400px" height="400px" ></canvas>
 		    </div>
                     </div>
                     
-                    <div class="status_div">
+                    <div class="status_div2">
                     	<h2>영역별 인식도 (성별)</h2>
 					    <div class="chart" >
 					    	<canvas id="pieChartSex"  width="400px" height="400px" ></canvas>
 					    </div>
                     </div>
                     
-                    <div class="status_div">
+                    <div class="status_div2">
                     	<h2>영역별 분포도 (지역)</h2>
 					    <div class="chart">
 					    	<canvas id="pieChartAddressLocal"  width="400px" height="400px" ></canvas>
 					    </div>
                     </div>
                 
-                    <div class="status_div">
+                    <div class="status_div2">
                         <h2>전체 인식도 (차트)</h2>
                         <div class="chart" >
                             <canvas id="chart_0"  width="400" height="400" ></canvas>
                         </div>
                       </div>
 
-                	<div class="status_div">
+                	<div class="status_div2">
 		    <h2>영역별 인식도 (차트)</h2>
 		    <div class="chart" >
 		    	<canvas id="chart_1"  width="400" height="400" ></canvas>
 		    </div>
 		  </div>
 		
-		  <div class="status_div">
+		  <div class="status_div2">
 		    <h2>영역별 분포도 (차트)</h2>
 		    <div class="chart">
 		    	<canvas id="chart_2"  width="400" height="400" ></canvas>
@@ -856,7 +905,7 @@ $(document).ready(function () {
 
 
 </script>
-
+<script src="${pageContext.request.contextPath}/resources/js/chartjs-plugin-labels.js"></script>
 </c:if>
 
 </body>

@@ -134,13 +134,11 @@
 	
 	<select id="getExamResultMemberAll" parameterType="AdminExamVo" resultType="hashMap">
 	SELECT 
-    er.* , m.address_local , m.age , m.job , m.sex
+    	er.* 
 	FROM 
 	    TBL_EXAM_RESULT er
 	JOIN 
 	    TBL_EXAM e ON er.exam_idx = e.idx
-	JOIN 
-	    TBL_MEMBER m ON er.member_id = m.member_id
 	WHERE 
 	    e.idx = #{idx}
 	</select>
@@ -151,6 +149,45 @@
 		UPDATE_TM= now()
 		WHERE IDX = #{idx}
 	</update>
+	<update id="setAdminExamQuestionSort" parameterType="AdminQuestionListVo">
+		SET @seq = 0;
+		UPDATE TBL_QUESTION_LIST
+		SET seq = @seq := @seq + 1
+		WHERE exam_idx = #{exam_idx}
+		ORDER BY seq
+	</update>
+
+	<select id="getResultAllList" resultType="hashMap"  parameterType="AdminExamVo">
+		SELECT name , inquiries  FROM TBL_EXAM_RESULT
+		WHERE 1=1
+		AND EXAM_IDX = #{idx}
+		<if test="SEARCH_TEXT != ''">
+		    <if test="SEARCH_TYPE != 'ALL'">
+	    		 AND ${SEARCH_TYPE} LIKE '%${SEARCH_TEXT}%'
+	    	</if>
+	    </if>
+	    <if test="UP != ''">
+	    	order by ${UP} asc
+	    </if>
+	    <if test="DOWN != ''">
+	    	order by ${DOWN} desc
+	    </if>
+	    <if test="DOWN == '' and UP == ''">
+	    	order by CREATE_TM desc
+	    </if>
+	    LIMIT ${LIMIT} OFFSET ${OFFSET}
+	</select>
+	
+	<select id="getResultAllListCnt" resultType="int" parameterType="AdminExamVo">
+		SELECT COUNT(*) FROM TBL_EXAM_RESULT
+		WHERE 1=1
+		AND EXAM_IDX = #{idx}
+		<if test="SEARCH_TEXT != ''">
+		    <if test="SEARCH_TYPE != 'ALL'">
+	    		 AND ${SEARCH_TYPE} LIKE '%${SEARCH_TEXT}%'
+	    	</if>
+	    </if> 
+	</select>
 
 
 </mapper>

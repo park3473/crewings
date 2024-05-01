@@ -1,10 +1,30 @@
 package egovframework.sample.admin.exam.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -185,6 +205,214 @@ public class AdminExamController {
 		
 	}
 	
+	@RequestMapping(value="/admin/question_list/sort.do" , method = RequestMethod.POST)
+	public void AdminQuestionSortList(@ModelAttribute("AdminQuestionListVo")AdminQuestionListVo AdminQuestionListVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		adminExamService.setAdminExamQuestionSort(AdminQuestionListVo);
+		
+	}
 	
+	@RequestMapping(value="/admin/exam/result/list.do" , method = RequestMethod.GET)
+	public ModelAndView AdminExamResultListGet(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		System.out.println("PAGE : " + AdminExamVo.getPAGE());
+		System.out.println("ITEM_COUNT : " + AdminExamVo.getITEM_COUNT());
+		
+		String PAGE = request.getParameter("PAGE") != null ? request
+				.getParameter("PAGE") : "0";
+		String ITEM_COUNT = request.getParameter("ITEM_COUNT") != null ? request
+				.getParameter("ITEM_COUNT") : "10";
+		
+		AdminExamVo.setPAGE(Integer.parseInt(PAGE));
+		AdminExamVo.setITEM_COUNT(Integer.parseInt(ITEM_COUNT));
+		
+		int pagelimit = AdminExamVo.getPAGE() * AdminExamVo.getITEM_COUNT();
+		
+		AdminExamVo.setLIMIT(Integer.parseInt(ITEM_COUNT));
+		AdminExamVo.setOFFSET(pagelimit);
+		
+		ModelMap model = new ModelMap();
+		
+		model = adminExamService.getResultAllList(AdminExamVo);
+		
+		model.put("before", AdminExamVo);
+		
+		return new ModelAndView("admin/exam/Resultlist" , "model" , model);
+		
+	}
+	
+	@RequestMapping(value="/admin/exam/result/ExcelDown.do" , method = RequestMethod.GET)
+	public void AdminExamResultExcelDown(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) throws UnsupportedEncodingException {
+		
+		System.out.println("--excelDownStart--");
+		
+		ModelMap model = new ModelMap();
+		
+		model = adminExamService.getExamExcelAll(AdminExamVo);
+		
+		List<HashMap> questionList = (List<HashMap>) model.get("question");
+		
+		List<HashMap> resultList = (List<HashMap>) model.get("result");
+		
+		Workbook workbook = new HSSFWorkbook();
+		
+		Sheet sheet = workbook.createSheet("문항 리스트");
+		
+		// 헤더 스타일 생성
+        CellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        headerStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		
+        Font font = workbook.createFont();
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 12);
+        headerStyle.setFont(font);
+        
+        // 바디 스타일 생성
+        CellStyle bodyStyle = workbook.createCellStyle();
+        bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+        
+        // 헤더 생성
+        String[] headers = {"문항 순서", "문항 제목", "문항 타입", "선택지 갯수", "선택지"};
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
+        
+        // 데이터 채우기
+        int rowIndex = 1;
+        
+        for (HashMap<String, Object> question : questionList) {
+        	
+        	Row row = sheet.createRow(rowIndex++);
+
+            
+            // "문항 순서"는 엑셀 파일 내의 순서를 반영
+            row.createCell(0).setCellValue(rowIndex - 1);
+            row.createCell(1).setCellValue(String.valueOf(question.getOrDefault("name", "")));
+            // "문항 타입" 변환
+            String selectType = "";
+            switch (String.valueOf(question.getOrDefault("select_type", ""))) {
+                case "1":
+                    selectType = "객관식";
+                    break;
+                case "2":
+                    selectType = "체크박스";
+                    break;
+                case "3":
+                    selectType = "답변형";
+                    break;
+            }
+            row.createCell(2).setCellValue(selectType);
+            // "선택지 갯수"와 "선택지 리스트"
+            row.createCell(3).setCellValue(String.valueOf(question.getOrDefault("select_count", "")));
+            String choicesStr = String.valueOf(question.getOrDefault("Choices", ""));
+
+            String[] choicesArr = choicesStr.split("#");
+
+            // 결과 문자열을 저장할 StringBuilder 객체를 생성합니다.
+            StringBuilder formattedChoices = new StringBuilder();
+
+            // 분리된 선택지 정보를 순회하면서 번호를 붙여 문자열을 구성합니다.
+            for (int i = 0; i < choicesArr.length; i++) {
+                // i + 1은 선택지 앞에 붙일 순서 번호입니다.
+                formattedChoices.append(i + 1).append(". ").append(choicesArr[i]);
+                // 마지막 선택지가 아니라면 공백을 추가합니다.
+                if (i < choicesArr.length - 1) {
+                    formattedChoices.append(" ");
+                }
+            }
+
+            // 엑셀 셀에 구성된 문자열을 기록합니다.
+            row.createCell(4).setCellValue(formattedChoices.toString());
+            
+            
+        }
+        
+        // 제목행에만 배경색 스타일 적용
+        Row headerRow1 = sheet.getRow(0); // 0번째 행이 제목행이라고 가정
+        if (headerRow1 != null) {
+            for (int cellNum = 0; cellNum < headerRow1.getLastCellNum(); cellNum++) {
+                Cell cell = headerRow1.getCell(cellNum, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                cell.setCellStyle(headerStyle);
+            }
+        }
+        
+        // 열 너비 자동 조정
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i , true);
+            int width = sheet.getColumnWidth(i);
+            sheet.setColumnWidth(i, width + 1024);
+        }
+        
+        // 두 번째 시트 생성
+        Sheet sheet2 = workbook.createSheet("응답자");
+        // 헤더 생성
+        // 헤더 생성
+        String[] headers2 = {"번호","결과 리스트"};
+        Row headerRow11 = sheet2.createRow(0);
+        for (int i = 0; i < headers2.length; i++) {
+            Cell cell = headerRow11.createCell(i);
+            cell.setCellValue(headers2[i]);
+            cell.setCellStyle(headerStyle);
+        }
+        
+        // 데이터 채우기
+        int rowIndex1 = 1;
+        
+        for (HashMap<String, Object> result : resultList) {
+            Row row = sheet2.createRow(rowIndex1++);
+            // "문항 순서"는 엑셀 파일 내의 순서를 반영
+            row.createCell(0).setCellValue(rowIndex1 - 1);
+            row.createCell(1).setCellValue(String.valueOf(result.getOrDefault("inquiries", "")));
+            
+        }
+        
+        // 제목행에만 배경색 스타일 적용
+        Row headerRow111 = sheet2.getRow(0); // 0번째 행이 제목행이라고 가정
+        if (headerRow111 != null) {
+            for (int cellNum = 0; cellNum < headerRow11.getLastCellNum(); cellNum++) {
+                Cell cell = headerRow111.getCell(cellNum, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                cell.setCellStyle(headerStyle);
+            }
+        }
+
+        // 중앙 정렬 스타일 생성
+        CellStyle centerAlignStyle1 = workbook.createCellStyle();
+        centerAlignStyle1.setAlignment(HorizontalAlignment.CENTER);
+        centerAlignStyle1.setVerticalAlignment(VerticalAlignment.CENTER);
+        
+     // 열 너비 자동 조정
+        for (int i = 0; i < headers2.length; i++) {
+            sheet2.autoSizeColumn(i , true);
+            int width = sheet2.getColumnWidth(i);
+            sheet2.setColumnWidth(i, width + 1024);
+        }
+        
+        // 컨텐츠 타입과 파일명 지정
+
+	    response.setContentType("ms-vnd/excel");
+	    String excel_name_is = "설문결과물";
+	    AdminExamVo vo = (AdminExamVo) model.get("view");
+	    System.out.println("name : " + vo.getName());
+	    String Name = vo.getName();
+	    excel_name_is = Name + "_" + excel_name_is;
+	    excel_name_is = URLEncoder.encode(excel_name_is,"UTF-8");
+	    response.setHeader("Content-Disposition", "attachment;filename="+excel_name_is+".xls");
+        
+	    // 엑셀 출력
+		   
+	    try {
+	    	workbook.write(response.getOutputStream());
+	    	workbook.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+	}
 	
 }

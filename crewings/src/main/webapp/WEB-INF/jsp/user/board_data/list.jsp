@@ -103,9 +103,11 @@
 			</c:if>
             <li class="page-item"><a class="page-link" href="#"><i class="las la-angle-right"></i></a></li>
         </ul>
+    		<!--
 		<div class="pos_r">
 		    <div class="btn_list pos_a"><a href=""><div class="btn_01">글쓰기</div></a></div>
 		</div>
+		-->
     </div>
     <!-- 페이징 끝 -->
 </div>

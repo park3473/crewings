@@ -21,6 +21,9 @@
 /* #content { width: 300px; margin: auto; padding: 20px; border: 1px solid #ddd; } */
     form > input, form > select, form > button { display: block; margin-bottom: 10px; width: 100%; }
     button { cursor: pointer; }
+    .star_red {
+    color: red;
+}
 </style>
 
 
@@ -31,17 +34,20 @@
 
 <div id="content" class="font_noto">
 <form name="register_form" id="register_form" action="${pageContext.request.contextPath }/view/register.do" method="POST">
-	<input type="hidden" name="address_local" value="">
+	<input type="hidden" name="address_local" value="all">
 	<input type="hidden" name="level" value="1">
 	<input type="hidden" name="type" value="1">
+	<input type="hidden" name="age" value="10">
+	<input type="hidden" name="sex" value="3">
+	<input type="hidden" name="IdCheck" id="idcheck" value="false">
     <table class="table">
         <tbody class="table-group-divider border_02">
           <tr>
-            <th scope="row">아이디</th>
-            <td><input type="text" name="member_id" placeholder="아이디 입력"></td>
+            <th scope="row"><span class="star_red">*</span>아이디</th>
+            <td id="member_td"><input type="text" name="member_id" class="mr-2" placeholder="아이디 입력" onchange="document.getElementById('idcheck').value = 'false' " >  <button type="button" class="btn_02" onclick="idCheck()">아이디 중복 확인</button></td>
           </tr>
           <tr>
-            <th scope="row">비밀번호</th>
+            <th scope="row"><span class="star_red">*</span>비밀번호</th>
             <td>
               <input type="password" name="password" placeholder="비밀번호 입력" class="mr-2 mar_b">
               <input type="password" name="password_check" placeholder="비밀번호 입력확인" class="mr-2 mar_b">
@@ -49,11 +55,12 @@
             </td>
           </tr>
           <tr>
-            <th scope="row">이름</th>
+            <th scope="row"><span class="star_red">*</span>이름</th>
             <td><input type="text" name="name" placeholder="이름 입력"></td>
           </tr>
+    <!--
           <tr>
-            <th scope="row">성별</th>
+            <th scope="row"><span class="star_red">*</span>성별</th>
             <td>
             	<select name="sex">
                     <option value="" class="pad_5">성별 선택</option>
@@ -63,7 +70,7 @@
             </td>
           </tr>
            <tr>
-            <th scope="row">나이</th>
+            <th scope="row"><span class="star_red">*</span>나이</th>
             <td>
             	<select name="age">
                     <option value="" class="pad_5">나이 선택</option>
@@ -79,7 +86,7 @@
             </td>
           </tr>
           <tr>
-            <th scope="row">직업</th>
+            <th scope="row"><span class="star_red">*</span>직업</th>
             <td>
             	<select name="job">
                     <option value="" class="pad_5">직업 선택</option>
@@ -97,11 +104,11 @@
             </td>
           </tr>
           <tr>
-            <th scope="row">핸드폰번호</th>
+            <th scope="row"><span class="star_red">*</span>핸드폰번호</th>
             <td><input type="text" name="phone" placeholder="핸드폰번호 입력"></td>
           </tr>
           <tr>
-            <th scope="row">이메일</th>
+            <th scope="row"><span class="star_red">*</span>이메일</th>
             <td>
                 <input type="text" name="email" placeholder="이메일 입력" class="mar_b"><span class="mr-2 ml-2">@</span>
                 <span>
@@ -116,7 +123,7 @@
             </td>
           </tr>
           <tr>
-            <th rowspan="2">주소</th>
+            <th rowspan="2"><span class="star_red">*</span>주소</th>
             <td>
                 <input type="text" name="address" placeholder="주소 입력" class="mr-2 mar_b" ><button type="button" onclick="zipCode()" value="주소검색" class="btn_02">주소검색</button>
             </td>
@@ -126,13 +133,15 @@
                 <input type="text" name="address_detail" placeholder="상세주소 입력">
             </td>
           </tr>
+          <!--
           <tr>
             <th scope="row">추천인</th>
             <td>
                 <input type="text" name="recommender" placeholder="추천인 입력" class="mr-2 mar_b">
-                <!-- <button type="button" class="btn_02">추천인 검색</button> -->
+                
             </td>
           </tr>
+        -->
         </tbody>
     </table>
 </form>
@@ -159,6 +168,39 @@ function zipCode() {
     }).open();
 }
 
+function idCheck(){
+	
+	var id = $('input[name=member_id]').val()
+	
+	if(id == ''){
+		alert('검사할 아이디를 입력해주세요.');
+		return;
+		}
+	
+	$('#idcheck_span').remove();
+	
+	$.ajax({
+	    url : '/view/IdCheck.do',
+	    type : 'POST',
+	    data : ({member_id : id}),
+	    success : function(data){
+	        console.log(data);
+	        if(data == 'true'){
+	        	alert('사용 가능한 아이디입니다.');
+	        	var html = `<span id="idcheck_span" style="color: #25a6df;">사용가능한 아이디 입니다.</span>`;
+	        	$('#member_td').append(html);
+	        	}else{
+	        		alert('사용 불가능한 아이디입니다.');
+	        		var html = `<span id="idcheck_span" style="color: #ff7a7a;">사용불가능한 아이디 입니다.</span>`;
+	        		$('#member_td').append(html);
+	        		}
+	        $('input[name=IdCheck]').val(data);
+	    },
+	    error : function(error , status){
+console.log(error);}
+	})
+	
+	}
 function passwordCheck(){
 	
 	if($('input[name=password]').val() == $('input[name=password_check]').val() ){
@@ -178,6 +220,12 @@ function register(){
 		return;
 	}
 	
+	  var idcheck = $('input[name=IdCheck]').val();
+	if(idcheck == 'false'){
+		alert('아이디 중복확인을 해주세요.');
+		return;
+		}
+	/*
 	if($('input[name=recommender]').val() != ''){
 		
 		var member_id = $('input[name=recommender]').val();
@@ -207,11 +255,27 @@ function register(){
 		registerOn();
 		
 	}
-	
+  */
+	registerOn();
+
 }
 
 function registerOn(){
 	
+	
+	
+  const inputs = document.querySelectorAll('form input');
+
+  // 필수 입력 필드가 비어있는지 체크
+  for (let input of inputs) {
+    if (input.value.trim() === '') {
+        alert('모든 필수 항목을 입력해주세요.');
+        input.focus(); // 비어있는 필드에 포커스
+        console.log(input);
+        return false; // 폼 제출 중단
+      }
+  }
+
 	var formData = $('#register_form').serialize();
 	
 	$.ajax({

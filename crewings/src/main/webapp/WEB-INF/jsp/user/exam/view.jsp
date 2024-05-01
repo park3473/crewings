@@ -81,6 +81,9 @@ body{
 
 .max_img img{border-radius:10px}
 
+.select_check{
+	background-color : #dc3545 !important;
+}
 
 </style>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
@@ -108,11 +111,11 @@ body{
                 <ul>
                     <li>
                         <div class="font_noto cont"><span class="f_wet_05">고유번호 : </span>${model.view.idx }</div>
-                        <div class="font_noto cont"><span class="f_wet_05">응답기간 : </span><span class="t_spa_00">${fn:substring(model.view.start_tm,0,11) } ~ ${fn:substring(model.view.end_tm,0,11) }</span></div>
                     </li>
                     <li>
-                        <div class="font_noto cont"><span class="f_wet_05">응답사례 : </span><span style="color:#ff0000;font-size:24px;font-weight:700">${model.view.point }</span> 포인트 리워드</div>
-                        <div class="font_noto cont"><span class="f_wet_05">설문소개 : </span>${model.view.coment }</div>
+                    	<div class="font_noto cont"><span class="f_wet_05">응답기간 : </span><span class="t_spa_00">${fn:substring(model.view.start_tm,0,11) } ~ ${fn:substring(model.view.end_tm,0,11) }</span></div>
+                        <!-- <div class="font_noto cont"><span class="f_wet_05">응답사례 : </span><span style="color:#ff0000;font-size:24px;font-weight:700">${model.view.point }</span> 포인트 리워드</div> -->
+                        <!-- <div class="font_noto cont"><span class="f_wet_05">설문소개 : </span>${model.view.coment }</div> -->
                     </li>
                     <li>
                         <div class="btn" data-toggle="modal" data-target="#myModal">참여하기</div>
@@ -181,7 +184,7 @@ body{
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title txt_30 font_noto">Quiz</h4>
+                    <h4 class="modal-title txt_30 font_noto" id="QuizModalTitle"></h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 				<div class="grid">
@@ -204,8 +207,8 @@ body{
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                	<button type="button" class="btn btn-danger"   id="next_btn" onclick="next_quiz()">Next</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="Close_btn">Close</button>
+                	<button type="button" class="btn btn-danger btn-next-btn"   id="next_btn" onclick="next_quiz()">다음</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="Close_btn">닫기</button>
                 </div>
 
             </div>
@@ -218,8 +221,10 @@ body{
  	<input type="text" name="exam_idx" value="${model.view.idx }">
  	<input type="text" name="member_id" value="${sessionScope.UserId }">
  	<input type="text" name="name" value="${sessionScope.UserName }">
+ 	<input type="text" name="category" value="${model.view.category }">
  	<input type="text" name="select_list" value="">
  	<input type="text" name="complete" value="1">
+	 <input type="text" name="inquiries" value="">
  	<input type="text" name="point" value="${model.view.point }">
  </form>
  
@@ -267,6 +272,12 @@ function speak(speech_text) {
 	  fetch(url, otherparam)
 	    .then(response => response.json())
 	    .then(res => {
+
+			if(currentAudio) {
+				currentAudio.pause(); // 현재 재생 중인 오디오가 있다면 중지
+				currentAudio = null;
+			}
+
 	      const blobUrl = base64ToBlobUrl(res.audioContent)
 	     currentAudio = new Audio(blobUrl); // 오디오 객체를 전역 변수에 저장
 	      currentAudio.play();
@@ -282,6 +293,13 @@ function speak(speech_text) {
 	  }
 	  return URL.createObjectURL(new Blob([buffer.buffer], {type: "audio/mp3"}));
 	}
+	
+	
+	document.querySelector('.btn-next-btn').addEventListener('click', function() {
+	  var modalContent = document.querySelector('.modal');
+	  modalContent.scrollTop = 0;
+	});
+	
 </script>
 <c:if test="${model.beforeData.category == '1' }">
 <script type="text/javascript">
@@ -325,7 +343,7 @@ questions.push(new Question('${item.name}','${item.category}',[
 			 '${choiceImage}',
 			 </c:forEach>	
 		],
-		'${item.solution}',
+		`${item.solution}`,
 		'${item.content}',
 		'${item.greet}'
 		));
@@ -339,6 +357,17 @@ function update_quiz(){
 	$("#quiz_btn").empty();
     var currentQuestion = quiz.questions[quiz.questionIndex];
 
+   var QuizTitle = $('#QuizModalTitle').html();
+   console.log(QuizTitle);
+   if(QuizTitle == ''){
+   	   $('#QuizModalTitle').html('표지');
+   	   }else if(QuizTitle == '표지'){
+   	   $('#QuizModalTitle').html('개요');	   
+   	   	   }else if(QuizTitle == '개요'){
+   	   $('#QuizModalTitle').html('인사말');	   
+   	   	   }else if(QuizTitle == '인사말'){
+   	   $('#QuizModalTitle').html('Quiz');	   
+   	   	   }
     var questionElement = document.getElementById('question');
     var questionContentElement = document.getElementById('q_content');
 
@@ -364,9 +393,10 @@ function update_quiz(){
             var choiceButton = document.getElementById('btn'+i);
             choiceButton.innerHTML = currentQuestion.choice[i];
             answer('btn' + i, choiceButton, i+1);
-            speech_text += (i+1)+'번'
+            speech_text += (i+1)+'번. '
             speech_text += currentQuestion.choice[i];
-            
+            speech_text += '. '
+
         }
 
         // 선택지가 있으므로 next 버튼은 숨김
@@ -395,6 +425,8 @@ function answer(id, choice,select_val){
 		var answer = quiz.questions[quiz.questionIndex].answer; // 정답
 	console.log(id);
 		console.log(answer);		
+		
+		$('#'+id).addClass("select_check");
 		
 		//선택한 거 select_list 담기
 		if($('[name=select_list]').val() == ''){
@@ -545,7 +577,18 @@ var quiz = new Quiz(questions);
 function update_quiz(){
 	$("#quiz_btn").empty();
     var currentQuestion = quiz.questions[quiz.questionIndex];
-
+    
+var QuizTitle = $('#QuizModalTitle').html();
+   console.log(QuizTitle);
+   if(QuizTitle == ''){
+   	   $('#QuizModalTitle').html('표지');
+   	   }else if(QuizTitle == '표지'){
+   	   $('#QuizModalTitle').html('개요');	   
+   	   	   }else if(QuizTitle == '개요'){
+   	   $('#QuizModalTitle').html('인사말');	   
+   	   	   }else if(QuizTitle == '인사말'){
+   	   $('#QuizModalTitle').html('Quiz');	   
+   	   	   }
     var questionElement = document.getElementById('question');
     var questionContentElement = document.getElementById('q_content');
 
@@ -572,8 +615,9 @@ function update_quiz(){
             var choiceButton = document.getElementById('btn'+i);
             choiceButton.innerHTML = currentQuestion.choice[i];
             answer('btn' + i, choiceButton, i+1);
-            speech_text += (i+1)+'번'
+            speech_text += (i+1)+'번. '
             speech_text += currentQuestion.choice[i];
+			speech_text += '. '
         }
 
         // 선택지가 있으므로 next 버튼은 숨김
@@ -602,6 +646,7 @@ function answer(id, choice,select_val){
 		var answer = quiz.questions[quiz.questionIndex].answer; // 정답
 	console.log(id);
 		console.log(answer);		
+		$('#'+id).addClass("select_check");
 		
 		//선택한 거 select_list 담기
 		if($('[name=select_list]').val() == ''){
@@ -643,7 +688,7 @@ function progress(){
 
 function result(){
 	var el = document.getElementById('quiz');
-	el.innerHTML =	'<button style="margin-top: 50px; width:100%;padding:15px" type="button" class="btn btn-danger" onclick="exam_result()">설문 종료하기</button>';
+	el.innerHTML = '<h1 style="font-size:24px;padding:15px 0">설문에 참여해주셔서 감사합니다.</h1><p style="text-align:center;padding : 15px 0">추가문의사항이 있으실 경우 아래의 칸에 작성해주시면 의견을 수렴하여 반영하도록 노력하겠습니다.</p><p style="text-align:center;text-weight:bold;color:red;">연락처와 성함을 남겨주시면 추첨하여 소정의 선물을 드리겠습니다.</p><textarea type="text" name="inquiries_box" style="width: 100%; height: 146px;">학교 : \n성함 : \n연락처 : \n추가문의 : </textarea><button style="margin-top: 50px; width:100%;padding:15px" type="button" class="btn btn-danger" onclick="exam_result()">설문 종료하기</button>';
 	$('#Close_btn').hide();
 }
 
@@ -668,7 +713,9 @@ function next_quiz(){
 
 function exam_result(){
 	
-	alert('참여해주셔서 감사합니다.\n결과는 마이CN패널 에서 확인가능합니다.');
+	$('[name="inquiries"]').val($('[name="inquiries_box"]').val());
+
+	alert('참여해주셔서 감사합니다.');
 	$('#exam_result').submit();
 	
 }

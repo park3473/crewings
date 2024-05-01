@@ -53,7 +53,7 @@
                                     <c:forEach var="item" items="${model.list}" varStatus="status">
                                     <tr data-role="button" data-id="${item.idx}"  >
                                         <td>${model.itemtotalcount - (status.index + model.page *  model.itemcount)}</td>
-                                        <td>${item.name }</td>
+                                        <td style="text-align:left">${item.name }</td>
                                         <td>
                                         	<c:choose>
                                         		<c:when test="${item.category == '0' }">설문</c:when>
@@ -74,14 +74,12 @@
                                         <td>
                                             ${fn:substring(item.update_tm,0,11)}
                                         </td>
-                                        <td style="display:none;">
-                                        	<div id="qrcode_${status.index + 1 }"></div>
-                                        </td>
                                         <td>
                                         	<button type="button" onclick="location.href='/admin/exam/question_list.do?exam_idx=${item.idx}&category=${item.category }'">문제 확인</button>
                                         	<button type="button" onclick="location.href='/admin/exam/update.do?idx=${item.idx}'">관리</button>
                                         	<button type="button"  onclick="location.href='/admin/exam/status.do?idx=${item.idx}&category=${item.category }'">통계</button>
-                                        	<button type="button"  onclick="qrCode('http://ktest01.cafe24.com//user/exam/view.do?idx=${item.idx}&category=${item.category }','${status.index + 1 }')" >Qr코드 생성</button>
+                                        	<button type="button"  onclick="qrCode('http://cnwpanel.com//user/exam/view.do?idx=${item.idx}&category=${item.category }','${status.index + 1 }' , '${item.name}')" >QR코드 생성</button>
+                                            <button type="button" onclick="location.href='/admin/exam/result/list.do?idx=${item.idx}'">추가문의 확인</button>
                                         </td>
                                     </tr>
                                     </c:forEach>
@@ -160,27 +158,51 @@ $(document).ready(function () {
 	});
 });
 
-//QR 코드 생성
-function qrCode(link , statusNumber){
-	new QRCode(document.getElementById("qrcode_"+statusNumber), {
-	    text: link,
-	    width: 128,
-	    height: 128
-	});
-	
-	// QR 코드 이미지가 생성될 때까지 기다림
-    setTimeout(function() {
-        var canvas = document.getElementById("qrcode_"+statusNumber).getElementsByTagName("canvas")[0];
-        var imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-        var a = document.createElement("a");
-        a.href = imgData;
-        a.download = "QRCode.png";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }, 300);
-	
+// QR 코드 생성 함수
+function qrCode(link, statusNumber,name) {
+    // QR 코드를 감쌀 div 요소 생성
+    var qrWrapper = document.createElement('div');
+    qrWrapper.style.display = 'flex';
+    qrWrapper.style.justifyContent = 'center';
+
+    // QR 코드를 위한 div 요소 생성
+    var qrCodeElement = document.createElement('div');
+    qrCodeElement.id = "qrcode_" + statusNumber;
+
+    // QR 코드 생성
+    new QRCode(qrCodeElement, {
+        text: link,
+        width: 128,
+        height: 128
+    });
+
+    // QR 코드를 감싸는 div에 추가
+    qrWrapper.appendChild(qrCodeElement);
+
+    // Swal2 팝업에 QR 코드 표시
+    Swal.fire({
+        title: 'QR-CODE',
+        html: qrWrapper,
+        confirmButtonText: '다운로드',
+        preConfirm: () => {
+            qrDown(statusNumber , name); // 버튼 클릭 시 다운로드 함수 호출
+        }
+    });
 }
+
+
+// QR Code Download Function
+function qrDown(statusNumber , name) {
+    var canvas = document.getElementById("qrcode_" + statusNumber).getElementsByTagName("canvas")[0];
+    var imgData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    var a = document.createElement("a");
+    a.href = imgData;
+    a.download = name + "_QRCode.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
 
 </script>
 

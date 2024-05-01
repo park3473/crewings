@@ -39,4 +39,10 @@ public interface AdminExamMapper {
 
 	public void setAdminExamQuestionListComent(AdminQuestionListVo adminQuestionListVo);
 
+	public void setAdminExamQuestionSort(AdminQuestionListVo adminQuestionListVo);
+
+	public List<?> getResultAllList(AdminExamVo adminExamVo);
+
+	public int getResultAllListCnt(AdminExamVo adminExamVo);
+	
 }

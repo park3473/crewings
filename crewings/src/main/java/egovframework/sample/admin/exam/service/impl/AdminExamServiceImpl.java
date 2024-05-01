@@ -34,7 +34,7 @@ public class AdminExamServiceImpl implements AdminExamService {
 		
 		int itemtotalcount = adminExamMapper.getAllListCnt(adminExamVo);
 		int itemcount  = adminExamVo.getITEM_COUNT();
-		int itempage = adminExamVo.getITEM_PAGE();
+		int itempage = adminExamVo.getPAGE();
 		
 		PageVO pageVo = new PageVO(itemcount, itemtotalcount, itempage);
 		
@@ -189,6 +189,72 @@ public class AdminExamServiceImpl implements AdminExamService {
 		
 		adminExamMapper.setAdminExamQuestionListComent(adminQuestionListVo);
 		
+	}
+
+	@Override
+	public void setAdminExamQuestionSort(AdminQuestionListVo adminQuestionListVo) {
+		
+		adminExamMapper.setAdminExamQuestionSort(adminQuestionListVo);
+		
+	}
+
+	@Override
+	public ModelMap getResultAllList(AdminExamVo adminExamVo) {
+
+		ModelMap modelMap = new ModelMap();
+		
+		List<?> list = adminExamMapper.getResultAllList(adminExamVo);
+		
+		System.out.println("size : " + list.size());
+		
+		int itemtotalcount = adminExamMapper.getResultAllListCnt(adminExamVo);
+		int itemcount  = adminExamVo.getITEM_COUNT();
+		int itempage = adminExamVo.getPAGE();
+		
+		PageVO pageVo = new PageVO(itemcount, itemtotalcount, itempage);
+		
+		if(pageVo.isItempagenext() == true){
+			modelMap.put("itempagenext", "true");
+		}else {
+			modelMap.put("itempagenext", "false");
+		}
+		
+		System.out.println(pageVo.getItempage());
+		
+		modelMap.put("page", pageVo.getItempage());
+		modelMap.put("itemcount", pageVo.getItemCount());
+		modelMap.put("itempagestart", pageVo.getItempagestart());
+		modelMap.put("itempageend", pageVo.getItempageend());
+		modelMap.put("itemtotalcount", pageVo.getItemtotalcount());
+		modelMap.put("itemtotalpage", pageVo.getItemtotalpage());
+		
+		modelMap.put("list", list);
+		
+		return modelMap;
+		
+	}
+
+	@Override
+	public ModelMap getExamExcelAll(AdminExamVo adminExamVo) {
+		
+		ModelMap model = new ModelMap();
+		
+		List<?> question = adminExamMapper.getStatusQuestionList(adminExamVo);
+		
+		adminExamVo.setLIMIT(10000);
+		adminExamVo.setOFFSET(0);
+		
+		List<?> list = adminExamMapper.getResultAllList(adminExamVo);
+		
+		AdminExamVo view = adminExamMapper.getExamView(adminExamVo);
+		
+		model.put("view", view);
+		
+		model.put("question", question);
+		
+		model.put("result", list);
+		
+		return model;
 	}
 	
 }

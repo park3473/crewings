@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<title>아이앤시티 샘플 서버</title>
+<title>창의와날개</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes, target-densitydpi=medium-dpi">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">

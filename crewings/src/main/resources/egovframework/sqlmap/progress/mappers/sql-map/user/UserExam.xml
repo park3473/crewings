@@ -69,9 +69,9 @@
 		ORDER BY 
 		    ql.seq;
 	</select>
-	<insert id="setExamResultData" parameterType="UserExamResultVo">
-		INSERT INTO TBL_EXAM_RESULT (EXAM_IDX , MEMBER_ID , NAME , SELECT_LIST , COMPLETE , COMPLETE_TM , CREATE_TM , UPDATE_TM)
-		VALUES(#{exam_idx} , #{member_id} , #{name} , #{select_list} , #{complete} , now() , now() , now())
+	<insert id="setExamResultData" parameterType="UserExamResultVo" useGeneratedKeys="true" keyProperty="idx">
+		INSERT INTO TBL_EXAM_RESULT (EXAM_IDX , MEMBER_ID , NAME , SELECT_LIST , COMPLETE , INQUIRIES , COMPLETE_TM , CREATE_TM , UPDATE_TM)
+		VALUES(#{exam_idx} , #{member_id} , #{name} , #{select_list} , #{complete} , #{inquiries} , now() , now() , now())
 	</insert>
 	
 	<select id="getResultListView" parameterType="UserExamResultVo" resultType="hashMap">
@@ -79,24 +79,22 @@
 	</select>
 	
 	<select id="getExamResultView"  parameterType="UserExamResultVo" resultType="UserExamResultVo">
-		SELECT * FROM TBL_EXAM_RESULT WHERE member_id = #{member_id} and idx = #{idx}
+		SELECT * FROM TBL_EXAM_RESULT WHERE idx = #{idx}
 	</select>
 
 	<select id="getExamResultMemberAll"  parameterType="UserExamResultVo" resultType="hashMap">
-	SELECT 
-    er.* , m.address_local , m.age , m.job , m.sex
-	FROM 
-	    TBL_EXAM_RESULT er
-	JOIN 
-	    TBL_EXAM e ON er.exam_idx = e.idx
-	JOIN 
-	    TBL_MEMBER m ON er.member_id = m.member_id
-	WHERE 
-	    e.idx = #{exam_idx}
+		SELECT 
+	    er.*
+		FROM 
+		    TBL_EXAM_RESULT er
+		JOIN 
+		    TBL_EXAM e ON er.exam_idx = e.idx
+		WHERE 
+		    e.idx = #{exam_idx} AND er.idx = #{idx}
 	</select>
 
 	<select id="getIndexList" resultType="hashMap">
-		SELECT  * FROM TBL_EXAM LIMIT 4
+		SELECT  * FROM TBL_EXAM ORDER BY start_tm LIMIT 10
 	</select>
 
 

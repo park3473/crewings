@@ -27,17 +27,17 @@
 	</div>
 
 	<div id="content" class="col-lg-4 font_noto">
-	<form action="${pageContext.request.contextPath }/view/login.do" method="POST" class="pad_30 border_01 row m-0">
+	<form action="${pageContext.request.contextPath }/view/login.do" method="POST" id="loginForm" class="pad_30 border_01 row m-0">
 		<p class="login_txt">ID</p>
 		<input type="text" name="member_id" placeholder="아이디를 입력해주세요" class="pad_10 col-sm-12">
 		<div class="pad_10 col-sm-12"></div>
 		<p class="login_txt">PASSWORD</p>
 		<input type="password" name="password"  placeholder="비밀번호를 입력해주세요" class="pad_10 col-sm-12">
 		<div class="pad_15 col-sm-12"></div>
-		<button type="button" onclick="login()" class="btn_01">Login</button>
+		<button type="button" onclick="login()" name="login_btn" class="btn_01">Login</button>
 		<div class="col-sm-12 pad_10">
 			<div class="d-flex justify-content-end">
-				<a href="#" onclick="IdCheck()">아이디 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="#" onclick="PwCheck()">비밀번호 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="/view/agree.do">회원가입</a>
+				<!--<a href="#" onclick="IdCheck()">아이디 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="#" onclick="PwCheck()">비밀번호 찾기</a><span class="ml-2 mr-2 opa_05">|</span><a href="/view/agree.do">회원가입</a>-->
 			</div>
 		</div>
 	</form>
@@ -53,6 +53,19 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript">
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the form by its ID or any other selector
+    var form = document.getElementById('loginForm'); // Replace with your actual form ID or selector
+
+    form.addEventListener('keypress', function(e) {
+      // Check if the Enter key was pressed
+      if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent the default action
+        login(); // Execute the login function
+      }
+    });
+  });
 
 function login(){
 	var member_id = $('[name=member_id]').val();

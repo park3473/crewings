@@ -63,7 +63,7 @@
                                         <td>
                                         	<c:choose>
                                         		<c:when test="${item.level == '1' }">일반</c:when>
-                                        		<c:when test="${item.level == '3' }">관리자</c:when>
+                                        		<c:when test="${item.level == '73' }">관리자</c:when>
                                         	</c:choose>
                                         </td>
                                         <td>${item.member_id }</td>

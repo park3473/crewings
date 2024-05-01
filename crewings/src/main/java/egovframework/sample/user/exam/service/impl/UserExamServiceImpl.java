@@ -82,12 +82,15 @@ public class UserExamServiceImpl implements UserExamService {
 	}
 
 	@Override
-	public void setExamResultData(UserExamResultVo userExamResultVo) {
+	public String setExamResultData(UserExamResultVo userExamResultVo) {
 		// TODO Auto-generated method stub
+		
 		
 		userExamMapper.setExamResultData(userExamResultVo);
 		
+		String result_idx = userExamResultVo.getIdx();
 		
+		return result_idx;
 	}
 
 	@Override

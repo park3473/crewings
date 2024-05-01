@@ -117,7 +117,7 @@
 		                            			<li>이미지 : <input type="text" name="image" value="${item.image }" readonly="readonly" /> <button type="button" onclick="image_change(this , '${status.index}')">이미지 변경</button></li>
 		                            		</c:if>
 		                            		<c:if test="${item.image == ''}">
-		                            			<li>이미지 : <input type="file" name="image" value=""></li>
+		                            			<li>이미지 : <input type="file" name="image" value="" onchange="chage_true();"></li>
 		                            		</c:if>
 		                            	</ul>
 	                            	</c:forEach>
@@ -128,6 +128,7 @@
                         <div class="register_btn_area">
                             <div class="register_btn_con" id="admin_button">
                                 <button class="storage" onclick="updateClick()">문제 업데이트</button>
+								<button class="storage" onclick="deleteClick()">문제 삭제</button>
     							<button class="storage" onclick="history.back()">뒤로 가기</button>
                             </div>
                         </div>
@@ -269,7 +270,7 @@ function image_change(e,list_idx){
 	$(e).before('<input type="file" name="image">');
 	$('#select_ul_'+list_idx+' [name=image][type=text]').remove();
 	$(e).remove();
-	
+	$('[name=select_change_bool]').val('true');
 }
 
 //답안 수정 관련 변경
@@ -511,7 +512,44 @@ function updateClick(InsertToConnectType)
 					}),
 					success : function(status , xhr){
 						//삭제 이후 현 답안들 등록
-						for(i = 0; i < select_cnt; i++){
+						handleAnswerUpdates();
+						
+					},
+					error : function(error , status , xhr){
+						
+					}
+				})	
+				
+			}else{
+				
+				//해당 답안 수정
+				
+				
+				console.log('수정 완료');
+				alert('해당 문제가 수정되었습니다.');
+				location.href = '/admin/question/list.do';	
+				
+			}
+			
+			
+		},
+		error : function(error , status , xhr){
+			
+			console.log('error');
+			
+		}
+		
+	})	
+	
+	
+}
+
+function handleAnswerUpdates() {
+    let promises = [];
+    let select_cnt = $('#select_insertForm #select_input_warp ul').length;
+	var question_idx = $('[name=idx]').val();
+
+	for(i = 0; i < select_cnt; i++){
 							
 							var seq = $('#select_ul_'+i+' [name=seq]').val();
 							var content = $('#select_ul_'+i+' [name=content]').val()
@@ -543,7 +581,10 @@ function updateClick(InsertToConnectType)
 							SelectForm.append('question_idx', question_idx);
 							
 							console.log(i+'번째 답안 보내기');
-							
+
+							// FormData에 데이터가 잘 담겼는지 확인
+							displayFormData(SelectForm);
+							promises.push(
 							$.ajax({
 								url : '/admin/select/insert.do',
 								type : 'POST',
@@ -564,41 +605,59 @@ function updateClick(InsertToConnectType)
 								}
 								
 							})
+							)
 							
 						}
-						
-					},
-					error : function(error , status , xhr){
-						
-					}
-				})
-				
-				console.log('수정 완료');
+
+
+						// 모든 선택지에 대한 요청이 완료될 때까지 기다리기
+    Promise.all(promises).then(function() {
+        console.log('모든 선택지 업데이트 완료');
 				alert('해당 문제가 수정되었습니다.');
-				location.href = '/admin/question/list.do';	
-				
-			}else{
-				
-				//해당 답안 수정
-				
-				
-				console.log('수정 완료');
-				alert('해당 문제가 수정되었습니다.');
-				location.href = '/admin/question/list.do';	
-				
-			}
-			
-			
-		},
-		error : function(error , status , xhr){
-			
-			console.log('error');
-			
-		}
-		
-	})	
-	
+        window.location.href = '/admin/question/list.do';
+    }).catch(function(error) {
+        console.error('선택지 업데이트 중 오류 발생', error);
+    });
+
 	
 }
+
+// SelectForm에 담긴 데이터를 확인하기 위한 함수
+function displayFormData(formData) {
+							for (let [key, value] of formData.entries()) {
+								console.log(key, value);
+							}
+							}
+
+function deleteClick(){
+	var result = confirm('정말 해당 문제를 삭제하시겠습니까?\n삭제된 문제는 복구 불가능합니다.');
+	if(!result){
+		return;
+	}
+	var idx = '${model.view.idx}';
+	$.ajax({
+		url : '/admin/question/delete.do',
+		type : 'POST',
+		data : ({
+			idx : idx
+		}),
+		success : function(status , xhr , success){
+
+			console.log('success');
+			alert('삭제되었습니다');
+			location.href='/admin/exam/list.do';
+
+		},
+		error : function(status , xhr , error){
+			console.log('error');
+		}
+	})
+
+}
+
+function chage_true(){
+	
+	$('[name=select_change_bool]').val('true');
+	}
 
 </script>

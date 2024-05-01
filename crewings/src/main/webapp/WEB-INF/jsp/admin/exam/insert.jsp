@@ -46,6 +46,7 @@
                         <input type="hidden"  name="csrf" value="${CSRF_TOKEN}" />
                         <input type="hidden" name="level" value="1"  />
                         <input type="hidden" name="type" value="0"  />
+                        <input type="hidden" name="image_change_bool" id="image_change_bool" value="false" />
                         <div class="sc_con" id="div_con">
                             <div class="title">
                                 <span></span>
@@ -197,7 +198,7 @@ function changeValue(obj){
 
   $('#image').val(allFilename);
   
-  $('#image_change_bool').val('ture');
+  $('#image_change_bool').val('true');
 }
 
 //프로필 사진 미리보기
@@ -220,22 +221,5 @@ inputImage.addEventListener('change' , e => {
 	preview_img(e.target);
 })
 
-$(document).ready(function(){
-$('#location_list').change(function(){
-  var selectedValue = $(this).val();
-  console.log(selectedValue); // This will log the value of the selected option
-  var html = `<span class="location_list_div">`+selectedValue+`</span>`;
-  $('#location_div').append(html);
-  
-  var location = $('[name=location]').val();
-  
-  selectedValue = '%23' + selectedValue;
-  
-  location += selectedValue;
-  
-  $('[name=location]').val(location);
-  
-});
-});
 
 </script>

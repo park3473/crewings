@@ -24,7 +24,7 @@
             <div class="col txt_15">
                 <span>주소 : 경기도 화성시 비봉면 현대기아로 830번길 25-14</span><span class="gab"></span>
                 <span class="gray_00">전화 : 1670-7209</span><span class="gab"></span>
-                <span>팩스 : 02-2062-0592</span><span class="gab"></span>
+                <span>팩스 : 070-4232-0096</span><span class="gab"></span>
                 <span>사업자등록번호 :  123-86-46360</span><span class="gab"></span>
                 <span>통신판매업신고 : 제 2023-화성비봉-34호</span><span class="gab"></span><br>
                 <span>근무시간 : 월 ~금 09:00 ~ 18:00 (토.일.공휴일 휴무) </span><span class="gab"></span> <br>

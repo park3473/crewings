@@ -14,7 +14,7 @@ public interface UserExamService {
 
 	ModelMap getView(UserExamVo userExamVo);
 
-	void setExamResultData(UserExamResultVo userExamResultVo);
+	String setExamResultData(UserExamResultVo userExamResultVo);
 
 	List<?> getResultListView(UserMemberVo userMemberVo);
 

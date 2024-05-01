@@ -43,6 +43,9 @@
                                 <div class="adm_btn_wrap stats_btn_area">
                                     <ul>
                                     <li class="delete">
+                                        <a href="#" onclick="sort('${model.exam_idx}')">문제 재정렬</a>
+                                    </li>
+                                    <li class="delete">
                                         <a href="${pageContext.request.contextPath}/admin/question/insert.do?exam_idx=${model.exam_idx}&category=${model.category}">문제 등록</a>
                                     </li>
                                 </ul>
@@ -63,7 +66,7 @@
                                     <c:forEach var="item" items="${model.list}" varStatus="status">
                                     <tr data-role="button" data-id="${item.idx}"  >
                                         <td>${item.seq }</td>
-                                        <td>${item.NAME }</td>
+                                        <td style="text-align:left">${item.NAME }</td>
                                         <td>${item.TYPE }</td>
                                         <td>
                                             ${fn:substring(item.create_tm,0,11)}
@@ -73,6 +76,8 @@
                                         </td>
                                         <td>
                                         	<button type="button"  onclick="location.href='/admin/question/view.do?idx=${item.question_idx}'" data-idx="${item.idx }" data-exam_idx="${item.exam_idx }" data-seq="${item.seq }" data-question_idx="${item.question_idx }" data-name="${item.name }" data-type="${item.type }" data-objectives="${item.objectives }" data-select_type="${item.select_type}" data-select-val="${item.select_val }">문제 보기</button>
+                                            <button type="button"  onclick="location.href='/admin/question/update.do?idx=${item.question_idx}&category=${model.category}'" data-idx="${item.idx }" data-exam_idx="${item.exam_idx }" data-seq="${item.seq }" data-question_idx="${item.question_idx }" data-name="${item.name }" data-type="${item.type }" data-objectives="${item.objectives }" data-select_type="${item.select_type}" data-select-val="${item.select_val }">문제 수정</button>
+                                            <button type="button"  onclick="question_list_delete('${item.idx}')" data-idx="${item.idx }">연결 해제</button>
                                         </td>
                                     </tr>
                                     </c:forEach>
@@ -104,6 +109,55 @@ $(document).ready(function () {
 	    backgroundColor: "#fff"
 	});
 });
+
+function question_list_delete(idx){
+
+    var result = confirm('정말 해당 문제 연결을 해제 하시겠습니까?');
+    
+    if(!result){
+        return;
+    }
+    console.log(idx);
+    $.ajax({
+        url : '/admin/exam/question_list/delete.do',
+        type : 'POST',
+        data : ({
+            idx : idx
+        }),
+        success : function(status , success , xhr){
+            console.log('success');
+            location.reload();
+        },
+        error : function(status , error , xhr){
+            console.log('error');
+        }
+    })
+
+}
+
+function sort(exam_idx){
+
+    var result = confirm('해당 문제 리스트를 재정렬 하시겠습니까?');
+    if(!result){
+        return
+    }
+    $.ajax({
+        url : '/admin/question_list/sort.do',
+        type : 'POST',
+        data : ({
+            exam_idx : exam_idx
+        }),
+        success : function(xhr , status , success){
+            console.log('success');
+            alert('완료되었습니다.');
+            location.reload();
+        },
+        error : function(xhr , status , error){
+            console.log('error');
+        }
+    })
+
+}
 
 </script>
 

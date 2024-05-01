@@ -25,7 +25,7 @@
 		<span class="" class="bg_01"><a href="">HOME</a></span>
         <span class="float_r">
         	<c:if test="${sessionScope.Login != 'OkOk' }">
-        	<a href="/view/login.do" class="bg_01">로그인</a><a href="/view/agree.do">회원가입</a>
+        	<a href="/view/login.do" class="bg_01">관리자 로그인</a><!--<a href="/view/agree.do">회원가입</a>-->
         	</c:if>
         	<c:if test="${sessionScope.Login == 'OkOk' }">
         	<a href="/view/logout.do" class="bg_01">로그아웃</a><c:if test="${sessionScope.UserLevel == '73' }"><a href="/admin/exam/list.do">관리자</a></c:if>
@@ -94,12 +94,14 @@
                         <li><a href="/user/exam/list.do"><span>설문조사</span></a></li>
                     </ul>
                     </li>
+                    <!-- 
                     <li>
                     <a href="#"><span>사은품안내</span></a>
                     <ul class="depth2">
                         <li><a href="/user/product/list.do"><span>사은품리스트</span></a></li>
                     </ul>
                     </li>
+                    -->
                     <li>
                     <a href="#"><span>패널도우미</span></a>
                     <ul class="depth2">
@@ -109,14 +111,15 @@
                         <li><a href="/user/board_data/list.do?board_idx=5"><span>의뢰하기</span></a></li>
                     </ul>
                     </li>
+                    <!-- 
                     <li>
                     <a href="#"><span>마이CN패널</span></a>
                     <ul class="depth2">
-                        <li><a href="/user/mypage/view.do"><span>포인트조회</span></a></li>
+                        <li><a href="/user/mypage/view.do"><span>마이CN패널</span></a></li>
+                        <li><a href="/user/order/list.do?member_id=${sessionScope.UserId }"><span>상품 신청 리스트</span></a></li>
                     </ul>
                     </li>
-
-
+                    -->
                 </ul>
             </div>
             <!--메뉴끝-->

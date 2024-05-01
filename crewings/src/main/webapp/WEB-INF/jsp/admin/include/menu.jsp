@@ -18,6 +18,15 @@
 	*/
 </script>
 
+<style type="text/css">
+.adm_menu_area i{font-size:36px;color:#999;padding:15px 0 0 15px}
+.adm_menu_con li a {
+    font-weight: 600 !important;
+}
+</style>
+
+<link type="text/css" rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
 <header id="adm_hd">
         <div id="adm_hd_area">
             <div id="adm_hd_con">
@@ -36,7 +45,7 @@
                                     class="adm_menu_active"
                                     </c:if>>
                                     <a href="${pageContext.request.contextPath}/admin/member/list.do">
-                                        <img src="${pageContext.request.contextPath}/resources/img/admin/member_icon.png" alt="회원관리" />
+                                        <!--<img src="${pageContext.request.contextPath}/resources/img/admin/member_icon.png" alt="회원관리" />--><i class="las la-user"></i>
                                     </a>
                                     <ul class="sub_menu_con">
                                         <div class="title notosans">
@@ -58,7 +67,7 @@
                                     class="adm_menu_active"
                                     </c:if>>
                                     <a href="${pageContext.request.contextPath}/admin/board/list.do">
-                                        <img src="${pageContext.request.contextPath}/resources/img/admin/board_icon.png" alt="게시판관리" />
+                                        <!--<img src="${pageContext.request.contextPath}/resources/img/admin/board_icon.png" alt="게시판관리" />--><i class="las la-comment"></i>
                                     </a>
                                     <ul class="sub_menu_con">
                                         <div class="title notosans">
@@ -90,7 +99,7 @@
                                     class="adm_menu_active"
                                     </c:if>>
                                     <a href="${pageContext.request.contextPath}/admin/menu/list.do">
-                                        <img src="${pageContext.request.contextPath}/resources/img/admin/menu_icon.png" alt="메뉴관리" />
+                                        <!--<img src="${pageContext.request.contextPath}/resources/img/admin/menu_icon.png" alt="메뉴관리" />--><i class="las la-bars"></i>
                                     </a>
                                     <ul class="sub_menu_con">
                                         <div class="title notosans">
@@ -116,13 +125,16 @@
 	                                        </ul>
                                         	</c:if>
                                         </li>
+                                        <li <c:if test="${fn:indexOf(fullURL, '/banner/list') > -1}">class="nav_active"</c:if>>
+                                            <a href="${pageContext.request.contextPath}/admin/banner/list.do">배너 관리</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li <c:if test="${fn:indexOf(fullURL , '/exam/') > -1}">
                                     class="adm_menu_active"
                                     </c:if>>
                                     <a href="${pageContext.request.contextPath}/admin/exam/list.do">
-                                        <img src="${pageContext.request.contextPath}/resources/img/admin/exam_icon.png" alt="파일관리" />
+                                        <!--<img src="${pageContext.request.contextPath}/resources/img/admin/exam_icon.png" alt="파일관리" />--><i class="lab la-wpforms"></i>
                                     </a>
                                     <ul class="sub_menu_con">
                                         <div class="title notosans">
@@ -130,11 +142,11 @@
                                             <span>조사 관리</span>
                                         </div>
                                         <li <c:if test="${fn:indexOf(fullURL, '/exam/list') > -1}">class="nav_active"</c:if>>
-                                            <a href="${pageContext.request.contextPath}/admin/exam/list.do">조사 리스트</a>
+                                            <a href="${pageContext.request.contextPath}/admin/exam/list.do">전체 리스트</a>
                                             <c:if test="${fn:indexOf(fullURL , '/exam/') > -1}">
 	                                        <ul class="sub_menu_ob">
 		                                        <li <c:if test="${fn:indexOf(fullURL, '/exam/question_list') > -1}">class="nav_active"</c:if>>
-		                                            <a href="#">조사 항목 리스트</a>
+		                                            <a href="${pageContext.request.contextPath}/admin/exam/list.do">조사 항목 리스트</a>
 		                                        </li>
 					<li <c:if test="${fn:indexOf(fullURL, 'exam/insert') > -1}">class="nav_active"</c:if>>
                                             			<a href="${pageContext.request.contextPath}/admin/exam/insert.do">조사 생성</a>
@@ -147,10 +159,10 @@
 			<c:if test="${fn:indexOf(fullURL , '/question/list.do?category=1') > -1}">
 	                                        <ul class="sub_menu_ob">
 		                                        <li <c:if test="${fn:indexOf(fullURL, '/question/list.do?category=1') > -1}">class="nav_active"</c:if>>
-		                                            <a href="#">진단 문제 리스트</a>
+		                                            <a href="#">진단 리스트</a>
 		                                        </li>
 					<li <c:if test="${fn:indexOf(fullURL, 'question/insert.do?category=1') > -1}">class="nav_active"</c:if>>
-                                            			<a href="${pageContext.request.contextPath}/admin/question/insert.do?category=1">진단 문제 생성</a>
+                                            			<a href="${pageContext.request.contextPath}/admin/question/insert.do?category=1">진단 생성</a>
                                         		</li>
 	                                        </ul>
                                         	</c:if>
@@ -160,10 +172,10 @@
 				<c:if test="${fn:indexOf(fullURL , '/question/list.do?category=0') > -1}">
 	                                        <ul class="sub_menu_ob">
 		                                        <li <c:if test="${fn:indexOf(fullURL, '/question/list.do?category=0') > -1}">class="nav_active"</c:if>>
-		                                            <a href="#">설문 문제 리스트</a>
+		                                            <a href="#">설문 리스트</a>
 		                                        </li>
 					<li <c:if test="${fn:indexOf(fullURL, 'question/insert.do?category=0') > -1}">class="nav_active"</c:if>>
-                                            			<a href="${pageContext.request.contextPath}/admin/question/insert.do?category=0">설문 문제 생성</a>
+                                            			<a href="${pageContext.request.contextPath}/admin/question/insert.do?category=0">설문 생성</a>
                                         		</li>
 	                                        </ul>
                                         	</c:if>
@@ -174,17 +186,17 @@
                                     class="adm_menu_active"
                                     </c:if>>
                                     <a href="${pageContext.request.contextPath}/admin/product/list.do">
-                                        <img src="${pageContext.request.contextPath}/resources/img/admin/file_icon.png" alt="파일관리" />
+                                        <!--<img src="${pageContext.request.contextPath}/resources/img/admin/file_icon.png" alt="파일관리" />--><i class="las la-gifts"></i>
                                     </a>
                                     <ul class="sub_menu_con">
                                         <div class="title notosans">
                                             <span></span>
                                             <span>상품 관리</span>
                                         </div>
-                                        <li <c:if test="${fn:indexOf(fullURL, '/product/list') > -1}">class="nav_active"</c:if>>
+                                        <li <c:if test="${fn:indexOf(fullURL, '/member/list') > -1}">class="nav_active"</c:if>>
                                             <a href="${pageContext.request.contextPath}/admin/product/list.do">상품 리스트</a>
                                         </li>
-                                        <li <c:if test="${fn:indexOf(fullURL, '/product/insert') > -1}">class="nav_active"</c:if>>
+                                        <li <c:if test="${fn:indexOf(fullURL, 'member/insert') > -1}">class="nav_active"</c:if>>
                                             <a href="${pageContext.request.contextPath}/admin/product/insert.do">상품 등록</a>
                                         </li>
                                     </ul>
@@ -193,7 +205,7 @@
                                     class="adm_menu_active"
                                     </c:if>>
                                     <a href="${pageContext.request.contextPath}/admin/order/list.do">
-                                        <img src="${pageContext.request.contextPath}/resources/img/admin/file_icon.png" alt="파일관리" />
+                                        <!--<img src="${pageContext.request.contextPath}/resources/img/admin/file_icon.png" alt="파일관리" />--><i class="las la-hand-holding-heart"></i>
                                     </a>
                                     <ul class="sub_menu_con">
                                         <div class="title notosans">

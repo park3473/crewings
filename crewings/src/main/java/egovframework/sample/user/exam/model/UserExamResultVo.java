@@ -12,6 +12,8 @@ public class UserExamResultVo {
 	String create_tm = "";
 	String update_tm = "";
 	String category = "";
+	String inquiries = "";
+	
 	int point = 0;
 	
 	public String getIdx() {
@@ -80,6 +82,13 @@ public class UserExamResultVo {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	public String getInquiries() {
+		return inquiries;
+	}
+	public void setInquiries(String inquiries) {
+		this.inquiries = inquiries;
+	}
+	
 	
 	
 	

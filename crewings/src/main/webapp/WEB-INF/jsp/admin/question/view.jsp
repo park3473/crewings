@@ -162,7 +162,7 @@ $(document).ready(function () {
 
 function img_modal(image){
 	
-	window.open('/resources/upload/ckeditor/'+image , '이미지 확인', 'width=500, height=500');
+	window.open('/resources/upload/select/image/'+image , '이미지 확인', 'width=500, height=500');
 	
 }
 

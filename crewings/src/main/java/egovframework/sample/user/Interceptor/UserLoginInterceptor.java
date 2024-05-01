@@ -43,6 +43,10 @@ public class UserLoginInterceptor extends HandlerInterceptorAdapter {
 		    level = "0"; // 기본 레벨을 0으로 설정
 		}
 		
+		if((request.getRequestURI().indexOf("/user/exam/list.do")) > -1) {
+			return true;
+		}
+		
 		int levelInt = Integer.parseInt(level);
 		if(level.equals("1") || levelInt >= 1)
 		{

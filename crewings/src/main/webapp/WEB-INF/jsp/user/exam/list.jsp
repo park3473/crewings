@@ -37,7 +37,18 @@
                 <div class="flexbox">
                     <c:forEach var="item" items="${model.list}" varStatus="status">
                     <div class="item_02 box_02 pos_r">
-                        <img src="/resources/img/thum_img.jpg" alt="">
+                        <c:if test="${item.image == ''}">
+                            <img src="/resources/img/thum_img.jpg" alt="">
+                        </c:if>
+                        <c:if test="${item.image != ''}">
+                            <div class="" style="
+                            background-size: cover;
+                            height: 250px;
+                            background-image: url(/resources/upload/exam/image/${item.image});
+                        ">
+                                
+                            </div>
+                        </c:if>
                         <div class="sul_box">
                             <div class="txt font_noto">${item.name }</div>
                             <div class="sul"><span class="gray_10">응답사례 : </span>${item.point } 포인트 리워드</div>

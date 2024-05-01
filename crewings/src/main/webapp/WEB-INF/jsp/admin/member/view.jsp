@@ -40,7 +40,7 @@
                                             <span class="list_t">회원 분류</span>
                                             <input type="radio" name="level" id="normal" value="1" <c:if test="${model.view.level == '1' }" >checked="checked"</c:if> >
                                             <label for="normal">일반</label>
-                                            <input type="radio" name="level" id="admin" value="3" <c:if test="${model.view.level == '3' }" >checked="checked"</c:if> >
+                                            <input type="radio" name="level" id="admin" value="73" <c:if test="${model.view.level == '73' }" >checked="checked"</c:if> >
                                             <label for="admin">관리자</label>
                                         </li>
                                         <li>

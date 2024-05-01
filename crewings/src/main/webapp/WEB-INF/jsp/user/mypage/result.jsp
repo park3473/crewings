@@ -48,6 +48,9 @@ console.log(select);
 
 table th{font-weight:bold !important}
 
+.select_check{color:#ff0000;font-weight:bold}
+
+
 </style>
 
 <div class="pad_35"></div>
@@ -63,15 +66,16 @@ table th{font-weight:bold !important}
 </div>
 <!-- 타이틀 긑 -->
 
+
 <!-- 포인트 -->
 <div class="container cnpnel">
     <div class="point_wrap">
         <div class="section">
 		    <h2>검사자 정보</h2>
-		    <p><strong>검사자명 : </strong> ${model.view.name }</p>
+		    <!-- <p><strong>검사자명 : </strong> ${model.view.name }</p> -->
 		    <p><strong>검사일 : </strong> ${fn:substring(model.view.complete_tm,0,11) }</p>
 		  </div>
-		
+			<!-- 
 		  <div class="section">
 		    <h2>전체 인식도 (차트)</h2>
 		    <div class="chart" >
@@ -92,6 +96,7 @@ table th{font-weight:bold !important}
 		    	<canvas id="chart_2"  width="400" height="400" ></canvas>
 		    </div>
 		  </div>
+		  -->
     </div>
 </div>
 <!-- 포인트 끝 -->
@@ -133,6 +138,15 @@ table th{font-weight:bold !important}
     </tbody>
     </table>
 </div>
+
+<div class="container cnpnel">
+    <div class="point_wrap">
+        <div class="section">
+			<h2>추가 문의</h2>
+			<input type="text" value="${model.view.inquiries}" style="width:100%;padding:30px">
+		</div>
+	</div>
+</div>
 <!-- 포인트리스트 끝 -->
 
 
@@ -162,17 +176,17 @@ var questions = [];
 <c:forEach var="item" items="${model.question}" varStatus="status" >
 if('${item.select_val}' == select[${status.index}]){
 questions.push(new Question(
-		'${item.idx}',
-		'${item.name}',
-		'${item.type}',
-		'${item.content}',
-		'${item.objectives}',
-		'${item.select_type}',
-		'${item.select_val}',
-		'${item.solution}',
-		'${item.right}',
-		'${item.wrong}',
-		'O',
+		`${item.idx}`,
+		`${item.name}`,
+		`${item.type}`,
+		`${item.content}`,
+		`${item.objectives}`,
+		`${item.select_type}`,
+		`${item.select_val}`,
+		`${item.solution}`,
+		`${item.right}`,
+		`${item.wrong}`,
+		`O`,
 		[
 			 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
 			 '${choice}',
@@ -181,17 +195,17 @@ questions.push(new Question(
 		));
 }else{
 	questions.push(new Question(
-			'${item.idx}',
-			'${item.name}',
-			'${item.type}',
-			'${item.content}',
-			'${item.objectives}',
-			'${item.select_type}',
-			'${item.select_val}',
-			'${item.solution}',
-			'${item.right}',
-			'${item.wrong}',
-			'X',
+			`${item.idx}`,
+			`${item.name}`,
+			`${item.type}`,
+			`${item.content}`,
+			`${item.objectives}`,
+			`${item.select_type}`,
+			`${item.select_val}`,
+			`${item.solution}`,
+			`${item.right}`,
+			`${item.wrong}`,
+			`X`,
 			[
 				 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
 				 '${choice}',
@@ -401,10 +415,10 @@ $( document ).ready(function() {
     <div class="point_wrap">
         <div class="section">
 		    <h2>검사자 정보</h2>
-		    <p><strong>검사자명 : </strong> ${model.view.name }</p>
+		    <!-- <p><strong>검사자명 : </strong> ${model.view.name }</p> -->
 		    <p><strong>검사일 : </strong> ${fn:substring(model.view.complete_tm,0,11) }</p>
 		  </div>
-		
+		<!--
 		  <div class="section">
 		    <h2>영역별 인식도 (연령대)</h2>
 		    <div class="chart" >
@@ -432,7 +446,7 @@ $( document ).ready(function() {
 		    	<canvas id="pieChartSex"  width="400" height="400" ></canvas>
 		    </div>
 		  </div>
-		  
+		  -->
     </div>
 </div>
 <!-- 포인트 끝 -->
@@ -452,11 +466,25 @@ $( document ).ready(function() {
     <tr>
         <td>${status.index + 1 }</td>
         <td style="text-align:left">${item.name }</td>
-        <td id="question_select_${status.index + 1}"></td>
+        <td id="question_select_${status.index + 1}">
+        	<ol>
+        	<c:forEach var="choice" items="${fn:split(item.Choices, '#')}"   varStatus="select_status" >
+			 		<li data="${choice}">${choice}</li>
+			 </c:forEach>
+			 </ol>
+        </td>
     </tr>
     </c:forEach>
     </tbody>
     </table>
+</div>
+<div class="container cnpnel">
+    <div class="point_wrap">
+        <div class="section">
+			<h2>추가 문의</h2>
+			<input type="text" value="${model.view.inquiries}" style="width:100%;padding:30px">
+		</div>
+	</div>
 </div>
 <!-- 포인트리스트 끝 -->
 
@@ -488,17 +516,17 @@ var questions = [];
 <c:forEach var="item" items="${model.question}" varStatus="status" >
 if('${item.select_val}' == select[${status.index}]){
 questions.push(new Question(
-		'${item.idx}',
-		'${item.name}',
-		'${item.type}',
-		'${item.content}',
-		'${item.objectives}',
-		'${item.select_type}',
-		'${item.select_val}',
-		'${item.solution}',
-		'${item.right}',
-		'${item.wrong}',
-		'O',
+		`${item.idx}`,
+		`${item.name}`,
+		`${item.type}`,
+		`${item.content}`,
+		`${item.objectives}`,
+		`${item.select_type}`,
+		`${item.select_val}`,
+		`${item.solution}`,
+		`${item.right}`,
+		`${item.wrong}`,
+		`O`,
 		[
 			 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
 			 '${choice}',
@@ -507,17 +535,17 @@ questions.push(new Question(
 		));
 }else{
 	questions.push(new Question(
-			'${item.idx}',
-			'${item.name}',
-			'${item.type}',
-			'${item.content}',
-			'${item.objectives}',
-			'${item.select_type}',
-			'${item.select_val}',
-			'${item.solution}',
-			'${item.right}',
-			'${item.wrong}',
-			'X',
+			`${item.idx}`,
+			`${item.name}`,
+			`${item.type}`,
+			`${item.content}`,
+			`${item.objectives}`,
+			`${item.select_type}`,
+			`${item.select_val}`,
+			`${item.solution}`,
+			`${item.right}`,
+			`${item.wrong}`,
+			`X`,
 			[
 				 <c:forEach var="choice" items="${fn:split(item.Choices, '#')}">
 				 '${choice}',
@@ -668,17 +696,17 @@ function createPieChart(canvasId, data) {
 }
 
 // 각 차트 생성 (canvasId를 적절히 수정해야 함)
+/*
 createPieChart('pieChartAddressLocal', pieDataAddressLocal);
 createPieChart('pieChartJob', pieDataJob);
 createPieChart('pieChartAge', pieDataAge);
 createPieChart('pieChartSex', pieDataSex);
-
+*/
 $( document ).ready(function() {
     
 	for(var i = 0; i < questions.length; i ++){
 		
-		$('#question_select_'+(i+1)).append(questions[i].choice[parseInt(select[i])-1]);
-		
+		$('#question_select_'+(i+1)+' ol li[data="'+questions[i].choice[parseInt(select[i])-1]+'"]').addClass('select_check');
 		
 	}
 	

@@ -84,7 +84,18 @@
                     
                     <c:forEach var="item" items="${model.ExamList }" >
                     <div class="item box_02 pos_r">
-                        <img src="${pageContext.request.contextPath}/resources/img/thum_img.jpg" alt="">
+                        <c:if test="${item.image == ''}">
+                            <img src="/resources/img/thum_img.jpg" alt="">
+                        </c:if>
+                        <c:if test="${item.image != ''}">
+                            <div class="" style="
+                            background-size: cover;
+                            height: 250px;
+                            background-image: url(/resources/upload/exam/image/${item.image});
+                        ">
+                                
+                            </div>
+                        </c:if>
                         <div class="sul_box">
                             <div class="txt font_noto">${item.name }</div>
                             <div class="sul"><span class="gray_10">응답사례 : </span>${item.point } 포인트 리워드</div>
@@ -141,6 +152,7 @@
                     <div class="txt font_noto">패널이란</div>
                     창날패널이 무었인가요?
                 </div>
+    			<!--
                 <div class="item box_01 pointer" onclick="location.href='/view/subpage/view.do?idx=2'">
                     <i class="las la-thumbs-up"></i>
                     <div class="txt font_noto">포인트 사용방법</div>
@@ -151,6 +163,7 @@
                     <div class="txt font_noto">사은품안내</div>
                     다양한 사은품 혜택 안내
                 </div>
+                -->
             </div>
         </div>
     </div>
