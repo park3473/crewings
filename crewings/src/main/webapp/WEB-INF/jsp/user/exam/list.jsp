@@ -45,8 +45,7 @@
                             background-size: cover;
                             height: 250px;
                             background-image: url(/resources/upload/exam/image/${item.image});
-                        ">
-                                
+                        ">   
                             </div>
                         </c:if>
                         <div class="sul_box">

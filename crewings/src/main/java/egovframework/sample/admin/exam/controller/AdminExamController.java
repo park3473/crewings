@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,7 +74,7 @@ public class AdminExamController {
 		
 		model.put("before", AdminExamVo);
 		
-		return new ModelAndView("admin/exam/list" , "model " , model);
+		return new ModelAndView("admin/exam/list" , "model" , model);
 		
 	}
 	
@@ -241,7 +242,8 @@ public class AdminExamController {
 		
 	}
 	
-	@RequestMapping(value="/admin/exam/result/ExcelDownTotal.do" , method = RequestMethod.GET)
+	//최종 출력문 다운로드
+	@RequestMapping(value="/admin/exam/result/FinalExcelDown.do" , method = RequestMethod.GET)
 	public void AdminExamResultExcelDownTotal(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) {
 		
 		
@@ -260,6 +262,8 @@ public class AdminExamController {
 		List<HashMap> questionList = (List<HashMap>) model.get("question");
 		
 		List<HashMap> resultList = (List<HashMap>) model.get("result");
+		
+		List<HashMap> dataList = (List<HashMap>) model.get("datalist");
 		
 		Workbook workbook = new HSSFWorkbook();
 		
@@ -392,11 +396,37 @@ public class AdminExamController {
         centerAlignStyle1.setAlignment(HorizontalAlignment.CENTER);
         centerAlignStyle1.setVerticalAlignment(VerticalAlignment.CENTER);
         
-     // 열 너비 자동 조정
+        // 열 너비 자동 조정
         for (int i = 0; i < headers2.length; i++) {
             sheet2.autoSizeColumn(i , true);
             int width = sheet2.getColumnWidth(i);
             sheet2.setColumnWidth(i, width + 1024);
+        }
+        
+        List<HashMap<String, Object>> questionList1 = (List<HashMap<String, Object>>) model.get("question");
+        List<HashMap<String, Object>> dataList1 = (List<HashMap<String, Object>>) model.get("datalist");
+        
+        int titleNum = 1;
+	     // 문제 리스트를 반복 처리
+	        for (HashMap question : questionList1) {
+	        	
+	        	String questionTitle = String.valueOf(question.getOrDefault("name",""));
+	            Sheet sheet3 = workbook.createSheet(titleNum+"번 문항");  // 시트 이름 설정
+
+	            Map<String, Map<String, Map<String, Integer>>> dataMap = processData(question, dataList1);
+	            createSheetWithData(sheet3, dataMap);
+	        	
+	            titleNum += 1;
+	            
+	            for (int i = 0; i < 8; i++) {
+		            sheet3.autoSizeColumn(i , true);
+		            int width = sheet3.getColumnWidth(i);
+		            sheet3.setColumnWidth(i, width + 1024);
+		        }
+	            
+	            System.out.println(titleNum + "번 문항 종료");
+	            
+	            
         }
         
         // 컨텐츠 타입과 파일명 지정
@@ -421,5 +451,78 @@ public class AdminExamController {
 		}
         
 	}
+	
+	private void createSheetWithData(Sheet sheet, Map<String, Map<String, Map<String, Integer>>> dataMap) {
+        // Create header
+        Row header = sheet.createRow(0);
+        createHeader(header);
+
+        int rowIdx = 1;
+        for (String region : dataMap.keySet()) {
+            for (String answer : dataMap.get(region).keySet()) {
+                Row row = sheet.createRow(rowIdx++);
+                int cellIdx = 0;
+                row.createCell(cellIdx++).setCellValue(region);
+                row.createCell(cellIdx++).setCellValue(answer);
+
+                Map<String, Integer> demographics = dataMap.get(region).get(answer);
+                int total = 0;
+                for (Integer count : demographics.values()) {
+                    total += count;
+                }
+                row.createCell(cellIdx++).setCellValue(total);
+                row.createCell(cellIdx++).setCellValue(total > 0 ? "100%" : "0%"); // Assuming total for region and answer is 100%
+
+                for (Map.Entry<String, Integer> entry : demographics.entrySet()) {
+                    String key = entry.getKey();
+                    Integer count = entry.getValue();
+                    row.createCell(cellIdx++).setCellValue(key + ": " + count);
+                }
+            }
+        }
+    }
+
+    private void createHeader(Row header) {
+        String[] headers = {"Region", "Answer", "Count", "Percentage", "Details"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = header.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+    }
+
+    private Map<String, Map<String, Map<String, Integer>>> processData(HashMap<String, Object> question, List<HashMap<String, Object>> dataList) {
+        Map<String, Map<String, Map<String, Integer>>> result = new HashMap<String, Map<String, Map<String, Integer>>>();
+        String[] choices = ((String) question.get("Choices")).split("#");
+
+        for (HashMap<String, Object> data : dataList) {
+            String region = (String) data.get("address_local");
+            String selectList = (String) data.get("select_list");
+            String[] selectedIndices = selectList.split(",");
+            for (String index : selectedIndices) {
+                int idx = Integer.parseInt(index.trim()) - 1;
+                if (idx < 0 || idx >= choices.length) continue;
+                String choice = choices[idx];
+                String gender = (String) data.get("sex");
+                int schoolYear = Integer.parseInt((String) data.get("school_year"));
+                String demographicKey = "Grade " + schoolYear + " " + gender;
+
+                if (!result.containsKey(region)) {
+                    result.put(region, new HashMap<String, Map<String, Integer>>());
+                }
+                if (!result.get(region).containsKey(choice)) {
+                    result.get(region).put(choice, new HashMap<String, Integer>());
+                }
+                if (!result.get(region).get(choice).containsKey(demographicKey)) {
+                    result.get(region).get(choice).put(demographicKey, 0);
+                }
+
+                int currentCount = result.get(region).get(choice).get(demographicKey);
+                result.get(region).get(choice).put(demographicKey, currentCount + 1);
+            }
+        }
+
+        return result;
+    }
+
 	
 }

@@ -13,6 +13,9 @@ public class UserExamResultVo {
 	String update_tm = "";
 	String category = "";
 	String inquiries = "";
+	String sex = "";
+	String address_local = "";
+	String school_year = "";
 	
 	int point = 0;
 	
@@ -87,6 +90,24 @@ public class UserExamResultVo {
 	}
 	public void setInquiries(String inquiries) {
 		this.inquiries = inquiries;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getAddress_local() {
+		return address_local;
+	}
+	public void setAddress_local(String address_local) {
+		this.address_local = address_local;
+	}
+	public String getSchool_year() {
+		return school_year;
+	}
+	public void setSchool_year(String school_year) {
+		this.school_year = school_year;
 	}
 	
 	

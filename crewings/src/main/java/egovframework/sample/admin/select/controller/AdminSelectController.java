@@ -75,8 +75,10 @@ public class AdminSelectController {
 		
 			String drv = request.getRealPath("");
 			drv = drv.substring(0 , drv.length()) + "./resources/" + ((HttpServletRequest) request).getContextPath() + "/upload/select/image/";
-			
+			System.out.println("++!+!+!");
 			String filename = SUtil.setFileUpload(request, drv);
+			
+			System.out.println("filename : " + filename);
 			
 			AdminSelectVo.setImage(filename);
 			

@@ -225,6 +225,9 @@ body{
  	<input type="text" name="select_list" value="">
  	<input type="text" name="complete" value="1">
 	 <input type="text" name="inquiries" value="">
+	 <input type="text" name="sex" value="">
+	 <input type="text" name="school_year" value="">
+	 <input type="text" name="address_local" value="">
  	<input type="text" name="point" value="${model.view.point }">
  </form>
  
@@ -544,11 +547,45 @@ function Quiz(questions){
 	this.questionIndex = 0;		// 질문 순서 dddd
 }
 
+
+//학년 ID와 이름을 매핑
+const schoolYearMap = {
+    '1': '초등학교 1학년',
+    '2': '초등학교 2학년',
+    '3': '초등학교 3학년',
+    '4': '초등학교 4학년',
+    '5': '초등학교 5학년',
+    '6': '초등학교 6학년',
+    '7': '중학교 1학년',
+    '8': '중학교 2학년',
+    '9': '중학교 3학년',
+    '10': '고등학교 1학년',
+    '11': '고등학교 2학년',
+    '12': '고등학교 3학년'
+};
+
+// 선택된 학년 ID를 문자열로 받아 해당하는 이름을 포함하는 배열로 반환
+function formatSchoolYears(schoolYearIds) {
+    const ids = schoolYearIds.split(',');
+    const names = ids.map(id => schoolYearMap[id] || 'Unknown');
+    return names; // 바로 names 배열 반환
+}
+
+// 모델에서 학년 ID 문자열을 받아와서 함수를 호출
+const schoolYearIds = '${model.view.school_year}'; // 이 부분은 서버 사이드 템플릿이나 브라우저에서 처리될 것
+const formattedNames = formatSchoolYears(schoolYearIds);
+
 // ---------------------------------------------------------------------
 var questions = [];
 questions.push(new Question('','','','','','','','<img src="/resources/upload/exam/image/${model.view.image}">',''));
 questions.push(new Question('','','','','','','','${model.view.content}',''));
 questions.push(new Question('','','','','','','','${model.view.greet}',''));
+//성별
+questions.push(new Question('성별을 선택하여 주세요.','sex',['남자','여자'],'2','','','','',''));
+//학년
+questions.push(new Question('학년을 선택하여 주세요.','school_year',formattedNames,'${fn:length(fn:split(model.view.school_year, ","))}','','','','',''));
+//지역
+questions.push(new Question('지역을 선택하여 주세요.','address_local',['서울경기','강원도','충청도','경상도','전라도제주도'],'5','','','','',''));
 
 <c:forEach var="item" items="${model.questionlist}">
 questions.push(new Question('${item.name}','${item.category}',[
@@ -602,26 +639,56 @@ var QuizTitle = $('#QuizModalTitle').html();
     
     // 선택지가 있는 경우에만 선택지 관련 HTML 생성
     if(currentQuestion.choice_cnt && currentQuestion.choice_cnt > 0){
-        var html = '';
-        for(var i = 0; i < currentQuestion.choice_cnt; i++){
-            if(currentQuestion.image[i] == '' || currentQuestion.image[i] == null){
-                html += '<div class="select_div"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>';
-            } else {
-                html += '<div class="select_div max_img"><img src="/resources/upload/select/image/'+currentQuestion.image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>';
-            }
-        }
-        $('#quiz_btn').append(html);
-        for(var i = 0; i < currentQuestion.choice_cnt; i++){
-            var choiceButton = document.getElementById('btn'+i);
-            choiceButton.innerHTML = currentQuestion.choice[i];
-            answer('btn' + i, choiceButton, i+1);
-            speech_text += (i+1)+'번. '
-            speech_text += currentQuestion.choice[i];
-			speech_text += '. '
-        }
+    	
+		if(currentQuestion.category == 'sex' || currentQuestion.category == 'address_local' || currentQuestion.category == 'school_year'){
+			
+			var html = '';
+	        for(var i = 0; i < currentQuestion.choice_cnt; i++){
+	            if(currentQuestion.image[i] == '' || currentQuestion.image[i] == null){
+	                html += '<div class="select_div"><button id="btn'+i+'" value="'+currentQuestion.choice[i]+'"><span id="choice'+i+'"></span></button></div>';
+	            } else {
+	                html += '<div class="select_div max_img"><img src="/resources/upload/select/image/'+currentQuestion.image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>';
+	            }
+	        }
+	        $('#quiz_btn').append(html);
+	        for(var i = 0; i < currentQuestion.choice_cnt; i++){
+	            var choiceButton = document.getElementById('btn'+i);
+	            choiceButton.innerHTML = currentQuestion.choice[i];
+	            answer('btn' + i, choiceButton , i+1 , currentQuestion.category);
+	            speech_text += (i+1)+'번. '
+	            speech_text += currentQuestion.choice[i];
+				speech_text += '. '
+	        }
 
-        // 선택지가 있으므로 next 버튼은 숨김
-        $('#next_btn').hide();
+	        // 선택지가 있으므로 next 버튼은 숨김
+	        $('#next_btn').hide();
+			
+		}else{
+			
+	        var html = '';
+	        for(var i = 0; i < currentQuestion.choice_cnt; i++){
+	            if(currentQuestion.image[i] == '' || currentQuestion.image[i] == null){
+	                html += '<div class="select_div"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>';
+	            } else {
+	                html += '<div class="select_div max_img"><img src="/resources/upload/select/image/'+currentQuestion.image[i]+'"><button id="btn'+i+'"><span id="choice'+i+'"></span></button></div>';
+	            }
+	        }
+	        $('#quiz_btn').append(html);
+	        for(var i = 0; i < currentQuestion.choice_cnt; i++){
+	            var choiceButton = document.getElementById('btn'+i);
+	            choiceButton.innerHTML = currentQuestion.choice[i];
+	            answer('btn' + i, choiceButton, i+1 , 'no');
+	            speech_text += (i+1)+'번. '
+	            speech_text += currentQuestion.choice[i];
+				speech_text += '. '
+	        }
+
+	        // 선택지가 있으므로 next 버튼은 숨김
+	        $('#next_btn').hide();
+			
+		} 	
+    	
+
     } else {
         // 선택지가 없으면 next 버튼을 바로 표시
         $('#next_btn').show();
@@ -641,11 +708,15 @@ var QuizTitle = $('#QuizModalTitle').html();
 }
 
 // 판정
-function answer(id, choice,select_val){
+function answer(id, choice,select_val , category){
 	choice.onclick = function(){
-		var answer = quiz.questions[quiz.questionIndex].answer; // 정답
+		//var answer = quiz.questions[quiz.questionIndex].answer;
 	console.log(id);
-		console.log(answer);		
+	console.log(category);
+	
+	if(category == 'no'){
+		
+		//console.log(answer);		
 		$('#'+id).addClass("select_check");
 		
 		//선택한 거 select_list 담기
@@ -667,6 +738,49 @@ function answer(id, choice,select_val){
 		if(speech_text != ''){
 			speak(speech_text);
 		}
+		
+	}else{
+
+		
+		
+		if(category == 'school_year'){
+			
+			const nameToIdMap = {
+				    '초등학교 1학년': '1',
+				    '초등학교 2학년': '2',
+				    '초등학교 3학년': '3',
+				    '초등학교 4학년': '4',
+				    '초등학교 5학년': '5',
+				    '초등학교 6학년': '6',
+				    '중학교 1학년': '7',
+				    '중학교 2학년': '8',
+				    '중학교 3학년': '9',
+				    '고등학교 1학년': '10',
+				    '고등학교 2학년': '11',
+				    '고등학교 3학년': '12'
+				};
+			
+			console.log($(this).val());
+			
+			var school_year_check = nameToIdMap[$(this).val()] || 'Unknown';	
+			
+			$('[name="'+category+'"]').val(school_year_check);
+			
+		}else{
+			
+			$('[name="'+category+'"]').val($(this).val());
+			
+		}
+		
+		
+		$('#'+id).addClass("select_check");
+		$('#quiz_btn button').attr('disabled','disabled');
+		$('#quiz_solution').show();
+		$('#next_btn').show();
+		
+	}
+	
+		
 		
 		
 		

@@ -19,6 +19,9 @@ public class UserExamVo extends SearchVo {
 	String create_tm = "";
 	String update_tm = "";
 	String category = "";
+	String sex = "";
+	String address_local = "";
+	String school_year = "";
 	
 	public String getIdx() {
 		return idx;
@@ -109,6 +112,24 @@ public class UserExamVo extends SearchVo {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getAddress_local() {
+		return address_local;
+	}
+	public void setAddress_local(String address_local) {
+		this.address_local = address_local;
+	}
+	public String getSchool_year() {
+		return school_year;
+	}
+	public void setSchool_year(String school_year) {
+		this.school_year = school_year;
 	}
 	
 	

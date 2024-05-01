@@ -46,6 +46,8 @@
                         <input type="hidden"  name="csrf" value="${CSRF_TOKEN}" />
                         <input type="hidden" name="level" value="1"  />
                         <input type="hidden" name="type" value="0"  />
+                        <input type="hidden" name="point" value="0"  />
+                        <input type="hidden" name="school_year" id="school_year" value=""  />
                         <input type="hidden" name="image_change_bool" id="image_change_bool" value="false" />
                         <div class="sc_con" id="div_con">
                             <div class="title">
@@ -70,10 +72,25 @@
                                         <li>
                                         	<span class="list_t">유형</span>
                                         	<select name="category">
-                                        		<option value="0">설문</option>]
-                                        		<option value="1">진단</option>]
+                                        		<option value="0">설문</option>
+                                        		<option value="1">진단</option>
                                         	</select>
                                         </li>
+                                        <li>
+											<span class="list_t">학년</span>
+											<label><input type="checkbox" name="school_year_list" value="1">초등학교 1학년</label>
+											<label><input type="checkbox" name="school_year_list" value="2">초등학교 2학년</label>
+											<label><input type="checkbox" name="school_year_list" value="3">초등학교 3학년</label>
+											<label><input type="checkbox" name="school_year_list" value="4">초등학교 4학년</label>
+											<label><input type="checkbox" name="school_year_list" value="5">초등학교 5학년</label>
+											<label><input type="checkbox" name="school_year_list" value="6">초등학교 6학년</label>
+											<label><input type="checkbox" name="school_year_list" value="7">중학교 1학년</label>
+											<label><input type="checkbox" name="school_year_list" value="8">중학교 2학년</label>
+											<label><input type="checkbox" name="school_year_list" value="9">중학교 3학년</label>
+											<label><input type="checkbox" name="school_year_list" value="10">고등학교 1학년</label>
+											<label><input type="checkbox" name="school_year_list" value="11">고등학교 2학년</label>
+											<label><input type="checkbox" name="school_year_list" value="12">고등학교 3학년</label>
+										</li>
                                         <li>
                                         	<span class="list_t">대분류</span>
                                         	<input class="input_title" type="text" name="l_category" id="l_category" list="l_category_list" >
@@ -96,10 +113,10 @@
                                         	</c:forEach>
                                         	</c:if>
                                         </li>
-                                        <li>
+                                        <!-- <li>
                                         	<span class="list_t">포인트</span>
                                         	<input class="input_size mr" type="text" name="point" id="point"/>
-                                        </li>
+                                        </li> -->
                                         <li>
                                         	<span class="list_t">설명</span>
                                         	<input class="input_size mr" type="text" name="coment" id="coment"/>
@@ -180,7 +197,20 @@ function insertClick()
 		alert('제목을 입력 하여 주세요');
 		return;
 	}
+	
+	// 체크박스를 모두 찾기
+    const checkboxes = document.querySelectorAll('input[name="school_year_list"]:checked');
+    // 선택된 체크박스의 값을 배열로 모으기
+    const selectedValues = Array.from(checkboxes).map(checkbox => checkbox.value);
+    // 배열을 쉼표로 구분된 문자열로 변환
+    const resultString = selectedValues.join(',');
+    // 결과 문자열 출력 (실제로는 여기서 서버로 보내거나 다른 작업을 수행할 수 있음)
+    console.log(resultString);
 
+    if(resultString != ''){
+        $('#school_year').val(resultString);	
+    }
+    
 	$('#insertForm').submit();
 }
 

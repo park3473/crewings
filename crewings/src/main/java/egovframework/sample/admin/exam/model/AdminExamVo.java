@@ -22,6 +22,8 @@ public class AdminExamVo extends SearchVo{
 	String category = "";
 	String inquiries = "";
 	String school_year = "";
+	String sex = "";
+	String address_local = "";
 	
 	public String getIdx() {
 		return idx;
@@ -124,6 +126,24 @@ public class AdminExamVo extends SearchVo{
 	}
 	public void setInquiries(String inquiries) {
 		this.inquiries = inquiries;
+	}
+	public String getSchool_year() {
+		return school_year;
+	}
+	public void setSchool_year(String school_year) {
+		this.school_year = school_year;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getAddress_local() {
+		return address_local;
+	}
+	public void setAddress_local(String address_local) {
+		this.address_local = address_local;
 	}
 	
 	

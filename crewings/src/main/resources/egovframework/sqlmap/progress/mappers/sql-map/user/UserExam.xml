@@ -70,8 +70,8 @@
 		    ql.seq;
 	</select>
 	<insert id="setExamResultData" parameterType="UserExamResultVo" useGeneratedKeys="true" keyProperty="idx">
-		INSERT INTO TBL_EXAM_RESULT (EXAM_IDX , MEMBER_ID , NAME , SELECT_LIST , COMPLETE , INQUIRIES , COMPLETE_TM , CREATE_TM , UPDATE_TM)
-		VALUES(#{exam_idx} , #{member_id} , #{name} , #{select_list} , #{complete} , #{inquiries} , now() , now() , now())
+		INSERT INTO TBL_EXAM_RESULT (EXAM_IDX , SEX , ADDRESS_LOCAL , SCHOOL_YEAR , MEMBER_ID , NAME , SELECT_LIST , COMPLETE , INQUIRIES , COMPLETE_TM , CREATE_TM , UPDATE_TM)
+		VALUES(#{exam_idx} , #{sex} , #{address_local} , #{school_year} , #{member_id} , #{name} , #{select_list} , #{complete} , #{inquiries} , now() , now() , now())
 	</insert>
 	
 	<select id="getResultListView" parameterType="UserExamResultVo" resultType="hashMap">

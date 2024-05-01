@@ -246,6 +246,8 @@ public class AdminExamServiceImpl implements AdminExamService {
 		
 		List<?> list = adminExamMapper.getResultAllList(adminExamVo);
 		
+		List<?> Datalist = adminExamMapper.getResultDataAllList(adminExamVo);
+		
 		AdminExamVo view = adminExamMapper.getExamView(adminExamVo);
 		
 		model.put("view", view);
@@ -253,6 +255,8 @@ public class AdminExamServiceImpl implements AdminExamService {
 		model.put("question", question);
 		
 		model.put("result", list);
+		
+		model.put("datalist", Datalist);
 		
 		return model;
 	}

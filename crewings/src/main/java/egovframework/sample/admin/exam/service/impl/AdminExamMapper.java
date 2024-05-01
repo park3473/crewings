@@ -44,5 +44,7 @@ public interface AdminExamMapper {
 	public List<?> getResultAllList(AdminExamVo adminExamVo);
 
 	public int getResultAllListCnt(AdminExamVo adminExamVo);
+
+	public List<?> getResultDataAllList(AdminExamVo adminExamVo);
 	
 }
