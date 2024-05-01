@@ -241,6 +241,13 @@ public class AdminExamController {
 		
 	}
 	
+	@RequestMapping(value="/admin/exam/result/ExcelDownTotal.do" , method = RequestMethod.GET)
+	public void AdminExamResultExcelDownTotal(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) {
+		
+		
+		
+	}
+	
 	@RequestMapping(value="/admin/exam/result/ExcelDown.do" , method = RequestMethod.GET)
 	public void AdminExamResultExcelDown(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) throws UnsupportedEncodingException {
 		
