@@ -21,6 +21,7 @@ public class AdminExamVo extends SearchVo{
 	String update_tm = "";
 	String category = "";
 	String inquiries = "";
+	String school_year = "";
 	
 	public String getIdx() {
 		return idx;

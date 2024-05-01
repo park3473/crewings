@@ -73,7 +73,7 @@ public class AdminExamController {
 		
 		model.put("before", AdminExamVo);
 		
-		return new ModelAndView("admin/exam/list" , "model" , model);
+		return new ModelAndView("admin/exam/list" , "model " , model);
 		
 	}
 	
