@@ -8,8 +8,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Chart;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -25,6 +30,22 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.charts.ChartDataSource;
+import org.apache.poi.ss.usermodel.charts.ChartLegend;
+import org.apache.poi.ss.usermodel.charts.DataSources;
+import org.apache.poi.ss.usermodel.charts.LegendPosition;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xddf.usermodel.chart.ChartTypes;
+import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
+import org.apache.poi.xddf.usermodel.chart.XDDFChartLegend;
+import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;
+import org.apache.poi.xddf.usermodel.chart.XDDFDataSourcesFactory;
+import org.apache.poi.xddf.usermodel.chart.XDDFNumericalDataSource;
+import org.apache.poi.xddf.usermodel.chart.XDDFPieChartData;
+import org.apache.poi.xssf.usermodel.XSSFChart;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -265,7 +286,7 @@ public class AdminExamController {
 		
 		List<HashMap> dataList = (List<HashMap>) model.get("datalist");
 		
-		Workbook workbook = new HSSFWorkbook();
+		Workbook workbook = new XSSFWorkbook();
 		
 		Sheet sheet = workbook.createSheet("문항 리스트");
 		
@@ -406,28 +427,18 @@ public class AdminExamController {
         List<HashMap<String, Object>> questionList1 = (List<HashMap<String, Object>>) model.get("question");
         List<HashMap<String, Object>> dataList1 = (List<HashMap<String, Object>>) model.get("datalist");
         
-        int titleNum = 1;
-	     // 문제 리스트를 반복 처리
-	        for (HashMap question : questionList1) {
-	        	
-	        	String questionTitle = String.valueOf(question.getOrDefault("name",""));
-	            Sheet sheet3 = workbook.createSheet(titleNum+"번 문항");  // 시트 이름 설정
-
-	            Map<String, Map<String, Map<String, Integer>>> dataMap = processData(question, dataList1);
-	            createSheetWithData(sheet3, dataMap);
-	        	
-	            titleNum += 1;
-	            
-	            for (int i = 0; i < 8; i++) {
-		            sheet3.autoSizeColumn(i , true);
-		            int width = sheet3.getColumnWidth(i);
-		            sheet3.setColumnWidth(i, width + 1024);
-		        }
-	            
-	            System.out.println(titleNum + "번 문항 종료");
-	            
-	            
+        // 문항별 시트 생성
+        int sheetIndex = 1;
+        for (int i = 0; i < questionList1.size(); i++) {
+            HashMap<String, Object> question = questionList1.get(i);
+            String sheetName = sheetIndex + "번 문항";
+            XSSFSheet sheet3 = (XSSFSheet) workbook.createSheet(sheetName);
+            setupSheetHeader(sheet3);
+            int statsStartRow = addOverallStatistics(sheet3, question, dataList1, i); // 전체 통계 추가, 시작 행 반환
+            addPieChart(sheet3, statsStartRow); // 파이 차트 추가
+            sheetIndex++;
         }
+
         
         // 컨텐츠 타입과 파일명 지정
 
@@ -452,77 +463,172 @@ public class AdminExamController {
         
 	}
 	
-	private void createSheetWithData(Sheet sheet, Map<String, Map<String, Map<String, Integer>>> dataMap) {
-        // Create header
-        Row header = sheet.createRow(0);
-        createHeader(header);
+	// 시트 헤더 설정
+	private void setupSheetHeader(XSSFSheet sheet) {
+	    Row headerRow1 = sheet.createRow(0);
+	    Row headerRow2 = sheet.createRow(1);
 
-        int rowIdx = 1;
-        for (String region : dataMap.keySet()) {
-            for (String answer : dataMap.get(region).keySet()) {
-                Row row = sheet.createRow(rowIdx++);
-                int cellIdx = 0;
-                row.createCell(cellIdx++).setCellValue(region);
-                row.createCell(cellIdx++).setCellValue(answer);
+	    // 첫 번째 행 (병합 헤더)
+	    sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0)); // 지역
+	    sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1)); // 답변
+	    sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2)); // 인원
+	    sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3)); // 백분율
 
-                Map<String, Integer> demographics = dataMap.get(region).get(answer);
-                int total = 0;
-                for (Integer count : demographics.values()) {
-                    total += count;
-                }
-                row.createCell(cellIdx++).setCellValue(total);
-                row.createCell(cellIdx++).setCellValue(total > 0 ? "100%" : "0%"); // Assuming total for region and answer is 100%
+	    // 헤더 셀 설정
+	    headerRow1.createCell(0).setCellValue("지역");
+	    headerRow1.createCell(1).setCellValue("답변");
+	    headerRow1.createCell(2).setCellValue("인원");
+	    headerRow1.createCell(3).setCellValue("%");
 
-                for (Map.Entry<String, Integer> entry : demographics.entrySet()) {
-                    String key = entry.getKey();
-                    Integer count = entry.getValue();
-                    row.createCell(cellIdx++).setCellValue(key + ": " + count);
-                }
-            }
+	    // 학년 및 성별 헤더
+	    String[] grades = {"초4", "초5", "초6"};
+	    int cellIndex = 4;
+	    for (String grade : grades) {
+	        headerRow1.createCell(cellIndex).setCellValue(grade);
+	        headerRow2.createCell(cellIndex).setCellValue("남");
+	        headerRow2.createCell(cellIndex + 1).setCellValue("여");
+	        sheet.addMergedRegion(new CellRangeAddress(0, 0, cellIndex, cellIndex + 1));
+	        cellIndex += 2;
+	    }
+	}
+
+
+	// 데이터 집계 및 입력
+	private void fillSheetWithData(XSSFSheet sheet, HashMap<String, Object> question, List<HashMap<String, Object>> dataList, int questionIndex) {
+	    String[] choices = question.get("Choices").toString().split("#");
+	    Map<String, Map<String, Integer[]>> regionChoicesMap = new TreeMap<>();
+
+	    // 데이터 집계
+	    for (HashMap<String, Object> data : dataList) {
+	        String region = data.get("address_local").toString();
+	        String[] selectedIndices = data.get("select_list").toString().split(",");
+	        if (selectedIndices.length > questionIndex) {
+	            int index = Integer.parseInt(selectedIndices[questionIndex].trim()) - 1;
+	            if (index >= 0 && index < choices.length) {
+	                String choice = choices[index];
+	                regionChoicesMap.computeIfAbsent(region, k -> new HashMap<>()).computeIfAbsent(choice, k -> new Integer[]{0, 0, 0, 0, 0, 0})[determineGenderIndex(data)]++;
+	            }
+	        }
+	    }
+
+	    // 데이터 입력
+	    int rowIndex = 2;
+	    for (Map.Entry<String, Map<String, Integer[]>> regionEntry : regionChoicesMap.entrySet()) {
+	        for (Map.Entry<String, Integer[]> choiceEntry : regionEntry.getValue().entrySet()) {
+	            Row row = sheet.createRow(rowIndex++);
+	            row.createCell(0).setCellValue(regionEntry.getKey());
+	            row.createCell(1).setCellValue(choiceEntry.getKey());
+	            Integer[] counts = choiceEntry.getValue();
+	            int sumCounts = Arrays.stream(counts).mapToInt(Integer::intValue).sum();
+	            row.createCell(2).setCellValue(sumCounts);
+	            row.createCell(3).setCellValue(calculatePercentage(counts, sumCounts));
+	            int cellIndex = 4;
+	            for (Integer count : counts) {
+	                row.createCell(cellIndex++).setCellValue(count);
+	            }
+	        }
+	    }
+	}
+
+	// 전체 통계 추가 및 파이 차트 생성
+	private int addOverallStatistics(XSSFSheet sheet, HashMap<String, Object> question, List<HashMap<String, Object>> dataList, int questionIndex) {
+	    String[] choices = question.get("Choices").toString().split("#");
+	    Map<String, Integer[]> overallStats = new LinkedHashMap<>();
+
+	    // 초기화
+	    for (String choice : choices) {
+	        overallStats.put(choice, new Integer[]{0, 0, 0, 0, 0, 0});
+	    }
+
+	    // 데이터 집계
+	    for (HashMap<String, Object> data : dataList) {
+	        String[] selectedIndices = data.get("select_list").toString().split(",");
+	        if (selectedIndices.length > questionIndex) {
+	            int index = Integer.parseInt(selectedIndices[questionIndex].trim()) - 1;
+	            if (index >= 0 && index < choices.length) {
+	                String choice = choices[index];
+	                Integer[] counts = overallStats.get(choice);
+	                int schoolYear = Integer.parseInt(data.get("school_year").toString()) - 4;
+	                int genderIndex = determineGenderIndex(data); // 성별 인덱스 결정
+	                counts[schoolYear * 2 + genderIndex]++;
+	            }
+	        }
+	    }
+	    
+	    // 데이터 입력 (시트 상단에 통계 추가)
+	    int startRow = sheet.getLastRowNum() + 2; // 이전 데이터 아래에 추가
+	    Row headerRow = sheet.createRow(startRow);
+	    headerRow.createCell(0).setCellValue("전체 답변");
+	    headerRow.createCell(1).setCellValue("인원");
+	    headerRow.createCell(2).setCellValue("백분율");
+
+	    int rowIdx = startRow + 1;
+	    for (Map.Entry<String, Integer[]> entry : overallStats.entrySet()) {
+	        Row row = sheet.createRow(rowIdx++);
+	        row.createCell(0).setCellValue(entry.getKey());
+	        Integer[] counts = entry.getValue();
+	        int sumCounts = Arrays.stream(counts).mapToInt(Integer::intValue).sum();
+	        row.createCell(1).setCellValue(sumCounts);
+	        row.createCell(2).setCellValue(calculatePercentage(counts, sumCounts));  // 전체 응답수로 백분율 계산
+	    }
+
+	    return startRow;
+	}
+
+
+	// 파이 차트 추가 메서드
+	private void addPieChart(XSSFSheet sheet, int startRow) {
+	    Drawing drawing = sheet.createDrawingPatriarch();
+	    ClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 6, startRow, 10, startRow + 5);  // 차트 위치 조정
+
+	    XSSFChart chart = (XSSFChart) ((XSSFDrawing) drawing).createChart(anchor);
+	    XDDFChartLegend legend = chart.getOrAddLegend();
+	    legend.setPosition(org.apache.poi.xddf.usermodel.chart.LegendPosition.BOTTOM); // 변경된 부분
+
+	    // 차트 데이터 소스 설정
+	    XDDFDataSource<String> categories = XDDFDataSourcesFactory.fromStringCellRange(sheet, new CellRangeAddress(startRow + 1, sheet.getLastRowNum(), 0, 0));
+	    XDDFNumericalDataSource<Double> values = XDDFDataSourcesFactory.fromNumericCellRange(sheet, new CellRangeAddress(startRow + 1, sheet.getLastRowNum(), 1, 1));
+
+	    // 차트 데이터 모델 설정
+	    XDDFChartDataFactory chartDataFactory = XDDFChartDataFactory.newInstance();
+	    XDDFChartData data = chartDataFactory.createPieChartData();
+
+	    // 차트 데이터 포인트 설정
+	    XDDFChartData.Series series = data.addSeries(categories, values);
+	    series.setTitle(sheet.getRow(startRow).getCell(0).getStringCellValue(), new XDDFDataFormat("0%"));
+
+	    // 차트 제목 설정
+	    chart.setTitleText(sheet.getRow(startRow).getCell(0).getStringCellValue());
+	    chart.setTitleOverlay(false);
+
+	    // 차트 모양 설정
+	    XDDFPieChartData pie = (XDDFPieChartData) data;
+	    pie.setVaryColors(true);
+	    pie.setFirstSliceAngle(0);  // 파이 차트의 첫 번째 슬라이스 각도
+
+	    // 차트 설정
+	    chart.plot(data);
+	}
+    
+    private double calculatePercentage(Integer[] counts, int totalResponses) {
+        int sumCounts = Arrays.stream(counts).mapToInt(Integer::intValue).sum();
+        return totalResponses > 0 ? (double) sumCounts / totalResponses * 100 : 0.0;
+    }
+
+    
+    private int determineGenderIndex(HashMap<String, Object> data) {
+        String sex = data.get("sex").toString();
+        if (sex.equals("남자")) {
+            return 0;
+        } else if (sex.equals("여자")) {
+            return 1;
+        } else {
+            // 예외 처리: 남자와 여자 이외의 값이 올 경우
+            throw new IllegalArgumentException("잘못된 성별 값입니다: " + sex);
         }
     }
 
-    private void createHeader(Row header) {
-        String[] headers = {"Region", "Answer", "Count", "Percentage", "Details"};
-        for (int i = 0; i < headers.length; i++) {
-            Cell cell = header.createCell(i);
-            cell.setCellValue(headers[i]);
-        }
-    }
 
-    private Map<String, Map<String, Map<String, Integer>>> processData(HashMap<String, Object> question, List<HashMap<String, Object>> dataList) {
-        Map<String, Map<String, Map<String, Integer>>> result = new HashMap<String, Map<String, Map<String, Integer>>>();
-        String[] choices = ((String) question.get("Choices")).split("#");
-
-        for (HashMap<String, Object> data : dataList) {
-            String region = (String) data.get("address_local");
-            String selectList = (String) data.get("select_list");
-            String[] selectedIndices = selectList.split(",");
-            for (String index : selectedIndices) {
-                int idx = Integer.parseInt(index.trim()) - 1;
-                if (idx < 0 || idx >= choices.length) continue;
-                String choice = choices[idx];
-                String gender = (String) data.get("sex");
-                int schoolYear = Integer.parseInt((String) data.get("school_year"));
-                String demographicKey = "Grade " + schoolYear + " " + gender;
-
-                if (!result.containsKey(region)) {
-                    result.put(region, new HashMap<String, Map<String, Integer>>());
-                }
-                if (!result.get(region).containsKey(choice)) {
-                    result.get(region).put(choice, new HashMap<String, Integer>());
-                }
-                if (!result.get(region).get(choice).containsKey(demographicKey)) {
-                    result.get(region).get(choice).put(demographicKey, 0);
-                }
-
-                int currentCount = result.get(region).get(choice).get(demographicKey);
-                result.get(region).get(choice).put(demographicKey, currentCount + 1);
-            }
-        }
-
-        return result;
-    }
 
 	
 }
