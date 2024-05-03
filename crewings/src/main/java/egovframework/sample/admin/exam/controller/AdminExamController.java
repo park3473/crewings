@@ -1,8 +1,11 @@
 package egovframework.sample.admin.exam.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -21,11 +24,13 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Chart;
 import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -35,6 +40,7 @@ import org.apache.poi.ss.usermodel.charts.ChartLegend;
 import org.apache.poi.ss.usermodel.charts.DataSources;
 import org.apache.poi.ss.usermodel.charts.LegendPosition;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xddf.usermodel.chart.ChartTypes;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartLegend;
@@ -46,6 +52,10 @@ import org.apache.poi.xssf.usermodel.XSSFChart;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -272,7 +282,7 @@ public class AdminExamController {
 	}
 	
 	@RequestMapping(value="/admin/exam/result/ExcelDown.do" , method = RequestMethod.GET)
-	public void AdminExamResultExcelDown(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) throws UnsupportedEncodingException {
+	public void AdminExamResultExcelDown(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) throws IOException {
 		
 		System.out.println("--excelDownStart--");
 		
@@ -435,7 +445,8 @@ public class AdminExamController {
             XSSFSheet sheet3 = (XSSFSheet) workbook.createSheet(sheetName);
             setupSheetHeader(sheet3);
             int statsStartRow = addOverallStatistics(sheet3, question, dataList1, i); // 전체 통계 추가, 시작 행 반환
-            addPieChart(sheet3, statsStartRow); // 파이 차트 추가
+            // 파이 차트 추가 메서드 호출
+            addPieChart((XSSFWorkbook) workbook, sheet3, statsStartRow);
             sheetIndex++;
         }
 
@@ -577,37 +588,41 @@ public class AdminExamController {
 
 
 	// 파이 차트 추가 메서드
-	private void addPieChart(XSSFSheet sheet, int startRow) {
+	private void addPieChart(XSSFWorkbook workbook, XSSFSheet sheet, int startRow) throws IOException {
+	    // 파이 차트 데이터 생성
+	    DefaultPieDataset dataset = new DefaultPieDataset();
+	    for (int rowNum = startRow + 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+	        String category = sheet.getRow(rowNum).getCell(0).getStringCellValue();
+	        double value = sheet.getRow(rowNum).getCell(1).getNumericCellValue();
+	        dataset.setValue(category, value);
+	    }
+
+	    // 파이 차트 생성
+	    JFreeChart chart = ChartFactory.createPieChart(
+	            sheet.getRow(startRow).getCell(0).getStringCellValue(),
+	            dataset,
+	            true, // legend
+	            true, // tooltips
+	            false // urls
+	    );
+
+	    // 차트 이미지 생성
+	    ByteArrayOutputStream chartOut = new ByteArrayOutputStream();
+	    ChartUtils.writeChartAsPNG(chartOut, chart, 800, 600);
+	    chartOut.flush();
+
+	    // 이미지를 엑셀 시트에 추가
+	    CreationHelper helper = workbook.getCreationHelper();
 	    Drawing drawing = sheet.createDrawingPatriarch();
-	    ClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 6, startRow, 10, startRow + 5);  // 차트 위치 조정
+	    ClientAnchor anchor = helper.createClientAnchor();
+	    anchor.setCol1(6); // 엑셀에서 차트가 시작될 열 번호
+	    anchor.setRow1(startRow); // 엑셀에서 차트가 시작될 행 번호
+	    int pictureIdx = workbook.addPicture(chartOut.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+	    Picture pict = drawing.createPicture(anchor, pictureIdx);
+	    pict.resize(); // 이미지 크기 조정
 
-	    XSSFChart chart = (XSSFChart) ((XSSFDrawing) drawing).createChart(anchor);
-	    XDDFChartLegend legend = chart.getOrAddLegend();
-	    legend.setPosition(org.apache.poi.xddf.usermodel.chart.LegendPosition.BOTTOM); // 변경된 부분
-
-	    // 차트 데이터 소스 설정
-	    XDDFDataSource<String> categories = XDDFDataSourcesFactory.fromStringCellRange(sheet, new CellRangeAddress(startRow + 1, sheet.getLastRowNum(), 0, 0));
-	    XDDFNumericalDataSource<Double> values = XDDFDataSourcesFactory.fromNumericCellRange(sheet, new CellRangeAddress(startRow + 1, sheet.getLastRowNum(), 1, 1));
-
-	    // 차트 데이터 모델 설정
-	    XDDFChartDataFactory chartDataFactory = XDDFChartDataFactory.newInstance();
-	    XDDFChartData data = chartDataFactory.createPieChartData();
-
-	    // 차트 데이터 포인트 설정
-	    XDDFChartData.Series series = data.addSeries(categories, values);
-	    series.setTitle(sheet.getRow(startRow).getCell(0).getStringCellValue(), new XDDFDataFormat("0%"));
-
-	    // 차트 제목 설정
-	    chart.setTitleText(sheet.getRow(startRow).getCell(0).getStringCellValue());
-	    chart.setTitleOverlay(false);
-
-	    // 차트 모양 설정
-	    XDDFPieChartData pie = (XDDFPieChartData) data;
-	    pie.setVaryColors(true);
-	    pie.setFirstSliceAngle(0);  // 파이 차트의 첫 번째 슬라이스 각도
-
-	    // 차트 설정
-	    chart.plot(data);
+	    // 스트림 닫기
+	    chartOut.close();
 	}
     
     private double calculatePercentage(Integer[] counts, int totalResponses) {
