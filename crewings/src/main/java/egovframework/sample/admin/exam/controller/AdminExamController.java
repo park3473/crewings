@@ -55,6 +55,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -444,11 +447,12 @@ public class AdminExamController {
             String sheetName = sheetIndex + "번 문항";
             XSSFSheet sheet3 = (XSSFSheet) workbook.createSheet(sheetName);
             setupSheetHeader(sheet3);
+            fillSheetWithData(sheet3, question, dataList1, i); // 데이터 집계 및 입력
             int statsStartRow = addOverallStatistics(sheet3, question, dataList1, i); // 전체 통계 추가, 시작 행 반환
-            // 파이 차트 추가 메서드 호출
-            addPieChart((XSSFWorkbook) workbook, sheet3, statsStartRow);
+            addPieChart((XSSFWorkbook) workbook, sheet3, statsStartRow , dataList1 , i , question); // 파이 차트 추가
             sheetIndex++;
         }
+
 
         
         // 컨텐츠 타입과 파일명 지정
@@ -505,9 +509,21 @@ public class AdminExamController {
 
 
 	// 데이터 집계 및 입력
-	private void fillSheetWithData(XSSFSheet sheet, HashMap<String, Object> question, List<HashMap<String, Object>> dataList, int questionIndex) {
+	private void fillSheetWithData(Sheet sheet, HashMap<String, Object> question, List<HashMap<String, Object>> dataList, int questionIndex) {
 	    String[] choices = question.get("Choices").toString().split("#");
-	    Map<String, Map<String, Integer[]>> regionChoicesMap = new TreeMap<>();
+	    Map<String, Map<String, Integer[]>> regionChoicesMap = new TreeMap<String, Map<String, Integer[]>>();
+
+	    // 초기화: 모든 지역 및 선택지 조합의 카운트를 0으로 설정
+	    for (HashMap<String, Object> data : dataList) {
+	        String region = data.get("address_local").toString();
+	        if (!regionChoicesMap.containsKey(region)) {
+	            Map<String, Integer[]> choiceMap = new LinkedHashMap<String, Integer[]>();
+	            for (String choice : choices) {
+	                choiceMap.put(choice, new Integer[]{0, 0, 0, 0, 0, 0}); // 모든 선택지를 0으로 초기화 (초4 남, 초4 여, 초5 남, 초5 여, 초6 남, 초6 여)
+	            }
+	            regionChoicesMap.put(region, choiceMap);
+	        }
+	    }
 
 	    // 데이터 집계
 	    for (HashMap<String, Object> data : dataList) {
@@ -517,38 +533,54 @@ public class AdminExamController {
 	            int index = Integer.parseInt(selectedIndices[questionIndex].trim()) - 1;
 	            if (index >= 0 && index < choices.length) {
 	                String choice = choices[index];
-	                regionChoicesMap.computeIfAbsent(region, k -> new HashMap<>()).computeIfAbsent(choice, k -> new Integer[]{0, 0, 0, 0, 0, 0})[determineGenderIndex(data)]++;
+	                Map<String, Integer[]> choiceMap = regionChoicesMap.get(region);
+	                int genderIndex = Integer.parseInt(data.get("school_year").toString()) - 4;
+	                genderIndex = genderIndex * 2 + (data.get("sex").toString().equals("남자") ? 0 : 1);
+	                choiceMap.get(choice)[genderIndex]++;
 	            }
 	        }
 	    }
 
 	    // 데이터 입력
-	    int rowIndex = 2;
+	    int rowIndex = 2; // 헤더 다음 행부터 시작
 	    for (Map.Entry<String, Map<String, Integer[]>> regionEntry : regionChoicesMap.entrySet()) {
+	        int totalResponses = 0;
+	        for (Integer[] counts : regionEntry.getValue().values()) {
+	            for (int count : counts) {
+	                totalResponses += count;
+	            }
+	        }
 	        for (Map.Entry<String, Integer[]> choiceEntry : regionEntry.getValue().entrySet()) {
 	            Row row = sheet.createRow(rowIndex++);
-	            row.createCell(0).setCellValue(regionEntry.getKey());
-	            row.createCell(1).setCellValue(choiceEntry.getKey());
+	            row.createCell(0).setCellValue(regionEntry.getKey()); // 지역
+	            row.createCell(1).setCellValue(choiceEntry.getKey()); // 답변
 	            Integer[] counts = choiceEntry.getValue();
-	            int sumCounts = Arrays.stream(counts).mapToInt(Integer::intValue).sum();
-	            row.createCell(2).setCellValue(sumCounts);
-	            row.createCell(3).setCellValue(calculatePercentage(counts, sumCounts));
+	            int sumCounts = 0;
+	            for (int count : counts) sumCounts += count;
+	            row.createCell(2).setCellValue(sumCounts); // 인원 총계
+	            double percentage = totalResponses > 0 ? (double) sumCounts / totalResponses * 100 : 0;
+	            row.createCell(3).setCellValue(String.format("%.2f%%", percentage)); // 백분율
 	            int cellIndex = 4;
-	            for (Integer count : counts) {
-	                row.createCell(cellIndex++).setCellValue(count);
+	            for (int count : counts) {
+	                row.createCell(cellIndex++).setCellValue(count); // 초4 남, 초4 여, 초5 남, 초5 여, 초6 남, 초6 여 각각의 값 입력
 	            }
 	        }
 	    }
 	}
 
-	// 전체 통계 추가 및 파이 차트 생성
 	private int addOverallStatistics(XSSFSheet sheet, HashMap<String, Object> question, List<HashMap<String, Object>> dataList, int questionIndex) {
 	    String[] choices = question.get("Choices").toString().split("#");
-	    Map<String, Integer[]> overallStats = new LinkedHashMap<>();
+	    Map<String, Integer[][]> overallStats = new LinkedHashMap<>();
 
 	    // 초기화
 	    for (String choice : choices) {
-	        overallStats.put(choice, new Integer[]{0, 0, 0, 0, 0, 0});
+	        Integer[][] statsByGenderAndGrade = new Integer[3][2]; // 각 학년별 남자, 여자 데이터를 위한 2차원 배열
+	        for (int grade = 0; grade < 3; grade++) {
+	            for (int gender = 0; gender < 2; gender++) {
+	                statsByGenderAndGrade[grade][gender] = 0;
+	            }
+	        }
+	        overallStats.put(choice, statsByGenderAndGrade);
 	    }
 
 	    // 데이터 집계
@@ -558,72 +590,128 @@ public class AdminExamController {
 	            int index = Integer.parseInt(selectedIndices[questionIndex].trim()) - 1;
 	            if (index >= 0 && index < choices.length) {
 	                String choice = choices[index];
-	                Integer[] counts = overallStats.get(choice);
-	                int schoolYear = Integer.parseInt(data.get("school_year").toString()) - 4;
-	                int genderIndex = determineGenderIndex(data); // 성별 인덱스 결정
-	                counts[schoolYear * 2 + genderIndex]++;
+	                int gradeIndex = Integer.parseInt(data.get("school_year").toString()) - 4;
+	                int genderIndex = data.get("sex").toString().equals("남자") ? 0 : 1;
+	                overallStats.get(choice)[gradeIndex][genderIndex]++;
 	            }
 	        }
 	    }
-	    
-	    // 데이터 입력 (시트 상단에 통계 추가)
-	    int startRow = sheet.getLastRowNum() + 2; // 이전 데이터 아래에 추가
-	    Row headerRow = sheet.createRow(startRow);
-	    headerRow.createCell(0).setCellValue("전체 답변");
-	    headerRow.createCell(1).setCellValue("인원");
-	    headerRow.createCell(2).setCellValue("백분율");
 
-	    int rowIdx = startRow + 1;
-	    for (Map.Entry<String, Integer[]> entry : overallStats.entrySet()) {
-	        Row row = sheet.createRow(rowIdx++);
-	        row.createCell(0).setCellValue(entry.getKey());
-	        Integer[] counts = entry.getValue();
-	        int sumCounts = Arrays.stream(counts).mapToInt(Integer::intValue).sum();
-	        row.createCell(1).setCellValue(sumCounts);
-	        row.createCell(2).setCellValue(calculatePercentage(counts, sumCounts));  // 전체 응답수로 백분율 계산
+	    // 헤더 설정 및 데이터 입력
+	    int startRow = sheet.getLastRowNum() + 1; // 마지막 사용된 행 다음에 헤더를 추가
+	    Row headerRow1 = sheet.createRow(startRow);
+	    Row headerRow2 = sheet.createRow(startRow + 1);
+
+	    // 병합 헤더 설정
+	    sheet.addMergedRegion(new CellRangeAddress(startRow, startRow + 1, 0, 0)); // "답변"
+	    sheet.addMergedRegion(new CellRangeAddress(startRow, startRow + 1, 1, 1)); // "인원"
+	    sheet.addMergedRegion(new CellRangeAddress(startRow, startRow + 1, 2, 2)); // "백분율"
+
+	    headerRow1.createCell(0).setCellValue("답변");
+	    headerRow1.createCell(1).setCellValue("인원");
+	    headerRow1.createCell(2).setCellValue("백분율");
+
+	    // 학년 및 성별 헤더
+	    String[] grades = {"초4", "초5", "초6"};
+	    int cellIndex = 3;
+	    for (String grade : grades) {
+	        headerRow1.createCell(cellIndex).setCellValue(grade);
+	        headerRow2.createCell(cellIndex).setCellValue("남");
+	        headerRow2.createCell(cellIndex + 1).setCellValue("여");
+	        sheet.addMergedRegion(new CellRangeAddress(startRow, startRow, cellIndex, cellIndex + 1));
+	        cellIndex += 2;
 	    }
 
-	    return startRow;
+	    // 선택지별 데이터 입력
+	    int rowIndex = startRow + 2; // 데이터 입력을 시작할 행
+	    for (Map.Entry<String, Integer[][]> entry : overallStats.entrySet()) {
+	        Row row = sheet.createRow(rowIndex++);
+	        row.createCell(0).setCellValue(entry.getKey());
+	        Integer[][] counts = entry.getValue();
+	        int sumCounts = 0;
+	        for (Integer[] gradeCounts : counts) {
+	            for (int count : gradeCounts) {
+	                sumCounts += count;
+	            }
+	        }
+	        row.createCell(1).setCellValue(sumCounts);
+	        row.createCell(2).setCellValue(String.format("%.2f%%", 100.0 * sumCounts / dataList.size()));
+	        cellIndex = 3; // 성별 데이터 시작 위치 초기화
+	        for (Integer[] gradeCounts : counts) {
+	            for (int count : gradeCounts) {
+	                row.createCell(cellIndex++).setCellValue(count);
+	            }
+	        }
+	    }
+
+	    return rowIndex; // 통계가 추가된 마지막 행 번호 반환
 	}
 
 
+
+
+
 	// 파이 차트 추가 메서드
-	private void addPieChart(XSSFWorkbook workbook, XSSFSheet sheet, int startRow) throws IOException {
+	private void addPieChart(XSSFWorkbook workbook, Sheet sheet, int startRow, List<HashMap<String, Object>> dataList, int questionIndex, HashMap<String, Object> question) throws IOException {
+	    // 선택지 추출
+	    String[] choices = question.get("Choices").toString().split("#");
+
 	    // 파이 차트 데이터 생성
 	    DefaultPieDataset dataset = new DefaultPieDataset();
-	    for (int rowNum = startRow + 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
-	        String category = sheet.getRow(rowNum).getCell(0).getStringCellValue();
-	        double value = sheet.getRow(rowNum).getCell(1).getNumericCellValue();
-	        dataset.setValue(category, value);
+	    Map<String, Integer> totalResponsesMap = new HashMap<>();
+
+	    for (HashMap<String, Object> data : dataList) {
+	        String[] selectedIndices = data.get("select_list").toString().split(",");
+	        if (selectedIndices.length > questionIndex) {
+	            int index = Integer.parseInt(selectedIndices[questionIndex].trim()) - 1;
+	            if (index >= 0 && index < choices.length) {
+	                String choice = choices[index];
+	                totalResponsesMap.put(choice, totalResponsesMap.getOrDefault(choice, 0) + 1);
+	            }
+	        }
+	    }
+
+	    for (Map.Entry<String, Integer> entry : totalResponsesMap.entrySet()) {
+	        dataset.setValue(entry.getKey(), entry.getValue());
 	    }
 
 	    // 파이 차트 생성
 	    JFreeChart chart = ChartFactory.createPieChart(
-	            sheet.getRow(startRow).getCell(0).getStringCellValue(),
-	            dataset,
-	            true, // legend
-	            true, // tooltips
-	            false // urls
+	        question.get("name").toString(), // 질문 제목을 차트 제목으로 사용
+	        dataset,
+	        true, // legend
+	        true, // tooltips
+	        false // urls
 	    );
 
-	    // 차트 이미지 생성
+	    // 한글 폰트 설정
+	    java.awt.Font koreanFont = new java.awt.Font("Malgun Gothic", java.awt.Font.PLAIN, 12);
+	    chart.getTitle().setFont(koreanFont); // 제목에 폰트 적용
+	    chart.getLegend().setItemFont(koreanFont); // 범례에 폰트 적용
+
+	    PiePlot plot = (PiePlot) chart.getPlot();
+	    plot.setLabelFont(koreanFont); // 데이터 레이블에 폰트 적용
+	    PieSectionLabelGenerator generator = new StandardPieSectionLabelGenerator("{0}: {1} ({2})");
+	    plot.setLabelGenerator(generator); // 레이블 제너레이터 설정
+
 	    ByteArrayOutputStream chartOut = new ByteArrayOutputStream();
-	    ChartUtils.writeChartAsPNG(chartOut, chart, 800, 600);
+	    ChartUtils.writeChartAsPNG(chartOut, chart, 600, 400); // 이미지 크기 조정
 	    chartOut.flush();
 
-	    // 이미지를 엑셀 시트에 추가
 	    CreationHelper helper = workbook.getCreationHelper();
-	    Drawing drawing = sheet.createDrawingPatriarch();
+	    Drawing<?> drawing = sheet.createDrawingPatriarch();
 	    ClientAnchor anchor = helper.createClientAnchor();
-	    anchor.setCol1(6); // 엑셀에서 차트가 시작될 열 번호
+	    anchor.setCol1(0); // 엑셀에서 차트가 시작될 열 번호
 	    anchor.setRow1(startRow); // 엑셀에서 차트가 시작될 행 번호
 	    int pictureIdx = workbook.addPicture(chartOut.toByteArray(), Workbook.PICTURE_TYPE_PNG);
 	    Picture pict = drawing.createPicture(anchor, pictureIdx);
 	    pict.resize(); // 이미지 크기 조정
 
-	    // 스트림 닫기
 	    chartOut.close();
 	}
+
+
+
     
     private double calculatePercentage(Integer[] counts, int totalResponses) {
         int sumCounts = Arrays.stream(counts).mapToInt(Integer::intValue).sum();
