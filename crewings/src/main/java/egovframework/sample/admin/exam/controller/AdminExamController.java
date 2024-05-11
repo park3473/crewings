@@ -1,5 +1,6 @@
 package egovframework.sample.admin.exam.controller;
 
+import java.awt.GraphicsEnvironment;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -653,61 +654,83 @@ public class AdminExamController {
 
 	// 파이 차트 추가 메서드
 	private void addPieChart(XSSFWorkbook workbook, Sheet sheet, int startRow, List<HashMap<String, Object>> dataList, int questionIndex, HashMap<String, Object> question) throws IOException {
-	    // 선택지 추출
-	    String[] choices = question.get("Choices").toString().split("#");
-
-	    // 파이 차트 데이터 생성
-	    DefaultPieDataset dataset = new DefaultPieDataset();
-	    Map<String, Integer> totalResponsesMap = new HashMap<>();
-
-	    for (HashMap<String, Object> data : dataList) {
-	        String[] selectedIndices = data.get("select_list").toString().split(",");
-	        if (selectedIndices.length > questionIndex) {
-	            int index = Integer.parseInt(selectedIndices[questionIndex].trim()) - 1;
-	            if (index >= 0 && index < choices.length) {
-	                String choice = choices[index];
-	                totalResponsesMap.put(choice, totalResponsesMap.getOrDefault(choice, 0) + 1);
+	    
+		 try {
+	            // 외부 폰트 파일 로드
+	            InputStream is = AdminExamController.class.getResourceAsStream("/font/malgun.ttf");
+	            
+	            if (is == null) {
+	                System.out.println("폰트 파일을 찾을 수 없습니다.");
+	                return;
 	            }
+	            
+	            java.awt.Font awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, is).deriveFont(12f);;
+
+	            is.close();  // InputStream 사용 후 닫기
+	            
+	            // 시스템 폰트로 등록
+	            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	            ge.registerFont(awtFont);
+
+	            // 선택지 추출
+	            String[] choices = question.get("Choices").toString().split("#");
+
+	            // 파이 차트 데이터 생성
+	            DefaultPieDataset dataset = new DefaultPieDataset();
+	            Map<String, Integer> totalResponsesMap = new HashMap<>();
+
+	            for (HashMap<String, Object> data : dataList) {
+	                String[] selectedIndices = data.get("select_list").toString().split(",");
+	                if (selectedIndices.length > questionIndex) {
+	                    int index = Integer.parseInt(selectedIndices[questionIndex].trim()) - 1;
+	                    if (index >= 0 && index < choices.length) {
+	                        String choice = choices[index];
+	                        totalResponsesMap.put(choice, totalResponsesMap.getOrDefault(choice, 0) + 1);
+	                    }
+	                }
+	            }
+
+	            for (Map.Entry<String, Integer> entry : totalResponsesMap.entrySet()) {
+	                dataset.setValue(entry.getKey(), entry.getValue());
+	            }
+
+	            // 파이 차트 생성
+	            JFreeChart chart = ChartFactory.createPieChart(
+	                question.get("name").toString(), // 질문 제목을 차트 제목으로 사용
+	                dataset,
+	                true, // legend
+	                true, // tooltips
+	                false // urls
+	            );
+
+	            // 한글 폰트 설정
+	            chart.getTitle().setFont(awtFont); // 제목에 폰트 적용
+	            chart.getLegend().setItemFont(awtFont); // 범례에 폰트 적용
+
+	            PiePlot plot = (PiePlot) chart.getPlot();
+	            plot.setLabelFont(awtFont); // 데이터 레이블에 폰트 적용
+	            PieSectionLabelGenerator generator = new StandardPieSectionLabelGenerator("{0}: {1} ({2})");
+	            plot.setLabelGenerator(generator); // 레이블 제너레이터 설정
+
+	            ByteArrayOutputStream chartOut = new ByteArrayOutputStream();
+	            ChartUtils.writeChartAsPNG(chartOut, chart, 600, 400);
+	            chartOut.flush();
+
+	            // 이미지를 엑셀 파일에 삽입
+	            CreationHelper helper = workbook.getCreationHelper();
+	            Drawing<?> drawing = sheet.createDrawingPatriarch();
+	            ClientAnchor anchor = helper.createClientAnchor();
+	            anchor.setCol1(0);
+	            anchor.setRow1(startRow);
+	            int pictureIdx = workbook.addPicture(chartOut.toByteArray(), Workbook.PICTURE_TYPE_PNG);
+	            Picture pict = drawing.createPicture(anchor, pictureIdx);
+	            pict.resize();
+
+	            chartOut.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
 	        }
-	    }
-
-	    for (Map.Entry<String, Integer> entry : totalResponsesMap.entrySet()) {
-	        dataset.setValue(entry.getKey(), entry.getValue());
-	    }
-
-	    // 파이 차트 생성
-	    JFreeChart chart = ChartFactory.createPieChart(
-	        question.get("name").toString(), // 질문 제목을 차트 제목으로 사용
-	        dataset,
-	        true, // legend
-	        true, // tooltips
-	        false // urls
-	    );
-
-	    // 한글 폰트 설정
-	    java.awt.Font koreanFont = new java.awt.Font("Malgun Gothic", java.awt.Font.PLAIN, 12);
-	    chart.getTitle().setFont(koreanFont); // 제목에 폰트 적용
-	    chart.getLegend().setItemFont(koreanFont); // 범례에 폰트 적용
-
-	    PiePlot plot = (PiePlot) chart.getPlot();
-	    plot.setLabelFont(koreanFont); // 데이터 레이블에 폰트 적용
-	    PieSectionLabelGenerator generator = new StandardPieSectionLabelGenerator("{0}: {1} ({2})");
-	    plot.setLabelGenerator(generator); // 레이블 제너레이터 설정
-
-	    ByteArrayOutputStream chartOut = new ByteArrayOutputStream();
-	    ChartUtils.writeChartAsPNG(chartOut, chart, 600, 400); // 이미지 크기 조정
-	    chartOut.flush();
-
-	    CreationHelper helper = workbook.getCreationHelper();
-	    Drawing<?> drawing = sheet.createDrawingPatriarch();
-	    ClientAnchor anchor = helper.createClientAnchor();
-	    anchor.setCol1(0); // 엑셀에서 차트가 시작될 열 번호
-	    anchor.setRow1(startRow); // 엑셀에서 차트가 시작될 행 번호
-	    int pictureIdx = workbook.addPicture(chartOut.toByteArray(), Workbook.PICTURE_TYPE_PNG);
-	    Picture pict = drawing.createPicture(anchor, pictureIdx);
-	    pict.resize(); // 이미지 크기 조정
-
-	    chartOut.close();
+	    
 	}
 
 
