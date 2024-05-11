@@ -260,5 +260,25 @@ public class AdminExamServiceImpl implements AdminExamService {
 		
 		return model;
 	}
+
+	@Override
+	public ModelMap getExamFinalAll(AdminExamVo adminExamVo) {
+		
+		ModelMap model = new ModelMap();
+		
+		List<?> question = adminExamMapper.getStatusQuestionList(adminExamVo);
+		
+		List<?> Datalist = adminExamMapper.getResultDataAllList(adminExamVo);
+		
+		AdminExamVo view = adminExamMapper.getExamView(adminExamVo);
+		
+		model.put("view", view);
+		
+		model.put("question", question);
+		
+		model.put("datalist", Datalist);
+		
+		return model;
+	}
 	
 }

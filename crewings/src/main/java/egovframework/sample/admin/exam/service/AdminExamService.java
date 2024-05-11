@@ -29,5 +29,7 @@ public interface AdminExamService {
 
 	public ModelMap getExamExcelAll(AdminExamVo adminExamVo);
 
+	public ModelMap getExamFinalAll(AdminExamVo adminExamVo);
+
 
 }

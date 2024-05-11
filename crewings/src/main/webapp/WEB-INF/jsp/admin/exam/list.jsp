@@ -80,6 +80,7 @@
                                         	<button type="button"  onclick="location.href='/admin/exam/status.do?idx=${item.idx}&category=${item.category }'">통계</button>
                                         	<button type="button"  onclick="qrCode('http://cnwpanel.com//user/exam/view.do?idx=${item.idx}&category=${item.category }','${status.index + 1 }' , '${item.name}')" >QR코드 생성</button>
                                             <button type="button" onclick="location.href='/admin/exam/result/list.do?idx=${item.idx}'">추가문의 확인</button>
+                                            <button type="button" onclick="location.href='/admin/exam/result/Final.do?idx=${item.idx}'">최종결과물</button>
                                         </td>
                                     </tr>
                                     </c:forEach>

@@ -1,0 +1,38 @@
+/* final css */
+
+/* 텍스트 */
+.big_tit_01 {font-size: 8rem; font-weight: 700;}
+.big_tit_02 {padding-bottom: 24px; font-size: 4rem;font-weight: 500;color: #333; }
+.big_tit_03 {padding-bottom:24px;font-size: 3rem;font-weight: 700;color: #333; word-break: keep-all;}
+
+.small_txt_01 {padding:24px 0;font-size: 3rem;font-weight: 700;color: #555; word-break: keep-all;}
+.small_txt_02 {font-size: 3rem;font-weight: 400;color: #666;-webkit-text-size-adjust: none;}
+.small_txt_03 {font-size: 3rem;font-weight: 400;color: #555; word-break: keep-all;}
+
+thead { color: #fff; background-color: #0a4e7b; text-align: center; }
+table { table-layout:fixed; width:100%; border-collapse: separate !important; text-align: center;}
+table thead tr th:first-child { border-radius:10px 0 0 0 !important ; -webkit-border-radius:10px 0 0 0 !important ; -moz-border-radius:10px 0 0 0 !important ; -ms-border-radius:10px 0 0 0 !important ; -o-border-radius:10px 0 0 0 !important ; }
+table thead tr th:last-child { border-radius:0 10px 0 0 !important ; -webkit-border-radius:0 10px 0 0 !important ; -moz-border-radius:0 10px 0 0 !important ; -ms-border-radius:0 10px 0 0 !important ; -o-border-radius:0 10px 0 0 !important ; }
+table tbody tr:last-child th:first-child { border-radius:0 0 0 10px !important ; -webkit-border-radius:0 0 0 10px !important ; -moz-border-radius:0 0 0 10px !important ; -ms-border-radius:0 0 0 10px !important ; -o-border-radius:0 0 0 10px !important ; }
+table tbody tr:last-child td:last-child { border-radius:0 0 10px 0 !important ; -webkit-border-radius:0 0 10px 0 !important ; -moz-border-radius:0 0 10px 0 !important ; -ms-border-radius:0 0 10px 0 !important ; -o-border-radius:0 0 10px 0 !important ; }
+table tbody {background-color: rgba(244, 244, 244, 0.3) ;}
+tbody th {text-align: center;}
+tbody th, tbody .color_td {background-color:rgba(10, 78, 123, 0.1) ;}
+table th, table td {vertical-align: middle !important;}
+/* .table-striped tbody tr:nth-of-type(odd) {background-color: rgba(8, 180, 254, 0.1) !important;} */
+
+
+/* 간격 */
+.line_gab_15 {padding-top:15px; margin-bottom: 15px; border-bottom: 1px solid #687693;}
+.line_gab_30 {padding-top:30px; margin-bottom: 30px; border-bottom: 1px solid #687693;}
+.line_gab_50 {padding-top:50px; margin-bottom: 50px; border-bottom: 1px solid #687693;}
+.line_bnk_30 {padding-top:15px; margin-bottom: 15px;}
+.line_bnk_50 {padding-top:25px; margin-bottom: 25px;}
+
+
+/* 보더처리 */
+.b_rad_10 { border-radius:10px ; -webkit-border-radius:10px ; -moz-border-radius:10px ; -ms-border-radius:10px ; -o-border-radius:10px ; }
+.border_line_01 {border: 1px solid #fff;}
+.border_line_02 {border: 1px solid #ccc;}
+
+

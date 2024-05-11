@@ -248,6 +248,18 @@ public class AdminExamController {
 		
 	}
 	
+	//최종 출력문 다운로드
+	@RequestMapping(value="/admin/exam/result/final.do" , method = RequestMethod.GET)
+	public ModelAndView AdminExamResultExcelDownTotal(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) {
+			
+		ModelMap model = new ModelMap();
+			
+		model = adminExamService.getExamFinalAll(AdminExamVo);
+			
+		return new ModelAndView("admin/exam/final" , "model" , model);
+			
+	}
+	
 	@RequestMapping(value="/admin/exam/result/list.do" , method = RequestMethod.GET)
 	public ModelAndView AdminExamResultListGet(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) {
 		
@@ -276,14 +288,7 @@ public class AdminExamController {
 		return new ModelAndView("admin/exam/Resultlist" , "model" , model);
 		
 	}
-	
-	//최종 출력문 다운로드
-	@RequestMapping(value="/admin/exam/result/FinalExcelDown.do" , method = RequestMethod.GET)
-	public void AdminExamResultExcelDownTotal(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) {
-		
-		
-		
-	}
+
 	
 	@RequestMapping(value="/admin/exam/result/ExcelDown.do" , method = RequestMethod.GET)
 	public void AdminExamResultExcelDown(@ModelAttribute("AdminExamVo")AdminExamVo AdminExamVo , HttpServletRequest request , HttpServletResponse response) throws IOException {
@@ -298,7 +303,7 @@ public class AdminExamController {
 		
 		List<HashMap> resultList = (List<HashMap>) model.get("result");
 		
-		List<HashMap> dataList = (List<HashMap>) model.get("datalist");
+		//List<HashMap> dataList = (List<HashMap>) model.get("datalist");
 		
 		Workbook workbook = new XSSFWorkbook();
 		
@@ -438,6 +443,7 @@ public class AdminExamController {
             sheet2.setColumnWidth(i, width + 1024);
         }
         
+        /*
         List<HashMap<String, Object>> questionList1 = (List<HashMap<String, Object>>) model.get("question");
         List<HashMap<String, Object>> dataList1 = (List<HashMap<String, Object>>) model.get("datalist");
         
@@ -453,7 +459,7 @@ public class AdminExamController {
             addPieChart((XSSFWorkbook) workbook, sheet3, statsStartRow , dataList1 , i , question); // 파이 차트 추가
             sheetIndex++;
         }
-
+		*/
 
         
         // 컨텐츠 타입과 파일명 지정
@@ -479,7 +485,7 @@ public class AdminExamController {
         
 	}
 	
-	// 시트 헤더 설정
+	// 3시트 헤더 설정
 	private void setupSheetHeader(XSSFSheet sheet) {
 	    Row headerRow1 = sheet.createRow(0);
 	    Row headerRow2 = sheet.createRow(1);
